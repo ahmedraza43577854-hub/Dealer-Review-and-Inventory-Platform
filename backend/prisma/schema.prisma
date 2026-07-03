@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Dealer {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  address     String
+  city        String
+  state       String
+  zip         String
+  phone       String?
+  email       String?
+  website     String?
+  description String?
+  logo        String?
+  featured    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  reviews     Review[]
+
+  @@index([state])
+  @@index([city])
+  @@index([featured])
+}
+
+model Review {
+  id         String   @id @default(cuid())
+  dealerId   String
+  dealer     Dealer   @relation(fields: [dealerId], references: [id], onDelete: Cascade)
+  authorName String
+  rating     Int
+  comment    String
+  createdAt  DateTime @default(now())
+
+  @@index([dealerId])
+}

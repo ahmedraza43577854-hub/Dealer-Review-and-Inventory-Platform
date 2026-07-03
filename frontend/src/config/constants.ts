@@ -92,6 +92,58 @@ export const WHY_CHOOSE_US = [
   },
 ] as const;
 
+export const TESTIMONIALS = [
+  {
+    quote:
+      "Finally a site that focuses on our region. I found a great dealer in Bergen County within minutes and the reviews matched exactly what I experienced.",
+    name: "Michael R.",
+    location: "Bergen County, NJ",
+    rating: 5,
+  },
+  {
+    quote:
+      "I was about to walk into a dealership with a terrible reputation. The reviews here saved me a wasted Saturday and a bad deal.",
+    name: "Priya S.",
+    location: "Nassau County, NY",
+    rating: 5,
+  },
+  {
+    quote:
+      "Simple, honest, no clutter. I could compare three dealers side by side and pick the one with the best service record.",
+    name: "Daniel K.",
+    location: "Bucks County, PA",
+    rating: 4,
+  },
+] as const;
+
+export const FAQS = [
+  {
+    question: "Is DealerReview free to use?",
+    answer:
+      "Yes. Searching dealers, reading reviews, and comparing ratings is completely free for car buyers, with no account required.",
+  },
+  {
+    question: "How are dealer ratings calculated?",
+    answer:
+      "Every rating is a live average of submitted customer reviews. We do not accept payment to raise, hide, or remove a dealer's score.",
+  },
+  {
+    question: "Which areas do you cover?",
+    answer:
+      "We currently focus on New Jersey, New York, Pennsylvania, and Connecticut, with more Northeast states planned as we grow.",
+  },
+  {
+    question: "Can a dealership remove a negative review?",
+    answer:
+      "No. Dealers can respond publicly to reviews, but they cannot delete or suppress honest feedback from verified buyers.",
+  },
+  {
+    question: "How do I write a review for a dealership?",
+    answer:
+      "Open any dealer profile and select \"Write a review,\" or use the Write a Review page to search for the dealership first.",
+  },
+] as const;
+
 export const STATES = [
   { code: "NJ", label: "New Jersey" },
   { code: "NY", label: "New York" },

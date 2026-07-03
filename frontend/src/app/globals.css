@@ -4,32 +4,34 @@
 
 @layer base {
   :root {
-    --background: 220 22% 96%;
-    --foreground: 222 50% 8%;
+    --background: 210 25% 98%;
+    --foreground: 222 47% 9%;
     --card: 0 0% 100%;
-    --card-foreground: 222 50% 8%;
+    --card-foreground: 222 47% 9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222 50% 8%;
-    --primary: 218 80% 35%;
+    --popover-foreground: 222 47% 9%;
+    --primary: 221 83% 30%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 220 25% 90%;
-    --secondary-foreground: 222 50% 8%;
-    --muted: 220 18% 92%;
-    --muted-foreground: 220 10% 40%;
-    --accent: 43 96% 56%;
-    --accent-foreground: 222 50% 8%;
+    --secondary: 213 30% 93%;
+    --secondary-foreground: 222 47% 9%;
+    --muted: 213 22% 93%;
+    --muted-foreground: 218 12% 42%;
+    --accent: 38 92% 50%;
+    --accent-foreground: 222 47% 9%;
+    --teal: 173 80% 32%;
+    --teal-foreground: 0 0% 100%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 16% 85%;
-    --input: 220 16% 85%;
-    --ring: 218 80% 35%;
-    --radius: 0.75rem;
-    --footer-bg: 222 50% 6%;
-    --footer-fg: 210 25% 90%;
-    --footer-muted: 215 12% 58%;
-    --hero-from: 222 55% 8%;
-    --hero-via: 218 65% 14%;
-    --hero-to: 222 50% 6%;
+    --border: 214 20% 88%;
+    --input: 214 20% 88%;
+    --ring: 221 83% 30%;
+    --radius: 0.9rem;
+    --footer-bg: 222 55% 5%;
+    --footer-fg: 210 25% 92%;
+    --footer-muted: 215 14% 60%;
+    --hero-from: 224 60% 7%;
+    --hero-via: 221 70% 13%;
+    --hero-to: 224 55% 5%;
   }
 }
 
@@ -46,19 +48,23 @@
 
 @layer utilities {
   .text-gradient-brand {
-    @apply bg-gradient-to-r from-[hsl(218,80%,45%)] to-[hsl(230,70%,30%)] bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-[hsl(221,83%,42%)] via-[hsl(224,75%,34%)] to-[hsl(230,70%,26%)] bg-clip-text text-transparent;
   }
 
   .text-gradient-gold {
-    @apply bg-gradient-to-r from-[hsl(43,96%,62%)] to-[hsl(38,90%,50%)] bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-[hsl(43,96%,64%)] to-[hsl(32,90%,48%)] bg-clip-text text-transparent;
   }
 
   .bg-gradient-brand {
-    @apply bg-gradient-to-r from-[hsl(218,80%,38%)] to-[hsl(228,70%,28%)];
+    @apply bg-gradient-to-br from-[hsl(221,83%,40%)] via-[hsl(223,78%,32%)] to-[hsl(228,72%,24%)];
   }
 
   .bg-gradient-gold {
-    @apply bg-gradient-to-r from-[hsl(43,96%,56%)] to-[hsl(38,92%,48%)];
+    @apply bg-gradient-to-br from-[hsl(43,96%,58%)] to-[hsl(32,92%,46%)];
+  }
+
+  .bg-gradient-teal {
+    @apply bg-gradient-to-br from-[hsl(173,75%,36%)] to-[hsl(184,70%,26%)];
   }
 
   .bg-hero {
@@ -89,8 +95,30 @@
   .section-dark {
     background: linear-gradient(
       180deg,
-      hsl(222 50% 8%) 0%,
-      hsl(218 55% 12%) 100%
+      hsl(224 58% 7%) 0%,
+      hsl(221 60% 12%) 100%
     );
+  }
+
+  .bg-grid-pattern {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  .shadow-premium {
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 12px 32px -12px rgba(15, 23, 42, 0.14);
+  }
+
+  .shadow-glow-primary {
+    box-shadow: 0 8px 30px -6px hsl(var(--primary) / 0.35);
+  }
+
+  .shadow-glow-gold {
+    box-shadow: 0 8px 24px -6px hsl(var(--accent) / 0.4);
+  }
+
+  .ring-hairline {
+    box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.06);
   }
 }

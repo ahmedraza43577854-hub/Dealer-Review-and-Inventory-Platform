@@ -118,7 +118,12 @@ export function WriteReviewPageContent() {
             <ArrowRight className="h-4 w-4" />
           </Link>
         </Button>
-        <Button asChild size="lg" variant="outline" className="w-full sm:w-auto">
+        <Button
+          asChild
+          size="lg"
+          variant="outline"
+          className="w-full sm:w-auto border-white/25 text-white hover:bg-white/10 bg-transparent"
+        >
           <Link href={`mailto:${SITE.email}`}>Contact us</Link>
         </Button>
       </PageCtaBand>

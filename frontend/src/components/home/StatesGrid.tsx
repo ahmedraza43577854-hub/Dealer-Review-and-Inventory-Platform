@@ -9,7 +9,7 @@ import { staggerContainer, staggerItem } from "@/lib/motion";
 
 export function StatesGrid() {
   return (
-    <section className="py-16 sm:py-24 bg-slate-50">
+    <section className="py-12 sm:py-16 bg-slate-50">
       <div className="container mx-auto px-4 sm:px-6">
         <SectionHeader
           eyebrow="Regional coverage"

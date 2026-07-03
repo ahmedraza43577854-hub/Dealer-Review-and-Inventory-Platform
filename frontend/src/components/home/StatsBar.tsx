@@ -14,23 +14,23 @@ const STATS = [
 
 export function StatsBar() {
   return (
-    <section className="border-t border-slate-200 bg-white py-12 sm:py-14">
+    <section className="relative z-10 -mt-12 sm:-mt-14 pb-0">
       <div className="container mx-auto px-4 sm:px-6">
         <motion.div
           variants={staggerContainer}
           initial="initial"
           whileInView="animate"
           viewport={{ once: true }}
-          className="grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-6"
+          className="grid grid-cols-2 gap-3 rounded-2xl bg-white p-3 shadow-premium ring-hairline sm:gap-4 lg:grid-cols-4 lg:gap-4 lg:p-4"
         >
           {STATS.map(({ icon: Icon, value, label }) => (
             <motion.div
               key={label}
               variants={staggerItem}
-              className="flex items-center gap-4 rounded-xl border border-slate-200 bg-slate-50/50 px-5 py-5 sm:px-6 sm:py-6"
+              className="flex items-center gap-4 rounded-xl px-4 py-4 transition-colors hover:bg-slate-50 sm:px-5 sm:py-5"
             >
-              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-[hsl(222,50%,14%)]">
-                <Icon className="h-5 w-5 text-[hsl(43,96%,56%)]" aria-hidden />
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-gradient-brand shadow-glow-primary">
+                <Icon className="h-5 w-5 text-[hsl(43,96%,62%)]" aria-hidden />
               </div>
               <div className="min-w-0">
                 <p className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">

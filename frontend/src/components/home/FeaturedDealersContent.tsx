@@ -17,7 +17,7 @@ export async function FeaturedDealersContent() {
     if (dealers.length === 0) return null;
 
     return (
-      <section className="section-dark py-16 sm:py-24">
+      <section className="section-dark py-12 sm:py-16">
         <div className="container mx-auto px-4 sm:px-6">
           <SectionHeader
             eyebrow="Top picks"

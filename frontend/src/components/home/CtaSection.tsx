@@ -8,11 +8,18 @@ import { ROUTES } from "@/config/constants";
 
 export function CtaSection() {
   return (
-    <section className="relative overflow-hidden section-dark py-20 sm:py-28">
+    <section className="relative overflow-hidden section-dark py-14 sm:py-20">
+      <div className="pointer-events-none absolute inset-0 bg-grid-pattern [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,black,transparent)]" aria-hidden />
       <motion.div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[400px] w-[600px] rounded-full bg-accent/10 blur-[100px]"
         animate={{ scale: [1, 1.1, 1] }}
         transition={{ duration: 6, repeat: Infinity }}
+        aria-hidden
+      />
+      <motion.div
+        className="absolute bottom-0 right-0 h-[300px] w-[400px] rounded-full bg-blue-500/10 blur-[100px]"
+        animate={{ scale: [1.1, 1, 1.1] }}
+        transition={{ duration: 7, repeat: Infinity }}
         aria-hidden
       />
 

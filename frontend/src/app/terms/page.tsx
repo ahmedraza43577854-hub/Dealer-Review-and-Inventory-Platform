@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import {
   ContentPage,
   ContentSection,
   ContentProse,
 } from "@/components/layout/ContentPage";
-import { ROUTES, SITE } from "@/config/constants";
+import { SITE } from "@/config/constants";
 
 export const metadata: Metadata = {
   title: `Terms of Service | ${SITE.name}`,

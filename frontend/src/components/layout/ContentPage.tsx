@@ -22,51 +22,46 @@ export function ContentPage({
 }: ContentPageProps) {
   return (
     <div className={cn("min-h-[60vh]", className)}>
-      <div className="relative overflow-hidden border-b bg-gradient-to-br from-primary/15 via-primary/5 to-background">
+      <div className="relative overflow-hidden bg-[#070c18]">
         <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 1px 1px, hsl(var(--primary)) 1px, transparent 0)",
-            backgroundSize: "32px 32px",
-          }}
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_15%_0%,rgba(37,99,235,0.22),transparent_55%)]"
           aria-hidden
         />
         <div
-          className="absolute -top-24 right-0 h-64 w-64 rounded-full bg-accent/10 blur-3xl"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_45%_45%_at_90%_10%,rgba(245,158,11,0.09),transparent)]"
           aria-hidden
         />
         <div
-          className="absolute -bottom-12 left-0 h-48 w-48 rounded-full bg-primary/10 blur-3xl"
+          className="pointer-events-none absolute inset-0 bg-grid-pattern [mask-image:radial-gradient(ellipse_60%_55%_at_50%_0%,black,transparent)]"
           aria-hidden
         />
 
-        <div className="container relative mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-20">
+        <div className="container relative mx-auto px-4 sm:px-6 py-14 sm:py-16 md:py-20">
           <nav
             className={cn(
-              "mb-6 flex items-center gap-1 text-sm text-muted-foreground",
+              "mb-6 flex items-center gap-1 text-sm text-slate-500",
               centered && "justify-center"
             )}
             aria-label="Breadcrumb"
           >
-            <Link href={ROUTES.home} className="hover:text-primary transition-colors">
+            <Link href={ROUTES.home} className="hover:text-white transition-colors">
               Home
             </Link>
             <ChevronRight className="h-3.5 w-3.5" aria-hidden />
-            <span className="text-foreground font-medium">{title}</span>
+            <span className="text-slate-300 font-medium">{title}</span>
           </nav>
 
           <div className={cn(centered && "mx-auto max-w-3xl text-center")}>
             {badge && (
-              <span className="mb-4 inline-block rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-primary">
+              <span className="mb-4 inline-block rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-accent">
                 {badge}
               </span>
             )}
-            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl text-gradient-brand">
+            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl text-white">
               {title}
             </h1>
             {subtitle && (
-              <p className="mt-4 text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed">
+              <p className="mt-4 text-base sm:text-lg md:text-xl text-slate-400 leading-relaxed">
                 {subtitle}
               </p>
             )}
@@ -164,14 +159,18 @@ interface PageCtaBandProps {
 
 export function PageCtaBand({ title, description, children }: PageCtaBandProps) {
   return (
-    <section className="relative overflow-hidden border-t">
+    <section className="relative overflow-hidden section-dark py-16 sm:py-20">
       <div
-        className="absolute inset-0 bg-gradient-to-br from-primary/15 via-primary/5 to-background"
+        className="pointer-events-none absolute inset-0 bg-grid-pattern [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,black,transparent)]"
         aria-hidden
       />
-      <div className="container relative mx-auto px-4 sm:px-6 py-14 sm:py-16 text-center">
-        <h2 className="text-2xl font-bold sm:text-3xl text-foreground">{title}</h2>
-        <p className="mx-auto mt-3 max-w-xl text-muted-foreground leading-relaxed">
+      <div
+        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[350px] w-[550px] rounded-full bg-accent/10 blur-[100px]"
+        aria-hidden
+      />
+      <div className="container relative mx-auto px-4 sm:px-6 text-center">
+        <h2 className="text-2xl font-bold sm:text-3xl text-white">{title}</h2>
+        <p className="mx-auto mt-3 max-w-xl text-slate-400 leading-relaxed">
           {description}
         </p>
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">

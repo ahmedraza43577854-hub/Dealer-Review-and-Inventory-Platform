@@ -12,7 +12,7 @@ const STEP_ICONS = [Search, Star, MapPin] as const;
 
 export function HowItWorksPreview() {
   return (
-    <section className="py-16 sm:py-24">
+    <section className="py-12 sm:py-16">
       <div className="container mx-auto px-4 sm:px-6">
         <SectionHeader
           eyebrow="Simple process"

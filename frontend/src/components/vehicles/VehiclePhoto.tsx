@@ -1,0 +1,83 @@
+import Image from "next/image";
+import { ImageIcon } from "lucide-react";
+import type { Vehicle } from "@/types/vehicle";
+import { bodyStyleIcon } from "@/lib/vehicles/icons";
+import { getVehicleImages } from "@/lib/vehicles/images";
+import { cn } from "@/lib/utils";
+
+interface VehiclePhotoProps {
+  vehicle: Pick<
+    Vehicle,
+    "id" | "bodyStyle" | "accent" | "photoCount" | "make" | "model"
+  >;
+  className?: string;
+  showCount?: boolean;
+  iconClassName?: string;
+  /** Override the resolved image (used by the gallery for a specific photo). */
+  image?: string;
+  /** Passed to next/image for responsive sizing. */
+  sizes?: string;
+  priority?: boolean;
+}
+
+/**
+ * Renders the real vehicle photo when available, otherwise a gray gradient
+ * placeholder with a body-style car icon. Includes an optional photo-count badge.
+ */
+export function VehiclePhoto({
+  vehicle,
+  className,
+  showCount = true,
+  iconClassName,
+  image,
+  sizes = "(max-width: 640px) 100vw, 400px",
+  priority = false,
+}: VehiclePhotoProps) {
+  const images = getVehicleImages(vehicle.id);
+  const src = image ?? images[0];
+  const Icon = bodyStyleIcon(vehicle.bodyStyle);
+  const count = images.length || vehicle.photoCount;
+  const alt = `${vehicle.make} ${vehicle.model}`;
+
+  return (
+    <div
+      className={cn(
+        "relative flex items-center justify-center overflow-hidden bg-photo-placeholder",
+        className
+      )}
+    >
+      {src ? (
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          sizes={sizes}
+          priority={priority}
+          className="object-cover"
+        />
+      ) : (
+        <>
+          <div
+            className="absolute inset-0 opacity-[0.12]"
+            style={{
+              background: `radial-gradient(circle at 50% 45%, ${vehicle.accent} 0%, transparent 62%)`,
+            }}
+            aria-hidden
+          />
+          <Icon
+            className={cn("relative h-16 w-16 text-slate-400/80", iconClassName)}
+            strokeWidth={1.25}
+            aria-hidden
+          />
+        </>
+      )}
+
+      {showCount && (
+        <span className="absolute bottom-2.5 right-2.5 inline-flex items-center gap-1 rounded-md bg-black/55 px-2 py-1 text-[11px] font-semibold text-white backdrop-blur-sm">
+          <ImageIcon className="h-3 w-3" />
+          {count}
+        </span>
+      )}
+    </div>
+  );
+}

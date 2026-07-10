@@ -1,70 +1,49 @@
-import { Skeleton } from "@/components/ui/skeleton";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { VehicleCardSkeleton } from "@/components/vehicles/VehicleCardSkeleton";
 
 export function DealerProfileSkeleton() {
   return (
-    <div className="space-y-6" aria-busy="true" aria-label="Loading dealer profile">
-      <div className="rounded-xl border overflow-hidden">
-        <Skeleton className="h-36 sm:h-44 w-full rounded-none" />
-        <div className="p-6 space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
-            <div className="space-y-2 flex-1">
-              <Skeleton className="h-8 w-2/3" />
-              <Skeleton className="h-4 w-full max-w-md" />
+    <div
+      className="container-page py-6 lg:py-8"
+      aria-busy="true"
+      aria-label="Loading dealer profile"
+    >
+      {/* Header */}
+      <div className="mb-6 rounded-lg border border-border/70 bg-white p-6 shadow-card">
+        <div className="mb-4 h-4 w-52 skeleton" />
+        <div className="flex flex-col gap-5 lg:flex-row lg:justify-between">
+          <div className="flex-1 space-y-3">
+            <div className="h-8 w-2/3 skeleton" />
+            <div className="h-4 w-full max-w-md skeleton" />
+            <div className="flex items-center gap-3 pt-2">
+              <div className="h-10 w-14 skeleton" />
+              <div className="h-6 w-40 skeleton" />
             </div>
-            <Skeleton className="h-6 w-28 rounded-full" />
+            <div className="h-4 w-64 skeleton" />
           </div>
-          <div className="flex items-center gap-4">
-            <div className="flex gap-1">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Skeleton key={i} className="h-6 w-6 rounded-sm" />
-              ))}
-            </div>
-            <Skeleton className="h-4 w-24" />
+          <div className="flex flex-col gap-2 lg:w-52">
+            <div className="h-10 w-full skeleton" />
+            <div className="h-10 w-full skeleton" />
           </div>
-          <Skeleton className="h-16 w-full" />
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <div className="space-y-6 lg:col-span-2">
-          <Card>
-            <CardHeader>
-              <Skeleton className="h-6 w-32" />
-              <Skeleton className="h-4 w-48" />
-            </CardHeader>
-            <CardContent>
-              <Skeleton className="h-32 w-full rounded-lg" />
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <Skeleton className="h-6 w-32" />
-            </CardHeader>
-            <CardContent>
-              <Skeleton className="h-32 w-full rounded-lg" />
-            </CardContent>
-          </Card>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_320px] lg:gap-8">
+        <div>
+          <div className="mb-6 flex gap-4 border-b border-border/70 pb-3">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="h-5 w-20 skeleton" />
+            ))}
+          </div>
+          <div className="mb-5 h-14 w-full skeleton rounded-lg" />
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <VehicleCardSkeleton key={i} />
+            ))}
+          </div>
         </div>
         <aside className="space-y-4">
-          <Card className="border-primary/20 bg-primary/[0.02]">
-            <CardHeader>
-              <Skeleton className="h-5 w-40" />
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <Skeleton className="h-10 w-full" />
-              <Skeleton className="h-10 w-full" />
-              <Skeleton className="h-10 w-full" />
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <Skeleton className="h-5 w-24" />
-            </CardHeader>
-            <CardContent>
-              <Skeleton className="h-40 w-full rounded-lg" />
-            </CardContent>
-          </Card>
+          <div className="h-64 w-full skeleton rounded-lg" />
+          <div className="h-44 w-full skeleton rounded-lg" />
         </aside>
       </div>
     </div>

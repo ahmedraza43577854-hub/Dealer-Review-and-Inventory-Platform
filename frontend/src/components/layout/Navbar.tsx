@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X, ArrowRight } from "lucide-react";
+import { Menu, X, PenSquare, Store } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BrandLogo } from "@/components/layout/BrandLogo";
 import { NAV_LINKS, ROUTES } from "@/config/constants";
@@ -28,119 +28,120 @@ export function Navbar() {
     setMobileOpen(false);
   }, [pathname]);
 
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
+  function isActive(href: string) {
+    if (href === ROUTES.home) return pathname === ROUTES.home;
+    return pathname.startsWith(href);
+  }
+
   return (
-    <motion.header
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
+    <header
       className={cn(
-        "fixed top-0 z-50 w-full border-b border-slate-200/80 bg-white/95 backdrop-blur-xl transition-shadow duration-300",
-        scrolled ? "shadow-md shadow-slate-900/5" : "shadow-sm"
+        "fixed top-0 z-50 w-full border-b border-border/70 bg-white transition-shadow duration-300",
+        scrolled ? "shadow-nav-scrolled" : "shadow-nav"
       )}
     >
-      <div className="container mx-auto flex h-[4.25rem] items-center justify-between gap-4 px-4 sm:px-6">
+      <div className="container-page flex h-16 items-center justify-between gap-4">
         <BrandLogo />
 
-        <nav className="hidden md:flex items-center gap-1" aria-label="Main">
-          {NAV_LINKS.map((link) => {
-            const isActive =
-              link.href === ROUTES.home
-                ? pathname === ROUTES.home
-                : pathname.startsWith(link.href);
-
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="relative px-4 py-2 text-sm font-medium"
-              >
-                <span
-                  className={cn(
-                    "relative z-10 transition-colors duration-200",
-                    isActive
-                      ? "text-slate-900 font-semibold"
-                      : "text-slate-600 hover:text-slate-900"
-                  )}
-                >
-                  {link.label}
-                </span>
-                {isActive && (
-                  <motion.span
-                    layoutId="nav-active"
-                    className="absolute inset-0 rounded-lg bg-slate-100"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
-                )}
-              </Link>
-            );
-          })}
+        <nav
+          className="hidden items-center gap-1 lg:flex"
+          aria-label="Main navigation"
+        >
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={cn(
+                "rounded-md px-3.5 py-2 text-sm font-semibold transition-colors",
+                isActive(link.href)
+                  ? "bg-secondary text-primary"
+                  : "text-slate-600 hover:bg-secondary hover:text-primary"
+              )}
+            >
+              {link.label}
+            </Link>
+          ))}
         </nav>
 
-        <div className="hidden md:flex items-center gap-3">
-          <Button
-            asChild
-            className="font-semibold bg-gradient-brand shadow-md shadow-primary/20 hover:opacity-90 transition-all duration-300"
-          >
-            <Link href={ROUTES.dealers}>
-              Find Dealers
-              <ArrowRight className="h-4 w-4" />
+        <div className="hidden items-center gap-2.5 lg:flex">
+          <Button asChild variant="outline" size="sm">
+            <Link href={ROUTES.forDealers}>
+              <Store className="h-4 w-4" />
+              List Your Dealership
+            </Link>
+          </Button>
+          <Button asChild variant="gold" size="sm">
+            <Link href={ROUTES.writeReview}>
+              <PenSquare className="h-4 w-4" />
+              Write a Review
             </Link>
           </Button>
         </div>
 
-        <Button
-          variant="ghost"
-          size="icon"
-          className="md:hidden rounded-xl text-slate-700 hover:bg-slate-100"
+        <button
+          type="button"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-lg text-primary transition-colors hover:bg-secondary lg:hidden"
           onClick={() => setMobileOpen((open) => !open)}
           aria-expanded={mobileOpen}
           aria-label={mobileOpen ? "Close menu" : "Open menu"}
         >
-          <AnimatePresence mode="wait" initial={false}>
-            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </AnimatePresence>
-        </Button>
+          {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        </button>
       </div>
 
       <AnimatePresence>
         {mobileOpen && (
-          <motion.nav
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden overflow-hidden border-t border-slate-200 bg-white"
-            aria-label="Mobile"
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 top-16 z-40 flex flex-col bg-white lg:hidden"
           >
-            <div className="container mx-auto flex flex-col gap-1 px-4 py-4">
-              {NAV_LINKS.map((link) => {
-                const isActive =
-                  link.href === ROUTES.home
-                    ? pathname === ROUTES.home
-                    : pathname.startsWith(link.href);
-
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={cn(
-                      "rounded-xl px-4 py-3 text-sm font-medium",
-                      isActive
-                        ? "bg-slate-100 text-slate-900"
-                        : "text-slate-600 hover:bg-slate-50"
-                    )}
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    {link.label}
-                  </Link>
-                );
-              })}
-              <Button asChild className="mt-2 w-full bg-gradient-brand">
-                <Link href={ROUTES.dealers}>Find Dealers</Link>
+            <nav
+              className="flex flex-col gap-1 px-4 py-6"
+              aria-label="Mobile navigation"
+            >
+              {NAV_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileOpen(false)}
+                  className={cn(
+                    "rounded-lg px-4 py-3.5 text-base font-semibold transition-colors",
+                    isActive(link.href)
+                      ? "bg-secondary text-primary"
+                      : "text-slate-700 hover:bg-secondary"
+                  )}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
+            <div className="mt-auto flex flex-col gap-3 border-t border-border/70 px-4 py-6">
+              <Button asChild variant="outline" className="w-full" size="lg">
+                <Link href={ROUTES.forDealers}>
+                  <Store className="h-4 w-4" />
+                  List Your Dealership
+                </Link>
+              </Button>
+              <Button asChild variant="gold" className="w-full" size="lg">
+                <Link href={ROUTES.writeReview}>
+                  <PenSquare className="h-4 w-4" />
+                  Write a Review
+                </Link>
               </Button>
             </div>
-          </motion.nav>
+          </motion.div>
         )}
       </AnimatePresence>
-    </motion.header>
+    </header>
   );
 }

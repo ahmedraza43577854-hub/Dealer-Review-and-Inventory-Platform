@@ -22,24 +22,11 @@ export function ContentPage({
 }: ContentPageProps) {
   return (
     <div className={cn("min-h-[60vh]", className)}>
-      <div className="relative overflow-hidden bg-[#070c18]">
-        <div
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_70%_60%_at_15%_0%,rgba(37,99,235,0.22),transparent_55%)]"
-          aria-hidden
-        />
-        <div
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_45%_45%_at_90%_10%,rgba(245,158,11,0.09),transparent)]"
-          aria-hidden
-        />
-        <div
-          className="pointer-events-none absolute inset-0 bg-grid-pattern [mask-image:radial-gradient(ellipse_60%_55%_at_50%_0%,black,transparent)]"
-          aria-hidden
-        />
-
-        <div className="container relative mx-auto px-4 sm:px-6 py-14 sm:py-16 md:py-20">
+      <div className="relative overflow-hidden bg-primary bg-hero-texture">
+        <div className="container-page relative py-14 sm:py-16 md:py-20">
           <nav
             className={cn(
-              "mb-6 flex items-center gap-1 text-sm text-slate-500",
+              "mb-6 flex items-center gap-1 text-sm text-white/60",
               centered && "justify-center"
             )}
             aria-label="Breadcrumb"
@@ -48,20 +35,20 @@ export function ContentPage({
               Home
             </Link>
             <ChevronRight className="h-3.5 w-3.5" aria-hidden />
-            <span className="text-slate-300 font-medium">{title}</span>
+            <span className="font-medium text-white">{title}</span>
           </nav>
 
           <div className={cn(centered && "mx-auto max-w-3xl text-center")}>
             {badge && (
-              <span className="mb-4 inline-block rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-accent">
+              <span className="mb-4 inline-block rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-accent">
                 {badge}
               </span>
             )}
-            <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl text-white">
+            <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl md:text-5xl">
               {title}
             </h1>
             {subtitle && (
-              <p className="mt-4 text-base sm:text-lg md:text-xl text-slate-400 leading-relaxed">
+              <p className="mt-4 text-base leading-relaxed text-white/75 sm:text-lg md:text-xl">
                 {subtitle}
               </p>
             )}

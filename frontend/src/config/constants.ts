@@ -1,39 +1,53 @@
 export const SITE = {
-  name: "DealerReview",
-  tagline: "Find trusted dealerships across the Northeast",
+  name: "AutoSalesReviews",
+  tagline: "Find your next car from trusted dealerships",
   description:
-    "Read real reviews and discover top-rated car dealers across New Jersey, New York, Pennsylvania, and Connecticut.",
+    "Search thousands of vehicles from trusted, top-rated dealerships across New Jersey, New York, Pennsylvania, and Connecticut.",
   region: "NJ, NY, PA & CT",
-  email: "hello@dealerreview.com",
+  email: "hello@autosalesreviews.com",
   phone: "(800) 555-0199",
 } as const;
 
 export const ROUTES = {
   home: "/",
+  vehicles: "/vehicles",
+  vehicleDetail: (id: string) => `/vehicles/${id}`,
   dealers: "/dealers",
   dealerProfile: (slug: string) => `/dealers/${slug}`,
   about: "/about",
+  blog: "/blog",
   howItWorks: "/how-it-works",
   writeReview: "/write-a-review",
   forDealers: "/for-dealers",
+  contact: "/contact",
+  faq: "/faq",
+  sitemap: "/sitemap",
+  accessibility: "/accessibility",
   privacy: "/privacy",
   terms: "/terms",
   cookies: "/cookies",
 } as const;
 
 export const NAV_LINKS = [
-  { href: ROUTES.home, label: "Home" },
-  { href: ROUTES.dealers, label: "Browse Dealers" },
+  { href: ROUTES.vehicles, label: "Find Cars" },
+  { href: ROUTES.dealers, label: "Dealers" },
+  { href: ROUTES.blog, label: "Blog" },
+  { href: ROUTES.about, label: "About" },
 ] as const;
 
 export const FOOTER = {
   explore: [
-    { href: ROUTES.home, label: "Home" },
-    { href: ROUTES.dealers, label: "All Dealers" },
-    { href: `${ROUTES.dealers}?state=NJ`, label: "New Jersey Dealers" },
-    { href: `${ROUTES.dealers}?state=NY`, label: "New York Dealers" },
-    { href: `${ROUTES.dealers}?state=PA`, label: "Pennsylvania Dealers" },
-    { href: `${ROUTES.dealers}?state=CT`, label: "Connecticut Dealers" },
+    { href: ROUTES.vehicles, label: "Find Cars" },
+    { href: ROUTES.dealers, label: "Dealers" },
+    { href: ROUTES.blog, label: "Blog" },
+    { href: `${ROUTES.vehicles}?bodyStyle=SUV`, label: "Browse SUVs" },
+    { href: `${ROUTES.vehicles}?condition=NEW`, label: "New Vehicles" },
+  ],
+  support: [
+    { href: ROUTES.contact, label: "Contact Us" },
+    { href: ROUTES.faq, label: "FAQ" },
+    { href: ROUTES.forDealers, label: "List Your Dealership" },
+    { href: ROUTES.accessibility, label: "Accessibility" },
   ],
   company: [
     { href: ROUTES.about, label: "About Us" },
@@ -45,71 +59,72 @@ export const FOOTER = {
     { href: ROUTES.privacy, label: "Privacy Policy" },
     { href: ROUTES.terms, label: "Terms of Service" },
     { href: ROUTES.cookies, label: "Cookie Policy" },
+    { href: ROUTES.sitemap, label: "Sitemap" },
   ],
 } as const;
 
 export const HOW_IT_WORKS_STEPS = [
   {
     step: "01",
-    title: "Search your area",
+    title: "Search vehicles",
     description:
-      "Filter dealerships by state, city, or name across New Jersey, New York, Pennsylvania, and Connecticut.",
+      "Filter thousands of cars by make, model, price, mileage, and body style across New Jersey, New York, Pennsylvania, and Connecticut.",
   },
   {
     step: "02",
-    title: "Compare ratings",
+    title: "Compare dealers",
     description:
-      "View average star ratings and review counts to shortlist dealers that match what you are looking for.",
+      "Every vehicle shows its dealer's combined star rating from Google, Yelp, and Carfax so you can buy with confidence.",
   },
   {
     step: "03",
-    title: "Visit with confidence",
+    title: "Contact & drive",
     description:
-      "Open a dealer profile for contact details, location, and more before you step onto the lot.",
+      "Reach out to the dealer, schedule a test drive, and pick up your next car — all from one place.",
   },
 ] as const;
 
 export const WHY_CHOOSE_US = [
   {
+    title: "Real inventory",
+    description:
+      "Browse actual vehicles for sale with prices, mileage, and features — not just dealer listings.",
+  },
+  {
+    title: "Combined ratings",
+    description:
+      "We aggregate Google, Yelp, and Carfax scores into one trusted rating for every dealership.",
+  },
+  {
     title: "Regional focus",
     description:
-      "We cover NJ, NY, PA, and CT only, so every listing is relevant to Northeast car buyers.",
-  },
-  {
-    title: "Transparent ratings",
-    description:
-      "Average scores are calculated live from customer reviews, not padded or stored separately.",
-  },
-  {
-    title: "No pay-to-hide",
-    description:
-      "Dealers cannot remove honest feedback. Our goal is accurate information for buyers.",
+      "We cover NJ, NY, PA, and CT only, so every car and dealer is relevant to Northeast buyers.",
   },
   {
     title: "Built for buyers",
     description:
-      "Simple search, clear profiles, and mobile-friendly pages designed for real shopping trips.",
+      "Fast search, clear vehicle pages, and mobile-friendly browsing designed for real car shopping.",
   },
 ] as const;
 
 export const TESTIMONIALS = [
   {
     quote:
-      "Finally a site that focuses on our region. I found a great dealer in Bergen County within minutes and the reviews matched exactly what I experienced.",
+      "Found the exact SUV I wanted at a Bergen County dealer within minutes. The combined rating told me the dealership was legit before I even called.",
     name: "Michael R.",
     location: "Bergen County, NJ",
     rating: 5,
   },
   {
     quote:
-      "I was about to walk into a dealership with a terrible reputation. The reviews here saved me a wasted Saturday and a bad deal.",
+      "Being able to filter by price and mileage and still see dealer reviews saved me a wasted Saturday and a bad deal.",
     name: "Priya S.",
     location: "Nassau County, NY",
     rating: 5,
   },
   {
     quote:
-      "Simple, honest, no clutter. I could compare three dealers side by side and pick the one with the best service record.",
+      "Simple, honest, no clutter. I compared three cars from three dealers side by side and picked the best one.",
     name: "Daniel K.",
     location: "Bucks County, PA",
     rating: 4,
@@ -118,14 +133,14 @@ export const TESTIMONIALS = [
 
 export const FAQS = [
   {
-    question: "Is DealerReview free to use?",
+    question: "Is AutoSalesReviews free to use?",
     answer:
-      "Yes. Searching dealers, reading reviews, and comparing ratings is completely free for car buyers, with no account required.",
+      "Yes. Searching vehicles, reading reviews, and comparing dealer ratings is completely free for car buyers, with no account required.",
   },
   {
     question: "How are dealer ratings calculated?",
     answer:
-      "Every rating is a live average of submitted customer reviews. We do not accept payment to raise, hide, or remove a dealer's score.",
+      "We combine ratings from Google, Yelp, and Carfax into a single average score for each dealership so you get the full picture at a glance.",
   },
   {
     question: "Which areas do you cover?",
@@ -138,9 +153,9 @@ export const FAQS = [
       "No. Dealers can respond publicly to reviews, but they cannot delete or suppress honest feedback from verified buyers.",
   },
   {
-    question: "How do I write a review for a dealership?",
+    question: "How do I contact a dealer about a car?",
     answer:
-      "Open any dealer profile and select \"Write a review,\" or use the Write a Review page to search for the dealership first.",
+      "Open any vehicle page and use \"Contact Dealer About This Car\" or \"Schedule a Test Drive\" to reach the dealership directly.",
   },
 ] as const;
 

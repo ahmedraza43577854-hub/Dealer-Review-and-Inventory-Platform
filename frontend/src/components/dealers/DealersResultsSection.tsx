@@ -2,7 +2,7 @@
 
 import { Suspense } from "react";
 import { DealerResults } from "@/components/dealers/DealerResults";
-import { DealerGridSkeleton } from "@/components/dealers/DealerGridSkeleton";
+import { DealerRowsSkeleton } from "@/components/dealers/DealerRowsSkeleton";
 import { useDealerNavigation } from "@/contexts/dealer-navigation-context";
 import { DealerQueryParams } from "@/types/dealer";
 import { cn } from "@/lib/utils";
@@ -25,7 +25,7 @@ export function DealersResultsSection({
 
   return (
     <div className={cn("relative transition-opacity duration-200", isPending && "opacity-70")}>
-      <Suspense key={suspenseKey} fallback={<DealerGridSkeleton count={9} />}>
+      <Suspense key={suspenseKey} fallback={<DealerRowsSkeleton count={6} />}>
         <DealerResults searchParams={searchParams} />
       </Suspense>
     </div>

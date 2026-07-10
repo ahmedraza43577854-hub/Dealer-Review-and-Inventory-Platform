@@ -1,0 +1,377 @@
+"use client";
+
+import { useMemo, useState } from "react";
+import Link from "next/link";
+import { Car, Check, Clock, ThumbsUp } from "lucide-react";
+import type { Vehicle } from "@/types/vehicle";
+import type { MockReview } from "@/lib/dealers/mock";
+import {
+  BRANDS_CARRIED,
+  BUSINESS_HOURS,
+  SERVICES,
+} from "@/lib/dealers/mock";
+import { ROUTES } from "@/config/constants";
+import { MAX_PRICE_OPTIONS } from "@/config/vehicle";
+import { VehicleCard } from "@/components/vehicles/VehicleCard";
+import { VehiclePhoto } from "@/components/vehicles/VehiclePhoto";
+import { StarRating } from "@/components/shared/StarRating";
+import { EmptyState } from "@/components/shared/EmptyState";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+type TabKey = "inventory" | "reviews" | "about" | "photos";
+
+const TABS: { key: TabKey; label: string }[] = [
+  { key: "inventory", label: "Inventory" },
+  { key: "reviews", label: "Reviews" },
+  { key: "about", label: "About" },
+  { key: "photos", label: "Photos" },
+];
+
+interface DealerProfileTabsProps {
+  dealerName: string;
+  description: string;
+  vehicles: Vehicle[];
+  reviews: MockReview[];
+  averageRating: number;
+}
+
+function selectClass() {
+  return "h-9 appearance-none rounded-lg border border-input bg-white px-2.5 pr-8 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20";
+}
+
+function InventoryTab({ vehicles }: { vehicles: Vehicle[] }) {
+  const makes = useMemo(
+    () => Array.from(new Set(vehicles.map((v) => v.make))).sort(),
+    [vehicles]
+  );
+  const years = useMemo(
+    () => Array.from(new Set(vehicles.map((v) => v.year))).sort((a, b) => b - a),
+    [vehicles]
+  );
+  const bodies = useMemo(
+    () => Array.from(new Set(vehicles.map((v) => v.bodyStyle))).sort(),
+    [vehicles]
+  );
+
+  const [make, setMake] = useState("");
+  const [year, setYear] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [body, setBody] = useState("");
+  const [applied, setApplied] = useState({
+    make: "",
+    year: "",
+    maxPrice: "",
+    body: "",
+  });
+
+  const filtered = vehicles.filter((v) => {
+    if (applied.make && v.make !== applied.make) return false;
+    if (applied.year && v.year !== Number(applied.year)) return false;
+    if (applied.maxPrice && v.price > Number(applied.maxPrice)) return false;
+    if (applied.body && v.bodyStyle !== applied.body) return false;
+    return true;
+  });
+
+  if (vehicles.length === 0) {
+    return (
+      <EmptyState
+        icon={Car}
+        title="No inventory yet"
+        description="This dealership hasn't listed any vehicles online yet. Check back soon or contact them directly for current availability."
+      />
+    );
+  }
+
+  return (
+    <div>
+      <div className="mb-5 flex flex-wrap items-end gap-2 rounded-lg border border-border/70 bg-white p-3 shadow-card">
+        <select value={make} onChange={(e) => setMake(e.target.value)} className={selectClass()}>
+          <option value="">All Makes</option>
+          {makes.map((m) => (
+            <option key={m} value={m}>{m}</option>
+          ))}
+        </select>
+        <select value={year} onChange={(e) => setYear(e.target.value)} className={selectClass()}>
+          <option value="">All Years</option>
+          {years.map((y) => (
+            <option key={y} value={y}>{y}</option>
+          ))}
+        </select>
+        <select value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} className={selectClass()}>
+          <option value="">Max Price</option>
+          {MAX_PRICE_OPTIONS.map((p) => (
+            <option key={p.value} value={p.value}>{p.label}</option>
+          ))}
+        </select>
+        <select value={body} onChange={(e) => setBody(e.target.value)} className={selectClass()}>
+          <option value="">All Types</option>
+          {bodies.map((b) => (
+            <option key={b} value={b}>{b}</option>
+          ))}
+        </select>
+        <Button
+          type="button"
+          variant="gold"
+          size="sm"
+          onClick={() => setApplied({ make, year, maxPrice, body })}
+        >
+          Apply
+        </Button>
+        <span className="ml-auto text-sm font-semibold text-muted-foreground">
+          {filtered.length} of {vehicles.length}
+        </span>
+      </div>
+
+      {filtered.length === 0 ? (
+        <EmptyState
+          icon={Car}
+          title="No matching vehicles"
+          description="Try adjusting the filters to see more of this dealer's inventory."
+        />
+      ) : (
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+          {filtered.map((v) => (
+            <VehicleCard key={v.id} vehicle={v} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ReviewsTab({
+  reviews,
+  averageRating,
+}: {
+  reviews: MockReview[];
+  averageRating: number;
+}) {
+  const [helpful, setHelpful] = useState<Record<string, boolean>>({});
+
+  return (
+    <div>
+      <div className="mb-6 flex flex-col gap-4 rounded-lg border border-border/70 bg-white p-5 shadow-card sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-4">
+          <span className="text-4xl font-extrabold text-primary">
+            {averageRating.toFixed(1)}
+          </span>
+          <div>
+            <StarRating rating={averageRating} size="lg" />
+            <p className="mt-1 text-sm text-muted-foreground">
+              Based on {reviews.length} recent reviews
+            </p>
+          </div>
+        </div>
+        <Button asChild variant="gold">
+          <Link href={ROUTES.writeReview}>Write a Review</Link>
+        </Button>
+      </div>
+
+      <div className="space-y-4">
+        {reviews.map((review) => {
+          const marked = helpful[review.id];
+          return (
+            <div
+              key={review.id}
+              className="rounded-lg border border-border/70 bg-white p-5 shadow-card"
+            >
+              <div className="flex items-start gap-3">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-white">
+                  {review.initials}
+                </span>
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <p className="font-bold text-primary">{review.author}</p>
+                    <span className="text-xs text-muted-foreground">
+                      {review.date}
+                    </span>
+                  </div>
+                  <StarRating rating={review.rating} size="sm" className="mt-1" />
+                  <p className="mt-2.5 text-sm leading-relaxed text-foreground/90">
+                    {review.comment}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setHelpful((h) => ({ ...h, [review.id]: !h[review.id] }))
+                    }
+                    className={cn(
+                      "mt-3 inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors",
+                      marked
+                        ? "border-primary bg-secondary text-primary"
+                        : "border-border text-muted-foreground hover:border-primary/40 hover:text-primary"
+                    )}
+                  >
+                    <ThumbsUp className="h-3.5 w-3.5" />
+                    Helpful ({review.helpful + (marked ? 1 : 0)})
+                  </button>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function AboutTab({
+  description,
+  dealerName,
+}: {
+  description: string;
+  dealerName: string;
+}) {
+  return (
+    <div className="space-y-6">
+      <div className="rounded-lg border border-border/70 bg-white p-5 shadow-card">
+        <h3 className="mb-2 text-lg font-bold text-primary">
+          About {dealerName}
+        </h3>
+        <p className="leading-relaxed text-foreground/90">{description}</p>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2">
+        <div className="rounded-lg border border-border/70 bg-white p-5 shadow-card">
+          <h3 className="mb-3 flex items-center gap-2 text-lg font-bold text-primary">
+            <Clock className="h-5 w-5" />
+            Business Hours
+          </h3>
+          <table className="w-full text-sm">
+            <tbody>
+              {BUSINESS_HOURS.map((row) => (
+                <tr key={row.day} className="border-b border-border/60 last:border-0">
+                  <td className="py-2 font-medium text-foreground">{row.day}</td>
+                  <td
+                    className={cn(
+                      "py-2 text-right",
+                      row.hours === "Closed"
+                        ? "text-muted-foreground"
+                        : "font-semibold text-primary"
+                    )}
+                  >
+                    {row.hours}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="space-y-6">
+          <div className="rounded-lg border border-border/70 bg-white p-5 shadow-card">
+            <h3 className="mb-3 text-lg font-bold text-primary">
+              Services Offered
+            </h3>
+            <div className="flex flex-wrap gap-2">
+              {SERVICES.map((s) => (
+                <span
+                  key={s}
+                  className="inline-flex items-center gap-1 rounded-md bg-secondary px-2.5 py-1 text-xs font-semibold text-primary"
+                >
+                  <Check className="h-3 w-3" />
+                  {s}
+                </span>
+              ))}
+            </div>
+          </div>
+          <div className="rounded-lg border border-border/70 bg-white p-5 shadow-card">
+            <h3 className="mb-3 text-lg font-bold text-primary">Brands Carried</h3>
+            <div className="flex flex-wrap gap-2">
+              {BRANDS_CARRIED.map((b) => (
+                <span
+                  key={b}
+                  className="rounded-md border border-border bg-slate-50 px-2.5 py-1 text-xs font-semibold text-foreground"
+                >
+                  {b}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PhotosTab({ vehicles }: { vehicles: Vehicle[] }) {
+  const tiles = vehicles.length > 0 ? vehicles.slice(0, 9) : [];
+  if (tiles.length === 0) {
+    return (
+      <EmptyState
+        icon={Car}
+        title="No photos yet"
+        description="Dealership photos will appear here soon."
+      />
+    );
+  }
+  return (
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+      {tiles.map((v) => (
+        <Link
+          key={v.id}
+          href={ROUTES.vehicleDetail(v.id)}
+          className="overflow-hidden rounded-lg border border-border/70 shadow-card transition-shadow hover:shadow-card-hover"
+        >
+          <VehiclePhoto
+            vehicle={v}
+            className="aspect-[4/3] w-full"
+            showCount={false}
+          />
+        </Link>
+      ))}
+    </div>
+  );
+}
+
+export function DealerProfileTabs({
+  dealerName,
+  description,
+  vehicles,
+  reviews,
+  averageRating,
+}: DealerProfileTabsProps) {
+  const [active, setActive] = useState<TabKey>("inventory");
+
+  return (
+    <div>
+      <div className="mb-6 border-b border-border/70">
+        <div className="no-scrollbar flex gap-1 overflow-x-auto">
+          {TABS.map((tab) => (
+            <button
+              key={tab.key}
+              type="button"
+              onClick={() => setActive(tab.key)}
+              className={cn(
+                "relative shrink-0 whitespace-nowrap px-4 py-3 text-sm font-bold transition-colors",
+                active === tab.key
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-primary"
+              )}
+            >
+              {tab.label}
+              {tab.key === "inventory" && (
+                <span className="ml-1.5 rounded-full bg-secondary px-1.5 py-0.5 text-xs font-bold text-primary">
+                  {vehicles.length}
+                </span>
+              )}
+              {active === tab.key && (
+                <span className="absolute inset-x-2 -bottom-px h-0.5 rounded-full bg-accent" />
+              )}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {active === "inventory" && <InventoryTab vehicles={vehicles} />}
+      {active === "reviews" && (
+        <ReviewsTab reviews={reviews} averageRating={averageRating} />
+      )}
+      {active === "about" && (
+        <AboutTab description={description} dealerName={dealerName} />
+      )}
+      {active === "photos" && <PhotosTab vehicles={vehicles} />}
+    </div>
+  );
+}

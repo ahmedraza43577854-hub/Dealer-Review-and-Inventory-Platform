@@ -1,12 +1,16 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Car, MessageSquare } from "lucide-react";
+import { PenSquare } from "lucide-react";
 import { getDealerBySlug } from "@/lib/api/dealers";
-import { DealerProfileHeader } from "@/components/dealers/DealerProfileHeader";
-import { DealerContactCard } from "@/components/dealers/DealerContactCard";
-import { DealerMapPlaceholder } from "@/components/dealers/DealerMapPlaceholder";
-import { ComingSoonSection } from "@/components/dealers/ComingSoonSection";
+import { enrichDealerSummary } from "@/lib/dealers/enrich";
+import { getVehiclesByDealerSlug } from "@/lib/vehicles/data";
+import { getMockReviews, dealerDescription } from "@/lib/dealers/mock";
+import { DealerProfileHero } from "@/components/dealers/profile/DealerProfileHero";
+import { DealerProfileTabs } from "@/components/dealers/profile/DealerProfileTabs";
+import { DealerSidebar } from "@/components/dealers/profile/DealerSidebar";
 import { ErrorState } from "@/components/shared/ErrorState";
 import { RetryButton } from "@/components/shared/RetryButton";
+import { ROUTES } from "@/config/constants";
 import { ApiError } from "@/types/dealer";
 
 interface DealerProfileContentProps {
@@ -16,33 +20,44 @@ interface DealerProfileContentProps {
 export async function DealerProfileContent({ slug }: DealerProfileContentProps) {
   try {
     const dealer = await getDealerBySlug(slug);
+    const ratings = enrichDealerSummary(dealer).ratings;
+    const vehicles = getVehiclesByDealerSlug(slug);
+    const reviews = getMockReviews(slug);
+    const description =
+      dealer.description ||
+      dealerDescription(dealer.name, dealer.city, dealer.state);
 
     return (
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3 lg:gap-8">
-        <div className="space-y-6 lg:col-span-2">
-          <DealerProfileHeader dealer={dealer} />
+      <div className="pb-20 lg:pb-0">
+        <div className="container-page py-6 lg:py-8">
+          <div className="mb-6">
+            <DealerProfileHero dealer={dealer} ratings={ratings} />
+          </div>
 
-          <ComingSoonSection
-            icon={MessageSquare}
-            title="Reviews"
-            description="Read and submit customer reviews right from this page."
-            message="Review listing and submission opening soon."
-          />
-
-          <ComingSoonSection
-            icon={Car}
-            title="Inventory"
-            description="Browse vehicles available at this dealership."
-            message="Inventory listings opening soon."
-          />
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_320px] lg:gap-8">
+            <div>
+              <DealerProfileTabs
+                dealerName={dealer.name}
+                description={description}
+                vehicles={vehicles}
+                reviews={reviews}
+                averageRating={ratings.combined}
+              />
+            </div>
+            <DealerSidebar dealer={dealer} />
+          </div>
         </div>
 
-        <aside className="space-y-4 lg:sticky lg:top-24 lg:self-start">
-          <DealerContactCard dealer={dealer} />
-          <DealerMapPlaceholder
-            address={`${dealer.address}, ${dealer.city}, ${dealer.state} ${dealer.zip}`}
-          />
-        </aside>
+        {/* Mobile sticky Write a Review */}
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border/70 bg-white p-3 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] lg:hidden">
+          <Link
+            href={ROUTES.writeReview}
+            className="flex h-11 items-center justify-center gap-2 rounded-lg bg-accent text-sm font-bold text-accent-foreground"
+          >
+            <PenSquare className="h-4 w-4" />
+            Write a Review
+          </Link>
+        </div>
       </div>
     );
   } catch (error) {
@@ -51,11 +66,13 @@ export async function DealerProfileContent({ slug }: DealerProfileContentProps) 
     }
 
     return (
-      <ErrorState
-        title="Unable to load dealer"
-        message="Something went wrong while fetching this dealership. Please try again."
-        action={<RetryButton />}
-      />
+      <div className="container-page py-10">
+        <ErrorState
+          title="Unable to load dealer"
+          message="Something went wrong while fetching this dealership. Please try again."
+          action={<RetryButton />}
+        />
+      </div>
     );
   }
 }

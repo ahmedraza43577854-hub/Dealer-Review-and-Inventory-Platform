@@ -44,26 +44,28 @@ export function VehicleContactActions({ vehicle }: VehicleContactActionsProps) {
 
   return (
     <>
-      <div className="flex flex-col gap-3 sm:flex-row">
+      <div className="flex w-full min-w-0 flex-col gap-3 sm:flex-row">
         <Button
           type="button"
           variant="gold"
           size="lg"
-          className="flex-1"
+          className="w-full min-w-0 flex-1 px-4 sm:px-8"
           onClick={() => setModal("contact")}
         >
-          <MessageSquare className="h-4 w-4" />
-          Contact Dealer About This Car
+          <MessageSquare className="h-4 w-4 shrink-0" />
+          <span className="sm:hidden">Contact Dealer</span>
+          <span className="hidden sm:inline">Contact Dealer About This Car</span>
         </Button>
         <Button
           type="button"
           variant="outline"
           size="lg"
-          className="flex-1"
+          className="w-full min-w-0 flex-1 px-4 sm:px-8"
           onClick={() => setModal("testdrive")}
         >
-          <CalendarClock className="h-4 w-4" />
-          Schedule a Test Drive
+          <CalendarClock className="h-4 w-4 shrink-0" />
+          <span className="sm:hidden">Schedule Test Drive</span>
+          <span className="hidden sm:inline">Schedule a Test Drive</span>
         </Button>
       </div>
 

@@ -19,12 +19,12 @@ export function VehicleDealerCard({ dealer }: { dealer: VehicleDealerRef }) {
         <div className="min-w-0">
           <Link
             href={ROUTES.dealerProfile(dealer.slug)}
-            className="text-base font-bold text-primary hover:underline"
+            className="block truncate text-base font-bold text-primary hover:underline"
           >
             {dealer.name}
           </Link>
           {dealer.featured && (
-            <span className="mt-1 inline-flex items-center gap-1 rounded-md bg-accent px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-accent-foreground">
+            <span className="mt-1.5 inline-flex w-fit items-center gap-1 rounded-md bg-accent px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-accent-foreground">
               <Star className="h-3 w-3 fill-current" />
               Featured Dealer
             </span>

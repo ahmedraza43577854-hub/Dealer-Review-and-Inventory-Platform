@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronRight, MessageSquare, CalendarClock } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import {
   getVehicleById,
   getSimilarVehicles,
@@ -14,9 +14,8 @@ import { VehicleSpecs } from "@/components/vehicles/VehicleSpecs";
 import { VehicleFeatures } from "@/components/vehicles/VehicleFeatures";
 import { VehicleDealerCard } from "@/components/vehicles/VehicleDealerCard";
 import { SimilarVehicles } from "@/components/vehicles/SimilarVehicles";
-import { MobileContactBar } from "@/components/vehicles/MobileContactBar";
 import { ConditionBadge } from "@/components/vehicles/ConditionBadge";
-import { Button } from "@/components/ui/button";
+import { VehicleContactActions } from "@/components/vehicles/VehicleContactActions";
 
 interface VehicleDetailPageProps {
   params: { id: string };
@@ -115,16 +114,7 @@ export default function VehicleDetailPage({ params }: VehicleDetailPageProps) {
               <VehicleFeatures features={vehicle.features} />
             </div>
 
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <Button variant="gold" size="lg" className="flex-1">
-                <MessageSquare className="h-4 w-4" />
-                Contact Dealer About This Car
-              </Button>
-              <Button variant="outline" size="lg" className="flex-1">
-                <CalendarClock className="h-4 w-4" />
-                Schedule a Test Drive
-              </Button>
-            </div>
+            <VehicleContactActions vehicle={vehicle} />
           </div>
 
           {/* Sidebar */}
@@ -142,8 +132,6 @@ export default function VehicleDetailPage({ params }: VehicleDetailPageProps) {
           </aside>
         </div>
       </div>
-
-      <MobileContactBar vehicle={vehicle} />
     </div>
   );
 }

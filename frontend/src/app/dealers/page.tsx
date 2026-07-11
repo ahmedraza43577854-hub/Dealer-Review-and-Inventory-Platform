@@ -9,7 +9,7 @@ import { SITE } from "@/config/constants";
 export const metadata: Metadata = {
   title: `Top Rated Dealerships | ${SITE.name}`,
   description:
-    "Browse and compare trusted car dealerships across NJ, NY, PA & CT with combined ratings from Google, Yelp, and Carfax.",
+    "Browse and compare trusted car dealerships nationwide with combined ratings from Google, Yelp, and Carfax.",
 };
 
 interface DealersPageProps {

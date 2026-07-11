@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { ContentPage, ContentSection } from "@/components/layout/ContentPage";
-import { ROUTES, SITE, STATES } from "@/config/constants";
+import { REGIONS, ROUTES, SITE } from "@/config/constants";
 import { BRAND_PILLS, HOME_BODY_STYLES } from "@/config/vehicle";
 
 export const metadata: Metadata = {
@@ -26,10 +26,10 @@ const GROUPS: SitemapGroup[] = [
     ],
   },
   {
-    title: "Shop by state",
-    links: STATES.map((s) => ({
-      href: `${ROUTES.dealers}?state=${s.code}`,
-      label: `${s.label} Dealers`,
+    title: "Shop by region",
+    links: REGIONS.map((r) => ({
+      href: `${ROUTES.dealers}?region=${r.key}`,
+      label: `${r.label} Dealers`,
     })),
   },
   {

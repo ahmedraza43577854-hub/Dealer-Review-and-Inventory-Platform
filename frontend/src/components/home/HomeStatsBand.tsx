@@ -3,7 +3,7 @@ import { Car, Store, MapPin, ShieldCheck } from "lucide-react";
 const STATS = [
   { icon: Car, value: "10,000+", label: "Vehicles" },
   { icon: Store, value: "500+", label: "Dealers" },
-  { icon: MapPin, value: "NJ, NY, PA & CT", label: "Coverage" },
+  { icon: MapPin, value: "All 50 States", label: "Nationwide Coverage" },
   { icon: ShieldCheck, value: "Verified", label: "Reviews" },
 ];
 

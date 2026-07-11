@@ -17,7 +17,7 @@ import {
   ContentSectionHeader,
   PageCtaBand,
 } from "@/components/layout/ContentPage";
-import { ROUTES, SITE, STATES, WHY_CHOOSE_US } from "@/config/constants";
+import { REGIONS, ROUTES, SITE, WHY_CHOOSE_US } from "@/config/constants";
 import { staggerContainer, staggerItem } from "@/lib/motion";
 
 const VALUES = [
@@ -33,8 +33,8 @@ const VALUES = [
   },
   {
     icon: MapPinned,
-    title: "Locally focused",
-    text: "We cover NJ, NY, PA, and CT only. No national noise, just dealers in your region.",
+    title: "Nationwide reach",
+    text: "Dealerships in all 50 states. Shop locally or search anywhere in the country.",
   },
   {
     icon: Sparkles,
@@ -44,7 +44,7 @@ const VALUES = [
 ] as const;
 
 const CURRENT_FEATURES = [
-  "Searchable dealer listings across four states",
+  "Searchable dealer listings in all 50 states",
   "Average star ratings from customer reviews",
   "Full dealer profiles with contact and location",
   "Filters by state, city, and minimum rating",
@@ -56,7 +56,7 @@ export function AboutPageContent() {
   return (
     <ContentPage
       title="About Us"
-      subtitle="We help Northeast drivers find dealerships they can trust before they buy."
+      subtitle="We help drivers across the country find dealerships they can trust before they buy."
       badge="Our story"
     >
       <ContentSection>
@@ -66,14 +66,14 @@ export function AboutPageContent() {
               Car buying should not feel like a guessing game
             </h2>
             <p className="mt-4 text-base sm:text-lg text-muted-foreground leading-relaxed">
-              {SITE.name} is a dealer review and discovery platform built for New
-              Jersey, New York, Pennsylvania, and Connecticut. We started with a
+              {SITE.name} is a dealer review and discovery platform built for car buyers
+              across the United States. We started with a
               simple idea: shoppers deserve clear, honest information before they
               walk into a showroom.
             </p>
             <p className="mt-4 text-muted-foreground leading-relaxed">
               Today we connect buyers with local dealerships through ratings,
-              detailed profiles, and search tools designed for the Northeast.
+              detailed profiles, and search tools designed for American car buyers.
               Tomorrow we are adding review submission and inventory so you can
               do even more from one place.
             </p>
@@ -88,15 +88,17 @@ export function AboutPageContent() {
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            {STATES.map((state) => (
+            {REGIONS.map((region) => (
               <Link
-                key={state.code}
-                href={`${ROUTES.dealers}?state=${state.code}`}
+                key={region.key}
+                href={`${ROUTES.dealers}?region=${region.key}`}
                 className="group rounded-xl border bg-card p-5 text-center shadow-sm transition-all hover:border-primary/30 hover:shadow-md"
               >
-                <span className="text-2xl font-bold text-primary">{state.code}</span>
+                <span className="text-lg font-bold text-primary">
+                  {region.label}
+                </span>
                 <p className="mt-1 text-sm text-muted-foreground group-hover:text-foreground transition-colors">
-                  {state.label}
+                  {region.blurb}
                 </p>
               </Link>
             ))}
@@ -152,7 +154,7 @@ export function AboutPageContent() {
           <div>
             <ContentSectionHeader
               title="Why shoppers choose us"
-              description="What sets DealerReview apart."
+              description="What sets AutoSalesReviews apart."
               centered={false}
             />
             <div className="space-y-4">
@@ -198,7 +200,7 @@ export function AboutPageContent() {
 
       <PageCtaBand
         title="Find your next dealership"
-        description="Search listings across the Northeast and compare ratings side by side."
+        description="Search listings nationwide and compare ratings side by side."
       >
         <Button asChild size="lg" className="bg-gradient-brand w-full sm:w-auto">
           <Link href={ROUTES.dealers}>

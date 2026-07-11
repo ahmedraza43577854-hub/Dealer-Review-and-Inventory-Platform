@@ -139,7 +139,7 @@ export function Footer() {
         <div className="mt-12 flex flex-col gap-4 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-white/60">
             &copy; {new Date().getFullYear()} {SITE.name}. All rights reserved.
-            Serving {SITE.region}.
+            Serving car buyers nationwide.
           </p>
           <nav
             className="flex flex-wrap items-center gap-x-6 gap-y-2"

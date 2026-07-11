@@ -43,54 +43,54 @@ export const DEMO_DEALERS: Record<string, VehicleDealerRef> = {
   "liberty-auto-group": {
     name: "Liberty Auto Group",
     slug: "liberty-auto-group",
-    city: "Jersey City",
-    state: "NJ",
-    phone: "(201) 555-0188",
+    city: "Austin",
+    state: "TX",
+    phone: "(512) 555-0188",
     featured: false,
     ratings: ratings(4.4, 210, 4.1, 88, 4.6),
   },
   "empire-motors": {
     name: "Empire Motors",
     slug: "empire-motors",
-    city: "Yonkers",
-    state: "NY",
-    phone: "(914) 555-0173",
+    city: "Chicago",
+    state: "IL",
+    phone: "(312) 555-0173",
     featured: false,
     ratings: ratings(4.0, 175, 3.8, 54, 4.2),
   },
-  "hudson-valley-autos": {
-    name: "Hudson Valley Autos",
-    slug: "hudson-valley-autos",
-    city: "White Plains",
-    state: "NY",
-    phone: "(914) 555-0119",
+  "summit-auto-group": {
+    name: "Summit Auto Group",
+    slug: "summit-auto-group",
+    city: "Denver",
+    state: "CO",
+    phone: "(303) 555-0119",
     featured: false,
     ratings: ratings(4.5, 98, 4.3, 40, 4.4),
   },
-  "keystone-car-center": {
-    name: "Keystone Car Center",
-    slug: "keystone-car-center",
-    city: "Allentown",
-    state: "PA",
-    phone: "(610) 555-0164",
+  "sunbelt-motors": {
+    name: "Sunbelt Motors",
+    slug: "sunbelt-motors",
+    city: "Phoenix",
+    state: "AZ",
+    phone: "(602) 555-0164",
     featured: false,
     ratings: ratings(4.1, 120, 3.9, 61, 4.3),
   },
-  "philly-auto-mart": {
-    name: "Philly Auto Mart",
-    slug: "philly-auto-mart",
-    city: "Philadelphia",
-    state: "PA",
-    phone: "(215) 555-0150",
+  "peachtree-auto-mart": {
+    name: "Peachtree Auto Mart",
+    slug: "peachtree-auto-mart",
+    city: "Atlanta",
+    state: "GA",
+    phone: "(404) 555-0150",
     featured: false,
     ratings: ratings(3.9, 230, 3.7, 95, 4.0),
   },
-  "constitution-motors": {
-    name: "Constitution Motors",
-    slug: "constitution-motors",
-    city: "Hartford",
-    state: "CT",
-    phone: "(860) 555-0131",
+  "golden-gate-autos": {
+    name: "Golden Gate Autos",
+    slug: "golden-gate-autos",
+    city: "San Jose",
+    state: "CA",
+    phone: "(408) 555-0131",
     featured: false,
     ratings: ratings(4.6, 76, 4.4, 33, 4.7),
   },
@@ -435,7 +435,7 @@ const VEHICLES: Vehicle[] = [
     interiorColor: "Charcoal Cloth",
     mpg: "26 city / 36 hwy",
     description:
-      "All-wheel-drive Altima SV with remote start, heated seats, and NissanConnect. Great value for Northeast winters.",
+      "All-wheel-drive Altima SV with remote start, heated seats, and NissanConnect. Great value for cold-weather winters.",
     features: ["Heated Seats", "Backup Camera", "Apple CarPlay", "All-Wheel Drive"],
   }),
 
@@ -504,8 +504,8 @@ const VEHICLES: Vehicle[] = [
     features: ["Backup Camera", "Bluetooth", "Cruise Control", "Keyless Entry"],
   }),
 
-  // ---- Hudson Valley Autos (3) ----
-  build("hudson-valley-autos", {
+  // ---- Summit Auto Group (3) ----
+  build("summit-auto-group", {
     year: 2023,
     make: "Subaru",
     model: "Outback",
@@ -530,7 +530,7 @@ const VEHICLES: Vehicle[] = [
       "All-Wheel Drive",
     ],
   }),
-  build("hudson-valley-autos", {
+  build("summit-auto-group", {
     year: 2022,
     make: "Mercedes-Benz",
     model: "GLC",
@@ -555,7 +555,7 @@ const VEHICLES: Vehicle[] = [
       "All-Wheel Drive",
     ],
   }),
-  build("hudson-valley-autos", {
+  build("summit-auto-group", {
     year: 2024,
     make: "Honda",
     model: "CR-V",
@@ -582,8 +582,8 @@ const VEHICLES: Vehicle[] = [
     ],
   }),
 
-  // ---- Keystone Car Center (3) ----
-  build("keystone-car-center", {
+  // ---- Sunbelt Motors (3) ----
+  build("sunbelt-motors", {
     year: 2021,
     make: "Kia",
     model: "Sorento",
@@ -607,7 +607,7 @@ const VEHICLES: Vehicle[] = [
       "All-Wheel Drive",
     ],
   }),
-  build("keystone-car-center", {
+  build("sunbelt-motors", {
     year: 2020,
     make: "Chevrolet",
     model: "Silverado",
@@ -632,7 +632,7 @@ const VEHICLES: Vehicle[] = [
       "All-Wheel Drive",
     ],
   }),
-  build("keystone-car-center", {
+  build("sunbelt-motors", {
     year: 2019,
     make: "Hyundai",
     model: "Elantra",
@@ -652,8 +652,8 @@ const VEHICLES: Vehicle[] = [
     features: ["Backup Camera", "Apple CarPlay", "Bluetooth", "Cruise Control"],
   }),
 
-  // ---- Philly Auto Mart (2) ----
-  build("philly-auto-mart", {
+  // ---- Peachtree Auto Mart (2) ----
+  build("peachtree-auto-mart", {
     year: 2022,
     make: "Nissan",
     model: "Rogue",
@@ -678,7 +678,7 @@ const VEHICLES: Vehicle[] = [
       "All-Wheel Drive",
     ],
   }),
-  build("philly-auto-mart", {
+  build("peachtree-auto-mart", {
     year: 2018,
     make: "Toyota",
     model: "Corolla",
@@ -698,8 +698,8 @@ const VEHICLES: Vehicle[] = [
     features: ["Backup Camera", "Bluetooth", "Cruise Control", "Keyless Entry"],
   }),
 
-  // ---- Constitution Motors (2) ----
-  build("constitution-motors", {
+  // ---- Golden Gate Autos (2) ----
+  build("golden-gate-autos", {
     year: 2023,
     make: "Tesla",
     model: "Model Y",
@@ -725,7 +725,7 @@ const VEHICLES: Vehicle[] = [
       "All-Wheel Drive",
     ],
   }),
-  build("constitution-motors", {
+  build("golden-gate-autos", {
     year: 2021,
     make: "Subaru",
     model: "Forester",

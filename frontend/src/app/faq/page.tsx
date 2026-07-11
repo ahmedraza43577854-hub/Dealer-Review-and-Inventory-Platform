@@ -62,7 +62,7 @@ const FAQ_GROUPS: FaqGroup[] = [
       {
         question: "Which areas do you cover?",
         answer:
-          "We currently focus on New Jersey, New York, Pennsylvania, and Connecticut, with more Northeast states planned as we grow.",
+          "We cover dealerships nationwide, across all 50 states. Filter by state or city to find inventory near you, or search anywhere in the country.",
       },
       {
         question: "How do I list my dealership?",

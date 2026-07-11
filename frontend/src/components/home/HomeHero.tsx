@@ -10,8 +10,8 @@ export function HomeHero() {
             Find Your Next Car
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-base text-white/75 sm:text-lg">
-            Search thousands of vehicles from trusted dealerships across NJ, NY,
-            PA &amp; CT.
+            Search thousands of vehicles from trusted dealerships across the
+            United States.
           </p>
         </div>
 

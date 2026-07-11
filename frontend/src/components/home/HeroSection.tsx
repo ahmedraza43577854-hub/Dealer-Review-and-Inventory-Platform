@@ -7,7 +7,7 @@ import { SITE } from "@/config/constants";
 
 const TRUST_POINTS = [
   "Real buyer reviews",
-  "NJ, NY, PA & CT coverage",
+  "Nationwide coverage",
   "Updated dealer ratings",
 ] as const;
 
@@ -37,7 +37,7 @@ export function HeroSection() {
               className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-slate-300"
             >
               <Sparkles className="h-3.5 w-3.5 text-accent" aria-hidden />
-              Now covering {SITE.region}
+              Now covering all 50 states
             </motion.div>
 
             <motion.h1
@@ -121,11 +121,11 @@ export function HeroSection() {
 
                 <blockquote className="mt-6">
                   <p className="text-[15px] leading-relaxed text-slate-300">
-                    &ldquo;Finally a site that focuses on our region. Found a great
+                    &ldquo;Finally a site that makes it easy. Found a great
                     dealer in Bergen within minutes.&rdquo;
                   </p>
                   <footer className="mt-4 text-sm font-medium text-slate-500">
-                    Verified buyer · New Jersey
+                    Verified buyer
                   </footer>
                 </blockquote>
 

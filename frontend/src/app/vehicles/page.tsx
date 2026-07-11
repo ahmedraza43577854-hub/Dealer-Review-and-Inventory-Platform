@@ -25,7 +25,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: `Find Cars | ${SITE.name}`,
   description:
-    "Search thousands of vehicles by make, model, price, and mileage from trusted dealerships across NJ, NY, PA & CT.",
+    "Search thousands of vehicles by make, model, price, and mileage from trusted dealerships across the United States.",
 };
 
 interface VehiclesPageProps {

@@ -26,7 +26,7 @@ export function WhyChooseUs() {
         <SectionHeader
           eyebrow="Why us"
           title="Built for serious car buyers"
-          description="Not another generic directory. Every feature serves Northeast shoppers."
+          description="Not another generic directory. Every feature serves real car shoppers."
           centered
         />
 

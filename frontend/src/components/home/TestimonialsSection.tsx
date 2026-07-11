@@ -25,7 +25,7 @@ export function TestimonialsSection() {
       <div className="container mx-auto px-4 sm:px-6">
         <SectionHeader
           eyebrow="Buyer stories"
-          title="What Northeast buyers are saying"
+          title="What car buyers are saying"
           description="Honest feedback from real people who found their dealer through us."
           centered
         />

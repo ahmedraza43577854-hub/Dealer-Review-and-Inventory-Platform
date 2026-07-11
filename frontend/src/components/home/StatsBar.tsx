@@ -2,14 +2,13 @@
 
 import { motion } from "framer-motion";
 import { MapPin, Star, Building2, Map } from "lucide-react";
-import { SITE } from "@/config/constants";
 import { staggerContainer, staggerItem } from "@/lib/motion";
 
 const STATS = [
-  { icon: Building2, value: "16+", label: "Listed dealerships" },
-  { icon: MapPin, value: "4", label: "States covered" },
+  { icon: Building2, value: "500+", label: "Listed dealerships" },
+  { icon: MapPin, value: "50", label: "States covered" },
   { icon: Star, value: "Live", label: "Rating averages" },
-  { icon: Map, value: SITE.region, label: "Northeast focus" },
+  { icon: Map, value: "Nationwide", label: "Coverage" },
 ] as const;
 
 export function StatsBar() {

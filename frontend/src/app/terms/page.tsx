@@ -35,7 +35,7 @@ export default function TermsPage() {
           <h2>Use of the service</h2>
           <p>
             {SITE.name} provides a directory of car dealerships and related
-            information for shoppers in {SITE.region}. You may use the site for
+            information for shoppers nationwide. You may use the site for
             personal, non-commercial purposes in accordance with these terms.
           </p>
 

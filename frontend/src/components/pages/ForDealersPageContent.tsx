@@ -22,7 +22,7 @@ const DEALER_BENEFITS = [
   {
     icon: TrendingUp,
     title: "Reach active buyers",
-    text: "Get in front of shoppers comparing dealerships across NJ, NY, PA, and CT right now.",
+    text: "Get in front of shoppers comparing dealerships across the country right now.",
   },
   {
     icon: BadgeCheck,
@@ -52,7 +52,7 @@ export function ForDealersPageContent() {
   return (
     <ContentPage
       title="For Dealers"
-      subtitle="Reach motivated car buyers across the Northeast. List your dealership and build trust with real customer feedback."
+      subtitle="Reach motivated car buyers nationwide. List your dealership and build trust with real customer feedback."
       badge="Partner with us"
     >
       <ContentSection>
@@ -63,7 +63,7 @@ export function ForDealersPageContent() {
             </h2>
             <p className="mt-4 text-muted-foreground leading-relaxed">
               {SITE.name} puts your store in front of shoppers actively comparing
-              options in {SITE.region}. We focus on trust and transparency, which
+              options nationwide. We focus on trust and transparency, which
               means your reputation is earned through service, not ad spend.
             </p>
             <Button asChild className="mt-8 bg-gradient-brand" size="lg">
@@ -96,7 +96,7 @@ export function ForDealersPageContent() {
 
       <ContentSection variant="muted">
         <ContentSectionHeader
-          title="Why list with DealerReview"
+          title="Why list with AutoSalesReviews"
           description="Benefits for dealerships joining the platform."
         />
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -133,7 +133,7 @@ export function ForDealersPageContent() {
 
       <PageCtaBand
         title="See what buyers see"
-        description="Browse current listings and profiles across the Northeast."
+        description="Browse current listings and profiles nationwide."
       >
         <Button asChild size="lg" className="bg-gradient-brand w-full sm:w-auto">
           <Link href={ROUTES.dealers}>

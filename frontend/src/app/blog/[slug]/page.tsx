@@ -125,7 +125,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
                 Ready to put this into practice?
               </p>
               <p className="text-sm text-foreground/80">
-                Explore real inventory and trusted dealers across NJ, NY, PA &amp; CT.
+                Explore real inventory and trusted dealers across the United States.
               </p>
             </div>
             <Button asChild variant="gold" className="shrink-0">

@@ -12,7 +12,13 @@ interface DealersResultsSectionProps {
 }
 
 function buildSuspenseKey(params: DealerQueryParams): string {
-  return [params.state, params.city, params.search, params.minRating]
+  return [
+    params.state,
+    params.city,
+    params.search,
+    params.minRating,
+    params.region,
+  ]
     .filter(Boolean)
     .join("|");
 }

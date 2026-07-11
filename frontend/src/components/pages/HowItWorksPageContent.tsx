@@ -28,7 +28,7 @@ const SEARCH_TIPS = [
   {
     icon: Filter,
     title: "Filter by state first",
-    text: "Narrow to NJ, NY, PA, or CT before searching by city to get the most relevant results.",
+    text: "Narrow by state before searching by city to get the most relevant results.",
   },
   {
     icon: Star,
@@ -43,7 +43,7 @@ const SEARCH_TIPS = [
   {
     icon: RefreshCw,
     title: "Come back often",
-    text: "New dealers and reviews are added regularly as we expand across the Northeast.",
+    text: "New dealers and reviews are added regularly as we grow across the country.",
   },
 ] as const;
 
@@ -61,12 +61,12 @@ const PLATFORM_FEATURES = [
   {
     icon: Search,
     title: "Smart search",
-    text: "Find dealers by name or city across all four states from a single search bar.",
+    text: "Find dealers by name or city anywhere in the country from a single search bar.",
   },
   {
     icon: MapPin,
-    title: "Regional coverage",
-    text: "Focused on NJ, NY, PA, and CT so you never wade through irrelevant national results.",
+    title: "Nationwide coverage",
+    text: "Dealerships in all 50 states, with filters to keep results relevant to you.",
   },
 ] as const;
 
@@ -74,14 +74,14 @@ export function HowItWorksPageContent() {
   return (
     <ContentPage
       title="How It Works"
-      subtitle="Three straightforward steps from search to showroom. Everything you need to shop smarter across the Northeast."
+      subtitle="Three straightforward steps from search to showroom. Everything you need to shop smarter, anywhere in the country."
       badge="Buyer guide"
     >
       <ContentSection>
         <p className="mx-auto max-w-3xl text-center text-base sm:text-lg text-muted-foreground leading-relaxed">
           Whether you are buying new, used, or comparing your options, {SITE.name}{" "}
           gives you a clear starting point with ratings, dealer profiles, and
-          filters built for {SITE.region}.
+          filters built for buyers nationwide.
         </p>
 
         <motion.div
@@ -124,7 +124,7 @@ export function HowItWorksPageContent() {
       <ContentSection variant="muted">
         <ContentSectionHeader
           title="Tips for a better search"
-          description="Get more from every visit to DealerReview with these practical suggestions."
+          description="Get more from every visit to AutoSalesReviews with these practical suggestions."
         />
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {SEARCH_TIPS.map(({ icon: Icon, title, text }) => (
@@ -145,7 +145,7 @@ export function HowItWorksPageContent() {
       <ContentSection>
         <ContentSectionHeader
           title="What you get on every search"
-          description="Tools designed specifically for Northeast car buyers."
+          description="Tools designed specifically for car buyers across the country."
         />
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {PLATFORM_FEATURES.map(({ icon: Icon, title, text }) => (
@@ -165,7 +165,7 @@ export function HowItWorksPageContent() {
 
       <PageCtaBand
         title="Start your search today"
-        description="Browse dealerships across New Jersey, New York, Pennsylvania, and Connecticut."
+        description="Browse dealerships across the United States."
       >
         <Button asChild size="lg" className="w-full sm:w-auto bg-gradient-brand">
           <Link href={ROUTES.dealers}>

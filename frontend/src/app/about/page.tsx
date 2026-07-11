@@ -4,7 +4,7 @@ import { SITE } from "@/config/constants";
 
 export const metadata: Metadata = {
   title: `About Us | ${SITE.name}`,
-  description: `Learn about ${SITE.name} and our mission to help car buyers find trusted dealerships in ${SITE.region}.`,
+  description: `Learn about ${SITE.name} and our mission to help car buyers find trusted dealerships nationwide.`,
 };
 
 export default function AboutPage() {

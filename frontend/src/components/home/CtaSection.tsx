@@ -37,7 +37,7 @@ export function CtaSection() {
             Ready to find your next dealer?
           </h2>
           <p className="mx-auto mt-5 max-w-xl text-lg text-slate-400 leading-relaxed">
-            Search listings across four states, compare ratings, and visit the
+            Search listings nationwide, compare ratings, and visit the
             lot with confidence.
           </p>
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">

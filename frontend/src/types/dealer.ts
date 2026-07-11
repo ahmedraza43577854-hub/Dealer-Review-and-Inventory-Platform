@@ -25,6 +25,8 @@ export interface DealerQueryParams {
   city?: string;
   minRating?: string;
   search?: string;
+  /** Frontend-only: broad US region, applied after fetching (API has no region param). */
+  region?: string;
 }
 
 export interface ApiErrorResponse {

@@ -22,7 +22,7 @@ export async function FeaturedDealersContent() {
           <SectionHeader
             eyebrow="Top picks"
             title="Featured Dealers"
-            description="Highly rated dealerships across the Northeast."
+            description="Highly rated dealerships across the country."
             dark
             action={
               <Button

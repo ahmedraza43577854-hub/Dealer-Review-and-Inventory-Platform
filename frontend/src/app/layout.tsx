@@ -13,7 +13,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: `${SITE.name} | Find Your Next Car in ${SITE.region}`,
+  title: `${SITE.name} | Find Your Next Car Nationwide`,
   description: SITE.description,
 };
 

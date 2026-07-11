@@ -6,7 +6,7 @@ export const BLOG_IMAGES: Record<string, string> = {
   "reading-combined-ratings": "/blog/reading-combined-ratings.jpg",
   "best-suvs-under-30k": "/blog/best-suvs-under-30k.jpg",
   "financing-101": "/blog/financing-101.jpg",
-  "electric-cars-northeast": "/blog/electric-cars-northeast.jpg",
+  "electric-cars-guide": "/blog/electric-cars-guide.jpg",
   "test-drive-questions": "/blog/test-drive-questions.jpg",
   "inspect-used-car": "/blog/inspect-used-car.jpg",
   "trade-in-tips": "/blog/trade-in-tips.jpg",

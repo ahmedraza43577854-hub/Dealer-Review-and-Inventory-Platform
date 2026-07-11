@@ -63,7 +63,7 @@ export function WriteReviewPageContent() {
             <p className="mt-4 text-muted-foreground leading-relaxed">
               We are finishing the review form and moderation tools. Soon you
               will be able to rate your experience, leave a comment, and help
-              shoppers across {SITE.region} shop with confidence.
+              shoppers across the country shop with confidence.
             </p>
             <p className="mt-4 text-muted-foreground leading-relaxed">
               In the meantime, browse dealer profiles to see current ratings and
@@ -90,7 +90,7 @@ export function WriteReviewPageContent() {
       <ContentSection variant="muted">
         <ContentSectionHeader
           title="Why your review matters"
-          description="Honest feedback is the backbone of DealerReview."
+          description="Honest feedback is the backbone of AutoSalesReviews."
         />
         <div className="grid gap-6 md:grid-cols-3">
           {WHY_REVIEW.map(({ icon: Icon, title, text }) => (
@@ -110,7 +110,7 @@ export function WriteReviewPageContent() {
 
       <PageCtaBand
         title="Explore dealers while you wait"
-        description="Compare ratings and read profiles across NJ, NY, PA, and CT today."
+        description="Compare ratings and read profiles from dealerships nationwide today."
       >
         <Button asChild size="lg" className="bg-gradient-brand w-full sm:w-auto">
           <Link href={ROUTES.dealers}>

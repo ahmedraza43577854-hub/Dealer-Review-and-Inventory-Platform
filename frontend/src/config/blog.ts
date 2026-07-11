@@ -116,7 +116,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "best-suvs-under-30k",
-    title: "The Best SUVs Under $30,000 in the Northeast Right Now",
+    title: "The Best SUVs Under $30,000 in the U.S. Right Now",
     excerpt:
       "From the RAV4 to the Tucson, these family-friendly SUVs deliver space, safety, and value without breaking the bank.",
     category: "Roundup",
@@ -131,7 +131,7 @@ export const BLOG_POSTS: BlogPost[] = [
     body: [
       {
         type: "p",
-        text: "Compact and midsize SUVs remain the sweet spot for Northeast buyers: enough ground clearance for winter, enough cargo room for a Costco run, and fuel economy that won't punish your commute. Here are the models that consistently deliver under $30,000.",
+        text: "Compact and midsize SUVs remain the sweet spot for American buyers: enough ground clearance for rough weather, enough cargo room for a Costco run, and fuel economy that won't punish your commute. Here are the models that consistently deliver under $30,000.",
       },
       { type: "h2", text: "Toyota RAV4" },
       {
@@ -203,8 +203,8 @@ export const BLOG_POSTS: BlogPost[] = [
     ],
   },
   {
-    slug: "electric-cars-northeast",
-    title: "Electric Cars in NJ, NY, PA & CT: Incentives and Range Tips",
+    slug: "electric-cars-guide",
+    title: "Electric Cars in the U.S.: Incentives and Range Tips",
     excerpt:
       "Thinking of going electric? Here's what to know about charging, real-world range, and regional incentives.",
     category: "EV Guide",
@@ -219,12 +219,12 @@ export const BLOG_POSTS: BlogPost[] = [
     body: [
       {
         type: "p",
-        text: "Electric vehicles have gone mainstream across the Northeast, with growing charging networks and meaningful incentives. If you're EV-curious, here's what actually matters before you buy.",
+        text: "Electric vehicles have gone mainstream nationwide, with growing charging networks and meaningful incentives. If you're EV-curious, here's what actually matters before you buy.",
       },
       { type: "h2", text: "Real-world range" },
       {
         type: "p",
-        text: "Published range figures assume mild weather. Cold Northeast winters can trim 20–30% off range temporarily. Buy enough range headroom that even a cold day comfortably covers your commute with margin to spare.",
+        text: "Published range figures assume mild weather. Cold winters can trim 20–30% off range temporarily. Buy enough range headroom that even a cold day comfortably covers your commute with margin to spare.",
       },
       { type: "h2", text: "Charging at home vs. on the road" },
       {
@@ -383,7 +383,7 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "best-family-road-trip-cars",
-    title: "The Best Family Cars for Northeast Road Trips",
+    title: "The Best Family Cars for American Road Trips",
     excerpt:
       "Three-row space, great safety scores, and highway comfort — these are the cars families love for the long haul.",
     category: "Roundup",
@@ -422,9 +422,9 @@ export const BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: "winter-driving-prep",
-    title: "Winter Driving Prep for NJ, NY, PA & CT Drivers",
+    title: "Winter Driving Prep for Cold-Weather Drivers",
     excerpt:
-      "From tires to emergency kits, get your vehicle ready for snow, ice, and cold-weather commutes across the Northeast.",
+      "From tires to emergency kits, get your vehicle ready for snow, ice, and cold-weather commutes wherever you drive.",
     category: "Maintenance",
     readTime: "5 min read",
     date: "April 6, 2026",
@@ -437,7 +437,7 @@ export const BLOG_POSTS: BlogPost[] = [
     body: [
       {
         type: "p",
-        text: "Northeast winters are hard on cars and drivers alike. A bit of preparation before the first storm keeps you safe and your vehicle reliable through the season.",
+        text: "Winter is hard on cars and drivers alike. A bit of preparation before the first storm keeps you safe and your vehicle reliable through the season.",
       },
       { type: "h2", text: "Tires matter most" },
       {

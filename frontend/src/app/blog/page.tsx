@@ -9,7 +9,7 @@ import { ROUTES, SITE } from "@/config/constants";
 
 export const metadata: Metadata = {
   title: `Blog & Buying Guides | ${SITE.name}`,
-  description: `Car-buying tips, dealer insights, and guides to help you shop smarter across NJ, NY, PA & CT.`,
+  description: `Car-buying tips, dealer insights, and guides to help you shop smarter, wherever you are in the country.`,
 };
 
 export default function BlogPage() {

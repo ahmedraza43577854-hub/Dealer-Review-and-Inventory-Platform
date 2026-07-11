@@ -17,7 +17,7 @@ const POSTS = [
   { slug: "reading-combined-ratings", query: "car salesman customer handshake dealership" },
   { slug: "best-suvs-under-30k", query: "white suv car road" },
   { slug: "financing-101", query: "car loan paperwork signing contract" },
-  { slug: "electric-cars-northeast", query: "electric car charging station" },
+  { slug: "electric-cars-guide", query: "electric car charging station" },
   { slug: "test-drive-questions", query: "person driving car interior steering wheel" },
   { slug: "inspect-used-car", query: "mechanic inspecting car engine" },
   { slug: "trade-in-tips", query: "car keys handover dealership" },

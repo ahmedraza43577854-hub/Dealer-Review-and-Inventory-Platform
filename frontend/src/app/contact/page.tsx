@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Clock, Mail, MapPin, MessageCircleQuestion, Phone } from "lucide-react";
 import { ContentPage, ContentSection } from "@/components/layout/ContentPage";
 import { ContactForm } from "@/components/pages/ContactForm";
-import { ROUTES, SITE, STATES } from "@/config/constants";
+import { ROUTES, SITE } from "@/config/constants";
 
 export const metadata: Metadata = {
   title: `Contact Us | ${SITE.name}`,
@@ -28,9 +28,9 @@ const METHODS = [
   {
     icon: MapPin,
     label: "Coverage area",
-    value: SITE.region,
+    value: "Nationwide",
     href: ROUTES.dealers,
-    hint: STATES.map((s) => s.label).join(" · "),
+    hint: "Dealerships in all 50 states",
   },
 ];
 

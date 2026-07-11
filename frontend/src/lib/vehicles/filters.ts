@@ -1,4 +1,5 @@
 import type { Vehicle, VehicleFilters, VehicleSort } from "@/types/vehicle";
+import { STATE_LABELS } from "@/config/constants";
 
 function toNumber(value?: string | null): number | undefined {
   if (value === undefined || value === null || value === "" || value === "any") {
@@ -146,11 +147,5 @@ export function countActiveFilters(filters: VehicleFilters): number {
 }
 
 export function stateLabel(code?: string): string | undefined {
-  const map: Record<string, string> = {
-    NJ: "New Jersey",
-    NY: "New York",
-    PA: "Pennsylvania",
-    CT: "Connecticut",
-  };
-  return code ? map[code] : undefined;
+  return code ? STATE_LABELS[code.toUpperCase()] : undefined;
 }

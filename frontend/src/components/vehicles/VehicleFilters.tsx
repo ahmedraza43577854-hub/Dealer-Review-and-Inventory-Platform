@@ -290,17 +290,18 @@ export function VehicleFilters({
       </Section>
 
       <Section title="State">
-        <div className="flex flex-wrap gap-1.5">
+        <select
+          value={state}
+          onChange={(e) => setState(e.target.value)}
+          className={selectClass()}
+        >
+          <option value="">All States</option>
           {STATES.map((s) => (
-            <Chip
-              key={s.code}
-              active={state === s.code}
-              onClick={() => toggle(state, s.code, setState)}
-            >
-              {s.code}
-            </Chip>
+            <option key={s.code} value={s.code}>
+              {s.label}
+            </option>
           ))}
-        </div>
+        </select>
       </Section>
 
       <Section title="Dealer Rating">

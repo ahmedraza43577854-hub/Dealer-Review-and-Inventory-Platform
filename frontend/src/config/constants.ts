@@ -2,8 +2,9 @@ export const SITE = {
   name: "AutoSalesReviews",
   tagline: "Find your next car from trusted dealerships",
   description:
-    "Search thousands of vehicles from trusted, top-rated dealerships across New Jersey, New York, Pennsylvania, and Connecticut.",
-  region: "NJ, NY, PA & CT",
+    "Search thousands of vehicles from trusted, top-rated dealerships across the United States.",
+  region: "Nationwide",
+  coverage: "Across the United States",
   email: "hello@autosalesreviews.com",
   phone: "(800) 555-0199",
 } as const;
@@ -68,7 +69,7 @@ export const HOW_IT_WORKS_STEPS = [
     step: "01",
     title: "Search vehicles",
     description:
-      "Filter thousands of cars by make, model, price, mileage, and body style across New Jersey, New York, Pennsylvania, and Connecticut.",
+      "Filter thousands of cars by make, model, price, mileage, and body style from dealerships across the country.",
   },
   {
     step: "02",
@@ -96,9 +97,9 @@ export const WHY_CHOOSE_US = [
       "We aggregate Google, Yelp, and Carfax scores into one trusted rating for every dealership.",
   },
   {
-    title: "Regional focus",
+    title: "Nationwide reach",
     description:
-      "We cover NJ, NY, PA, and CT only, so every car and dealer is relevant to Northeast buyers.",
+      "Search dealerships in all 50 states, so you can shop locally or expand your search anywhere.",
   },
   {
     title: "Built for buyers",
@@ -110,23 +111,23 @@ export const WHY_CHOOSE_US = [
 export const TESTIMONIALS = [
   {
     quote:
-      "Found the exact SUV I wanted at a Bergen County dealer within minutes. The combined rating told me the dealership was legit before I even called.",
+      "Found the exact SUV I wanted within minutes. The combined rating told me the dealership was legit before I even called.",
     name: "Michael R.",
-    location: "Bergen County, NJ",
+    location: "Verified buyer",
     rating: 5,
   },
   {
     quote:
       "Being able to filter by price and mileage and still see dealer reviews saved me a wasted Saturday and a bad deal.",
     name: "Priya S.",
-    location: "Nassau County, NY",
+    location: "Verified buyer",
     rating: 5,
   },
   {
     quote:
       "Simple, honest, no clutter. I compared three cars from three dealers side by side and picked the best one.",
     name: "Daniel K.",
-    location: "Bucks County, PA",
+    location: "Verified buyer",
     rating: 4,
   },
 ] as const;
@@ -145,7 +146,7 @@ export const FAQS = [
   {
     question: "Which areas do you cover?",
     answer:
-      "We currently focus on New Jersey, New York, Pennsylvania, and Connecticut, with more Northeast states planned as we grow.",
+      "We cover dealerships nationwide, across all 50 states. Filter by state or city to find inventory near you, or search anywhere in the country.",
   },
   {
     question: "Can a dealership remove a negative review?",
@@ -159,12 +160,110 @@ export const FAQS = [
   },
 ] as const;
 
+/** All 50 US states plus DC. */
 export const STATES = [
-  { code: "NJ", label: "New Jersey" },
-  { code: "NY", label: "New York" },
-  { code: "PA", label: "Pennsylvania" },
+  { code: "AL", label: "Alabama" },
+  { code: "AK", label: "Alaska" },
+  { code: "AZ", label: "Arizona" },
+  { code: "AR", label: "Arkansas" },
+  { code: "CA", label: "California" },
+  { code: "CO", label: "Colorado" },
   { code: "CT", label: "Connecticut" },
+  { code: "DE", label: "Delaware" },
+  { code: "DC", label: "District of Columbia" },
+  { code: "FL", label: "Florida" },
+  { code: "GA", label: "Georgia" },
+  { code: "HI", label: "Hawaii" },
+  { code: "ID", label: "Idaho" },
+  { code: "IL", label: "Illinois" },
+  { code: "IN", label: "Indiana" },
+  { code: "IA", label: "Iowa" },
+  { code: "KS", label: "Kansas" },
+  { code: "KY", label: "Kentucky" },
+  { code: "LA", label: "Louisiana" },
+  { code: "ME", label: "Maine" },
+  { code: "MD", label: "Maryland" },
+  { code: "MA", label: "Massachusetts" },
+  { code: "MI", label: "Michigan" },
+  { code: "MN", label: "Minnesota" },
+  { code: "MS", label: "Mississippi" },
+  { code: "MO", label: "Missouri" },
+  { code: "MT", label: "Montana" },
+  { code: "NE", label: "Nebraska" },
+  { code: "NV", label: "Nevada" },
+  { code: "NH", label: "New Hampshire" },
+  { code: "NJ", label: "New Jersey" },
+  { code: "NM", label: "New Mexico" },
+  { code: "NY", label: "New York" },
+  { code: "NC", label: "North Carolina" },
+  { code: "ND", label: "North Dakota" },
+  { code: "OH", label: "Ohio" },
+  { code: "OK", label: "Oklahoma" },
+  { code: "OR", label: "Oregon" },
+  { code: "PA", label: "Pennsylvania" },
+  { code: "RI", label: "Rhode Island" },
+  { code: "SC", label: "South Carolina" },
+  { code: "SD", label: "South Dakota" },
+  { code: "TN", label: "Tennessee" },
+  { code: "TX", label: "Texas" },
+  { code: "UT", label: "Utah" },
+  { code: "VT", label: "Vermont" },
+  { code: "VA", label: "Virginia" },
+  { code: "WA", label: "Washington" },
+  { code: "WV", label: "West Virginia" },
+  { code: "WI", label: "Wisconsin" },
+  { code: "WY", label: "Wyoming" },
 ] as const;
+
+export const STATE_LABELS: Record<string, string> = Object.fromEntries(
+  STATES.map((s) => [s.code, s.label])
+);
+
+/** Broad US regions used for browsing dealers nationwide. */
+export const REGIONS = [
+  {
+    key: "northeast",
+    label: "Northeast",
+    blurb: "NY, NJ, PA, New England",
+    states: [
+      "CT", "ME", "MA", "NH", "NJ", "NY", "PA", "RI", "VT", "DE", "MD", "DC",
+    ],
+  },
+  {
+    key: "southeast",
+    label: "Southeast",
+    blurb: "FL, GA, the Carolinas",
+    states: [
+      "AL", "AR", "FL", "GA", "KY", "LA", "MS", "NC", "SC", "TN", "VA", "WV",
+    ],
+  },
+  {
+    key: "midwest",
+    label: "Midwest",
+    blurb: "IL, MI, OH, the Plains",
+    states: [
+      "IA", "IL", "IN", "KS", "MI", "MN", "MO", "ND", "NE", "OH", "SD", "WI",
+    ],
+  },
+  {
+    key: "southwest",
+    label: "Southwest",
+    blurb: "TX, AZ, NM, OK",
+    states: ["AZ", "NM", "OK", "TX"],
+  },
+  {
+    key: "west",
+    label: "West",
+    blurb: "CA, WA, CO, the Mountain West",
+    states: ["AK", "CA", "CO", "HI", "ID", "MT", "NV", "OR", "UT", "WA", "WY"],
+  },
+] as const;
+
+export type RegionKey = (typeof REGIONS)[number]["key"];
+
+export function getRegion(key?: string) {
+  return REGIONS.find((r) => r.key === key);
+}
 
 export const MIN_RATING_OPTIONS = [
   { value: "any", label: "Any Rating" },

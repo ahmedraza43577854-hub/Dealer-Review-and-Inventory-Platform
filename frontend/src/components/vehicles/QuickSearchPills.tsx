@@ -6,7 +6,7 @@ export function QuickSearchPills({ variant = "hero" }: { variant?: "hero" | "lig
   return (
     <div className="flex flex-wrap items-center justify-center gap-2">
       {isHero && (
-        <span className="mr-1 text-sm font-medium text-white/70">Popular:</span>
+        <span className="mr-1 text-sm font-medium text-white/85">Popular:</span>
       )}
       {QUICK_SEARCH_PILLS.map((pill) => (
         <Link

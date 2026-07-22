@@ -16,7 +16,7 @@ export function BlogCard({ post }: { post: BlogPost }) {
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 360px"
       />
       <div className="flex flex-1 flex-col p-5">
-        <span className="text-xs font-bold uppercase tracking-wide text-accent-foreground/70">
+        <span className="text-xs font-bold uppercase tracking-wide text-accent-foreground">
           {post.category}
         </span>
         <h3 className="mt-1.5 text-base font-bold text-primary group-hover:text-navy-600">

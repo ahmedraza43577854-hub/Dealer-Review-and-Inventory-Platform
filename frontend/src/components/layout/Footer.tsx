@@ -101,7 +101,7 @@ export function Footer() {
               <Link
                 key={link.label}
                 href={link.href}
-                className="text-xs text-white/60 transition-colors hover:text-accent"
+                className="text-xs text-white/75 transition-colors hover:text-accent"
               >
                 {link.label}
               </Link>

@@ -9,8 +9,28 @@ import {
   buildOrganizationSchema,
   buildWebSiteSchema,
 } from "@/lib/schema/builders";
-import { HomeStatsBand } from "@/components/home/HomeStatsBand";
-import { SeoContentSection } from "@/components/seo/SeoContentSection";
+
+const HomeStatsBand = dynamic(
+  () =>
+    import("@/components/home/HomeStatsBand").then((m) => ({
+      default: m.HomeStatsBand,
+    })),
+  {
+    loading: () => (
+      <div className="border-b border-border/70 bg-white py-8" aria-hidden>
+        <div className="container-page h-11 animate-pulse rounded-lg bg-muted" />
+      </div>
+    ),
+  }
+);
+
+const SeoContentSection = dynamic(
+  () =>
+    import("@/components/seo/SeoContentSection").then((m) => ({
+      default: m.SeoContentSection,
+    })),
+  { loading: () => <HomeSectionSkeleton /> }
+);
 
 const FeaturedVehicles = dynamic(
   () =>

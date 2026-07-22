@@ -1,6 +1,18 @@
+import dynamic from "next/dynamic";
 import { PAGE_HEADINGS } from "@/config/constants";
-import { VehicleSearchBar } from "@/components/vehicles/VehicleSearchBar";
 import { QuickSearchPills } from "@/components/vehicles/QuickSearchPills";
+import { HeroSearchSkeleton } from "@/components/home/HeroSearchSkeleton";
+
+const VehicleSearchBar = dynamic(
+  () =>
+    import("@/components/vehicles/VehicleSearchBar").then((m) => ({
+      default: m.VehicleSearchBar,
+    })),
+  {
+    loading: () => <HeroSearchSkeleton />,
+    ssr: false,
+  }
+);
 
 export function HomeHero() {
   return (
@@ -10,7 +22,7 @@ export function HomeHero() {
           <h1 className="text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
             {PAGE_HEADINGS.home}
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-base text-white/75 sm:text-lg">
+          <p className="mx-auto mt-4 max-w-2xl text-base text-white/90 sm:text-lg">
             Compare dealer ratings, filter by make and price, and shop with
             confidence in every state.
           </p>

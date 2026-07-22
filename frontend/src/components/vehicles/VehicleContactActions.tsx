@@ -141,7 +141,7 @@ function ContactModal({
       return;
     }
     setStatus("sending");
-    // Demo only — no backend endpoint. Simulate a successful request.
+    // Demo only, no backend endpoint. Simulate a successful request.
     window.setTimeout(() => setStatus("sent"), 750);
   }
 
@@ -176,7 +176,7 @@ function ContactModal({
               {carLabel} · {formatPrice(vehicle.price)}
             </p>
             <p className="mt-0.5 truncate text-xs text-muted-foreground">
-              {vehicle.dealer.name} — {vehicle.dealer.city},{" "}
+              {vehicle.dealer.name}, {vehicle.dealer.city},{" "}
               {vehicle.dealer.state}
             </p>
           </div>

@@ -5,11 +5,9 @@ import {
   ContentProse,
 } from "@/components/layout/ContentPage";
 import { SITE } from "@/config/constants";
+import { PAGE_SEO } from "@/config/seo";
 
-export const metadata: Metadata = {
-  title: `Terms of Service | ${SITE.name}`,
-  description: `Terms of Service for ${SITE.name}.`,
-};
+export const metadata: Metadata = PAGE_SEO.terms;
 
 const LAST_UPDATED = new Date().toLocaleDateString("en-US", {
   month: "long",

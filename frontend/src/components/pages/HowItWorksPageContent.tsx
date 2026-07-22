@@ -20,7 +20,9 @@ import {
   PageCtaBand,
 } from "@/components/layout/ContentPage";
 import { HOW_IT_WORKS_STEPS, ROUTES, SITE } from "@/config/constants";
+import { HOW_IT_WORKS_SEO_CONTENT } from "@/config/seo-content";
 import { staggerContainer, staggerItem } from "@/lib/motion";
+import { SeoContentSection } from "@/components/seo/SeoContentSection";
 
 const STEP_ICONS = [Search, Star, MapPin] as const;
 
@@ -162,6 +164,8 @@ export function HowItWorksPageContent() {
           ))}
         </div>
       </ContentSection>
+
+      <SeoContentSection content={HOW_IT_WORKS_SEO_CONTENT} variant="muted" />
 
       <PageCtaBand
         title="Start your search today"

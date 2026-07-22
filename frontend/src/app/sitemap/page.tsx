@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { ContentPage, ContentSection } from "@/components/layout/ContentPage";
-import { REGIONS, ROUTES, SITE } from "@/config/constants";
+import { SeoContentSection } from "@/components/seo/SeoContentSection";
+import { REGIONS, ROUTES } from "@/config/constants";
+import { SITEMAP_SEO_CONTENT } from "@/config/seo-content";
 import { BRAND_PILLS, HOME_BODY_STYLES } from "@/config/vehicle";
+import { PAGE_SEO } from "@/config/seo";
 
-export const metadata: Metadata = {
-  title: `Sitemap | ${SITE.name}`,
-  description: `Browse every section of ${SITE.name} — vehicles, dealers, and support pages.`,
-};
+export const metadata: Metadata = PAGE_SEO.sitemap;
 
 interface SitemapGroup {
   title: string;
@@ -102,6 +102,8 @@ export default function SitemapPage() {
           ))}
         </div>
       </ContentSection>
+
+      <SeoContentSection content={SITEMAP_SEO_CONTENT} variant="muted" />
     </ContentPage>
   );
 }

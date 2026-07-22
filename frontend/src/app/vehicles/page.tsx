@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { Car } from "lucide-react";
+import Link from "next/link";
 import { getAllVehicles } from "@/lib/vehicles/data";
 import {
   filterAndSortVehicles,
@@ -11,25 +13,51 @@ import {
   type VehicleSearchParams,
 } from "@/lib/vehicles/filters";
 import { VEHICLES_PER_PAGE } from "@/config/vehicle";
-import { ROUTES, SITE } from "@/config/constants";
+import { PAGE_HEADINGS, ROUTES } from "@/config/constants";
+import { buildVehicleCategoryMetadata, PAGE_SEO } from "@/config/seo";
+import { getVehicleCategoryConfig } from "@/config/vehicle-categories";
+import { VEHICLES_INTRO_SEO_CONTENT } from "@/config/seo-content";
 import { VehicleSearchBar } from "@/components/vehicles/VehicleSearchBar";
+import { VehicleCategoryHero } from "@/components/vehicles/VehicleCategoryHero";
 import { VehicleFilters } from "@/components/vehicles/VehicleFilters";
-import { MobileFilterDrawer } from "@/components/vehicles/MobileFilterDrawer";
 import { VehicleSortSelect } from "@/components/vehicles/VehicleSortSelect";
 import { VehicleRow } from "@/components/vehicles/VehicleRow";
 import { VehiclePagination } from "@/components/vehicles/VehiclePagination";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { SeoContentSection } from "@/components/seo/SeoContentSection";
+import { SchemaMarkup } from "@/components/seo/SchemaMarkup";
+import { LocationFaqSection } from "@/components/dealers/LocationFaqSection";
+import { buildFaqPageSchema } from "@/lib/schema/builders";
 
-export const metadata: Metadata = {
-  title: `Find Cars | ${SITE.name}`,
-  description:
-    "Search thousands of vehicles by make, model, price, and mileage from trusted dealerships across the United States.",
-};
+const MobileFilterDrawer = dynamic(
+  () =>
+    import("@/components/vehicles/MobileFilterDrawer").then((m) => ({
+      default: m.MobileFilterDrawer,
+    })),
+  {
+    loading: () => (
+      <div className="h-10 w-full animate-pulse rounded-lg bg-muted lg:hidden" aria-hidden />
+    ),
+  }
+);
 
 interface VehiclesPageProps {
   searchParams: VehicleSearchParams;
+}
+
+export function generateMetadata({
+  searchParams,
+}: VehiclesPageProps): Metadata {
+  const category = getVehicleCategoryConfig(
+    parseVehicleFilters(searchParams).bodyStyle
+  );
+
+  if (category) {
+    return buildVehicleCategoryMetadata(category);
+  }
+
+  return PAGE_SEO.vehicles;
 }
 
 export default function VehiclesPage({ searchParams }: VehiclesPageProps) {
@@ -47,93 +75,127 @@ export default function VehiclesPage({ searchParams }: VehiclesPageProps) {
   const location = stateLabel(filters.state);
   const countLabel =
     results.length === 1 ? "1 vehicle" : `${results.length} vehicles`;
+  const category = getVehicleCategoryConfig(filters.bodyStyle);
+  const faqSchema = category ? buildFaqPageSchema(category.faqs) : null;
+
+  const searchDefaults = {
+    make: filters.make,
+    model: filters.model,
+    year: filters.yearFrom?.toString(),
+    priceTo: filters.priceTo?.toString(),
+  };
 
   return (
-    <div className="bg-background">
-      {/* Top search bar */}
-      <div className="border-b border-border/70 bg-white">
-        <div className="container-page py-5">
-          <h1 className="mb-3 text-2xl font-bold text-primary">
-            Find Your Next Car
-          </h1>
-          <VehicleSearchBar
-            layout="bar"
-            submitLabel="Update Results"
-            defaultValues={{
-              make: filters.make,
-              model: filters.model,
-              year: filters.yearFrom?.toString(),
-              priceTo: filters.priceTo?.toString(),
-            }}
+    <>
+      {faqSchema && <SchemaMarkup data={faqSchema} />}
+
+      <div className="bg-background">
+        {category ? (
+          <VehicleCategoryHero
+            badge={category.badge}
+            h1={category.h1}
+            subtitle={category.subtitle}
+            submitLabel={category.searchSubmitLabel}
+            defaultValues={searchDefaults}
           />
-        </div>
-      </div>
-
-      <div className="container-page py-6 lg:py-8">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[290px_1fr] lg:gap-8">
-          {/* Desktop sidebar */}
-          <aside className="hidden lg:block">
-            <div className="sticky top-20 rounded-lg border border-border/70 bg-white p-4 shadow-card">
-              <VehicleFilters filters={filters} sort={sort} />
-            </div>
-          </aside>
-
-          {/* Results */}
-          <div>
-            <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <p className="text-lg font-bold text-primary">
-                  Showing {countLabel}
-                  {location ? ` in ${location}` : ""}
-                </p>
-                {activeCount > 0 && (
-                  <Link
-                    href={ROUTES.vehicles}
-                    className="text-sm font-semibold text-accent-foreground/70 hover:text-primary hover:underline"
-                  >
-                    Clear all filters
-                  </Link>
-                )}
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="flex-1 lg:hidden">
-                  <MobileFilterDrawer
-                    filters={filters}
-                    sort={sort}
-                    activeCount={activeCount}
-                  />
-                </div>
-                <VehicleSortSelect value={sort} />
-              </div>
-            </div>
-
-            {pageItems.length === 0 ? (
-              <EmptyState
-                icon={Car}
-                title="No vehicles match your search"
-                description="Try widening your price range, removing a filter, or clearing all filters to see more results."
-                action={
-                  <Button asChild variant="gold">
-                    <Link href={ROUTES.vehicles}>Clear All Filters</Link>
-                  </Button>
-                }
+        ) : (
+          <div className="border-b border-border/70 bg-white">
+            <div className="container-page py-5">
+              <h1 className="mb-3 text-xl font-bold leading-snug text-primary sm:text-2xl">
+                {PAGE_HEADINGS.vehicles}
+              </h1>
+              <VehicleSearchBar
+                layout="bar"
+                submitLabel="Update Results"
+                defaultValues={searchDefaults}
               />
-            ) : (
-              <>
-                <div className="space-y-4">
-                  {pageItems.map((vehicle) => (
-                    <VehicleRow key={vehicle.id} vehicle={vehicle} />
-                  ))}
+            </div>
+          </div>
+        )}
+
+        {!category && (
+          <SeoContentSection
+            content={VEHICLES_INTRO_SEO_CONTENT}
+            variant="compact"
+            wide
+            className="border-b border-border/70 bg-white"
+          />
+        )}
+
+        <div className="container-page py-6 lg:py-8">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-[290px_1fr] lg:gap-8">
+            <aside className="hidden lg:block">
+              <div className="sticky top-20 rounded-lg border border-border/70 bg-white p-4 shadow-card">
+                <VehicleFilters filters={filters} sort={sort} />
+              </div>
+            </aside>
+
+            <div>
+              <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-lg font-bold text-primary">
+                    Showing {countLabel}
+                    {location ? ` in ${location}` : ""}
+                  </p>
+                  {activeCount > 0 && (
+                    <Link
+                      href={ROUTES.vehicles}
+                      className="text-sm font-semibold text-accent-foreground/70 hover:text-primary hover:underline"
+                    >
+                      Clear all filters
+                    </Link>
+                  )}
                 </div>
-                <VehiclePagination
-                  page={currentPage}
-                  totalPages={totalPages}
+                <div className="flex items-center gap-3">
+                  <div className="flex-1 lg:hidden">
+                    <MobileFilterDrawer
+                      filters={filters}
+                      sort={sort}
+                      activeCount={activeCount}
+                    />
+                  </div>
+                  <VehicleSortSelect value={sort} />
+                </div>
+              </div>
+
+              {pageItems.length === 0 ? (
+                <EmptyState
+                  icon={Car}
+                  title="No vehicles match your search"
+                  description="Try widening your price range, removing a filter, or clearing all filters to see more results."
+                  action={
+                    <Button asChild variant="gold">
+                      <Link href={ROUTES.vehicles}>Clear All Filters</Link>
+                    </Button>
+                  }
                 />
-              </>
-            )}
+              ) : (
+                <>
+                  <div className="space-y-4">
+                    {pageItems.map((vehicle) => (
+                      <VehicleRow key={vehicle.id} vehicle={vehicle} />
+                    ))}
+                  </div>
+                  <VehiclePagination
+                    page={currentPage}
+                    totalPages={totalPages}
+                  />
+                </>
+              )}
+            </div>
           </div>
         </div>
+
+        {category && (
+          <>
+            <SeoContentSection content={category.seoContent} variant="muted" wide />
+            <LocationFaqSection
+              items={category.faqs}
+              title={`${category.label} Buying FAQ`}
+            />
+          </>
+        )}
       </div>
-    </div>
+    </>
   );
 }

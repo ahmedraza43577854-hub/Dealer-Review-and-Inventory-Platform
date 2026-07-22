@@ -9,7 +9,17 @@ import { VehiclePhoto } from "@/components/vehicles/VehiclePhoto";
 import { ConditionBadge } from "@/components/vehicles/ConditionBadge";
 import { DealerRatingInline } from "@/components/vehicles/DealerRatingInline";
 
-export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
+interface VehicleCardProps {
+  vehicle: Vehicle;
+  priority?: boolean;
+  sizes?: string;
+}
+
+export function VehicleCard({
+  vehicle,
+  priority = false,
+  sizes = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px",
+}: VehicleCardProps) {
   const href = ROUTES.vehicleDetail(vehicle.id);
 
   return (
@@ -22,7 +32,12 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
       )}
     >
       <Link href={href} className="relative block">
-        <VehiclePhoto vehicle={vehicle} className="h-48 w-full" />
+        <VehiclePhoto
+          vehicle={vehicle}
+          className="w-full"
+          sizes={sizes}
+          priority={priority}
+        />
         <div className="absolute left-3 top-3 flex items-center gap-2">
           <ConditionBadge condition={vehicle.condition} />
           {vehicle.dealer.featured && (

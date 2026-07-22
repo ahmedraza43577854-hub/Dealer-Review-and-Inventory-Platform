@@ -10,9 +10,15 @@ import { DealerQueryParams } from "@/types/dealer";
 
 interface DealerResultsProps {
   searchParams: DealerQueryParams;
+  emptyTitle?: string;
+  emptyDescription?: string;
 }
 
-export async function DealerResults({ searchParams }: DealerResultsProps) {
+export async function DealerResults({
+  searchParams,
+  emptyTitle = "No dealers found",
+  emptyDescription = "We couldn't find any dealerships matching your criteria. Try broadening your search or clearing some filters.",
+}: DealerResultsProps) {
   try {
     const dealers = await getDealers(searchParams);
 
@@ -28,8 +34,8 @@ export async function DealerResults({ searchParams }: DealerResultsProps) {
       return (
         <EmptyState
           icon={Search}
-          title="No dealers found"
-          description="We couldn't find any dealerships matching your criteria. Try broadening your search or clearing some filters."
+          title={emptyTitle}
+          description={emptyDescription}
         />
       );
     }

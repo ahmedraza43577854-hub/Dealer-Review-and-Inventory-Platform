@@ -17,7 +17,9 @@ import {
   ContentSectionHeader,
   PageCtaBand,
 } from "@/components/layout/ContentPage";
+import { SeoContentSection } from "@/components/seo/SeoContentSection";
 import { REGIONS, ROUTES, SITE, WHY_CHOOSE_US } from "@/config/constants";
+import { ABOUT_EXTENDED_SEO_CONTENT } from "@/config/seo-content";
 import { staggerContainer, staggerItem } from "@/lib/motion";
 
 const VALUES = [
@@ -174,7 +176,9 @@ export function AboutPageContent() {
         </div>
       </ContentSection>
 
-      <ContentSection variant="muted">
+      <SeoContentSection content={ABOUT_EXTENDED_SEO_CONTENT} variant="muted" />
+
+      <ContentSection>
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-2xl font-bold text-foreground">Get in touch</h2>
           <p className="mt-3 text-muted-foreground leading-relaxed">

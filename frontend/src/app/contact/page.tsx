@@ -3,12 +3,14 @@ import Link from "next/link";
 import { Clock, Mail, MapPin, MessageCircleQuestion, Phone } from "lucide-react";
 import { ContentPage, ContentSection } from "@/components/layout/ContentPage";
 import { ContactForm } from "@/components/pages/ContactForm";
+import { SchemaMarkup } from "@/components/seo/SchemaMarkup";
+import { SeoContentSection } from "@/components/seo/SeoContentSection";
 import { ROUTES, SITE } from "@/config/constants";
+import { CONTACT_SEO_CONTENT } from "@/config/seo-content";
+import { PAGE_SEO } from "@/config/seo";
+import { buildContactPageSchema } from "@/lib/schema/builders";
 
-export const metadata: Metadata = {
-  title: `Contact Us | ${SITE.name}`,
-  description: `Get in touch with the ${SITE.name} team. Questions about cars, dealers, or listing your dealership? We're here to help.`,
-};
+export const metadata: Metadata = PAGE_SEO.contact;
 
 const METHODS = [
   {
@@ -36,7 +38,9 @@ const METHODS = [
 
 export default function ContactPage() {
   return (
-    <ContentPage
+    <>
+      <SchemaMarkup data={buildContactPageSchema()} />
+      <ContentPage
       title="Contact Us"
       subtitle="Have a question about a car, a dealer, or listing your dealership? Our team is here to help."
       badge="We're here to help"
@@ -105,6 +109,9 @@ export default function ContactPage() {
           </aside>
         </div>
       </ContentSection>
+
+      <SeoContentSection content={CONTACT_SEO_CONTENT} variant="muted" />
     </ContentPage>
+    </>
   );
 }

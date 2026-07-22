@@ -1,4 +1,5 @@
 import { Globe, Mail, MapPin, Navigation, Phone, Clock } from "lucide-react";
+import { CityPageLink } from "@/components/dealers/CityPageLink";
 import type { DealerDetail } from "@/types/dealer";
 import { TODAY_HOURS } from "@/lib/dealers/mock";
 import { formatPhone, stripProtocol } from "@/lib/utils/format";
@@ -62,7 +63,16 @@ export function DealerSidebar({ dealer }: { dealer: DealerDetail }) {
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-secondary text-primary">
               <MapPin className="h-4 w-4" />
             </span>
-            <span className="text-muted-foreground">{fullAddress}</span>
+            <span className="text-muted-foreground">
+              {dealer.address},{" "}
+              <CityPageLink
+                city={dealer.city}
+                state={dealer.state}
+                cityOnly
+                className="hover:text-primary"
+              />
+              , {dealer.state} {dealer.zip}
+            </span>
           </li>
         </ul>
 

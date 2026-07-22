@@ -16,7 +16,9 @@ import {
   ContentSectionHeader,
   PageCtaBand,
 } from "@/components/layout/ContentPage";
+import { SeoContentSection } from "@/components/seo/SeoContentSection";
 import { ROUTES, SITE } from "@/config/constants";
+import { WRITE_REVIEW_SEO_CONTENT } from "@/config/seo-content";
 
 const REVIEW_INCLUDES = [
   "Overall rating from 1 to 5 stars",
@@ -107,6 +109,8 @@ export function WriteReviewPageContent() {
           ))}
         </div>
       </ContentSection>
+
+      <SeoContentSection content={WRITE_REVIEW_SEO_CONTENT} />
 
       <PageCtaBand
         title="Explore dealers while you wait"

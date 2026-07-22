@@ -1,3 +1,5 @@
+import { toStateSlug } from "@/lib/dealers/state-slugs";
+
 export const SITE = {
   name: "AutoSalesReviews",
   tagline: "Find your next car from trusted dealerships",
@@ -9,14 +11,25 @@ export const SITE = {
   phone: "(800) 555-0199",
 } as const;
 
+/** Canonical H1 copy, each public page must render exactly one H1 from this map. */
+export const PAGE_HEADINGS = {
+  home: "Find Your Next Car - Search Trusted Dealerships Nationwide",
+  vehicles: "Search Cars for Sale - Browse Thousands of Vehicles Nationwide",
+} as const;
+
 export const ROUTES = {
   home: "/",
   vehicles: "/vehicles",
   vehicleDetail: (id: string) => `/vehicles/${id}`,
   dealers: "/dealers",
   dealerProfile: (slug: string) => `/dealers/${slug}`,
+  dealerState: (stateCode: string) =>
+    `/dealers/state/${toStateSlug(stateCode)}`,
+  dealerCity: (cityState: string) => `/dealers/city/${cityState}`,
+  cities: "/cities",
   about: "/about",
   blog: "/blog",
+  blogPost: (slug: string) => `/blog/${slug}`,
   howItWorks: "/how-it-works",
   writeReview: "/write-a-review",
   forDealers: "/for-dealers",
@@ -40,6 +53,7 @@ export const FOOTER = {
   explore: [
     { href: ROUTES.vehicles, label: "Find Cars" },
     { href: ROUTES.dealers, label: "Dealers" },
+    { href: ROUTES.cities, label: "Cities" },
     { href: ROUTES.blog, label: "Blog" },
     { href: `${ROUTES.vehicles}?bodyStyle=SUV`, label: "Browse SUVs" },
     { href: `${ROUTES.vehicles}?condition=NEW`, label: "New Vehicles" },
@@ -81,7 +95,7 @@ export const HOW_IT_WORKS_STEPS = [
     step: "03",
     title: "Contact & drive",
     description:
-      "Reach out to the dealer, schedule a test drive, and pick up your next car — all from one place.",
+      "Reach out to the dealer, schedule a test drive, and pick up your next car, all from one place.",
   },
 ] as const;
 
@@ -89,7 +103,7 @@ export const WHY_CHOOSE_US = [
   {
     title: "Real inventory",
     description:
-      "Browse actual vehicles for sale with prices, mileage, and features — not just dealer listings.",
+      "Browse actual vehicles for sale with prices, mileage, and features, not just dealer listings.",
   },
   {
     title: "Combined ratings",

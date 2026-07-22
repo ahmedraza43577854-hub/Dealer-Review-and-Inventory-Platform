@@ -84,7 +84,7 @@ export function enrichDealerSummary(dealer: DealerSummary): DealerCardData {
   };
 }
 
-/** Homepage: top-rated dealers straight from the self-contained demo set. */
+/** Homepage: top-rated dealers from inventory with real vehicle counts. */
 export function getTopRatedDemoDealers(limit = 3): DealerCardData[] {
   return Object.values(DEMO_DEALERS)
     .map((d) => ({

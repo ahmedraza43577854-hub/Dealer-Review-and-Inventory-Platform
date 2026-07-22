@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { MapPin, Phone, Star, Store } from "lucide-react";
 import type { VehicleDealerRef } from "@/types/vehicle";
+import { CityPageLink } from "@/components/dealers/CityPageLink";
 import { ROUTES } from "@/config/constants";
 import { formatPhone } from "@/lib/utils/format";
 import { RatingSources } from "@/components/vehicles/RatingBreakdown";
@@ -52,7 +53,7 @@ export function VehicleDealerCard({ dealer }: { dealer: VehicleDealerRef }) {
       <div className="mt-4 space-y-2.5 text-sm">
         <p className="flex items-start gap-2 text-muted-foreground">
           <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-          {dealer.city}, {dealer.state}
+          <CityPageLink city={dealer.city} state={dealer.state} />
         </p>
         <a
           href={`tel:${digits}`}

@@ -12,7 +12,7 @@ export function BlogCard({ post }: { post: BlogPost }) {
     >
       <BlogCover
         post={post}
-        className="h-44"
+        className="w-full"
         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 360px"
       />
       <div className="flex flex-1 flex-col p-5">

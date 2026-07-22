@@ -40,12 +40,20 @@ async function search(query, perPage = 6) {
   return data.photos ?? [];
 }
 
-async function download(url, dest) {
+async function downloadBuffer(url) {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const buf = Buffer.from(await res.arrayBuffer());
-  await writeFile(dest, buf);
-  return buf.length;
+  return Buffer.from(await res.arrayBuffer());
+}
+
+async function saveWebp(buffer, dest) {
+  const sharp = (await import("sharp")).default;
+  await sharp(buffer)
+    .rotate()
+    .resize({ width: 1600, withoutEnlargement: true })
+    .webp({ quality: 82 })
+    .toFile(dest);
+  return buffer.length;
 }
 
 async function main() {
@@ -67,9 +75,11 @@ async function main() {
       continue;
     }
     const src = photo.src.large2x || photo.src.large || photo.src.original;
-    const file = `${post.slug}.jpg`;
+    const file = `${post.slug}.webp`;
+    const dest = path.join(PUBLIC_DIR, file);
     try {
-      const bytes = await download(src, path.join(PUBLIC_DIR, file));
+      const buffer = await downloadBuffer(src);
+      const bytes = await saveWebp(buffer, dest);
       manifest[post.slug] = `/blog/${file}`;
       console.log(`${post.slug}: ok (${Math.round(bytes / 1024)}kb)`);
     } catch (e) {

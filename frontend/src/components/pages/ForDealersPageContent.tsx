@@ -16,7 +16,9 @@ import {
   ContentSectionHeader,
   PageCtaBand,
 } from "@/components/layout/ContentPage";
+import { SeoContentSection } from "@/components/seo/SeoContentSection";
 import { ROUTES, SITE } from "@/config/constants";
+import { FOR_DEALERS_EXTENDED_SEO_CONTENT } from "@/config/seo-content";
 
 const DEALER_BENEFITS = [
   {
@@ -114,6 +116,8 @@ export function ForDealersPageContent() {
           ))}
         </div>
       </ContentSection>
+
+      <SeoContentSection content={FOR_DEALERS_EXTENDED_SEO_CONTENT} />
 
       <ContentSection>
         <div className="mx-auto max-w-2xl rounded-2xl border bg-card p-8 sm:p-10 text-center shadow-sm">

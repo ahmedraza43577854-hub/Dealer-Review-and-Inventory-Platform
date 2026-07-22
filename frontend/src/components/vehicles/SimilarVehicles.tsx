@@ -17,7 +17,10 @@ export function SimilarVehicles({ vehicles }: { vehicles: Vehicle[] }) {
         >
           <VehiclePhoto
             vehicle={vehicle}
-            className="h-16 w-24 shrink-0 rounded-md"
+            className="w-24 shrink-0 rounded-md"
+            width={96}
+            height={64}
+            sizes="96px"
             showCount={false}
             iconClassName="h-6 w-6"
           />

@@ -1,12 +1,27 @@
 import type { Metadata } from "next";
-import { AboutPageContent } from "@/components/pages/AboutPageContent";
-import { SITE } from "@/config/constants";
+import dynamic from "next/dynamic";
+import { SchemaMarkup } from "@/components/seo/SchemaMarkup";
+import { PAGE_SEO } from "@/config/seo";
+import { buildAboutPageSchema } from "@/lib/schema/builders";
 
-export const metadata: Metadata = {
-  title: `About Us | ${SITE.name}`,
-  description: `Learn about ${SITE.name} and our mission to help car buyers find trusted dealerships nationwide.`,
-};
+const AboutPageContent = dynamic(
+  () =>
+    import("@/components/pages/AboutPageContent").then((m) => ({
+      default: m.AboutPageContent,
+    })),
+  {
+    loading: () => (
+      <div className="min-h-[60vh] animate-pulse bg-muted" aria-hidden />
+    ),
+  }
+);
+export const metadata: Metadata = PAGE_SEO.about;
 
 export default function AboutPage() {
-  return <AboutPageContent />;
+  return (
+    <>
+      <SchemaMarkup data={buildAboutPageSchema()} />
+      <AboutPageContent />
+    </>
+  );
 }

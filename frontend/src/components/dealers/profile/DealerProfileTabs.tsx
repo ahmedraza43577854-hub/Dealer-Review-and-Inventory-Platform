@@ -316,7 +316,10 @@ function PhotosTab({ vehicles }: { vehicles: Vehicle[] }) {
         >
           <VehiclePhoto
             vehicle={v}
-            className="aspect-[4/3] w-full"
+            className="w-full"
+            width={320}
+            height={240}
+            sizes="(max-width: 640px) 50vw, 320px"
             showCount={false}
           />
         </Link>

@@ -23,7 +23,9 @@ export function VehicleGallery({ vehicle }: { vehicle: Vehicle }) {
         <VehiclePhoto
           vehicle={hasImages ? vehicle : { ...vehicle, accent: slides[active] }}
           image={hasImages ? images[active] : undefined}
-          className="aspect-[16/10] w-full"
+          className="w-full"
+          width={800}
+          height={500}
           showCount={false}
           iconClassName="h-24 w-24"
           sizes="(max-width: 1024px) 100vw, 800px"
@@ -55,7 +57,9 @@ export function VehicleGallery({ vehicle }: { vehicle: Vehicle }) {
             <VehiclePhoto
               vehicle={hasImages ? vehicle : { ...vehicle, accent: slide }}
               image={hasImages ? slide : undefined}
-              className="aspect-[4/3] w-full"
+              className="w-full"
+              width={150}
+              height={112}
               showCount={false}
               iconClassName="h-7 w-7"
               sizes="150px"

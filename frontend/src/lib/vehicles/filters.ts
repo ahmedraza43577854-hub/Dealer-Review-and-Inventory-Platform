@@ -30,6 +30,7 @@ export function parseVehicleFilters(
     bodyStyle: first(params.bodyStyle) || undefined,
     condition: first(params.condition) || undefined,
     state: first(params.state) || undefined,
+    city: first(params.city) || undefined,
     minRating: toNumber(first(params.minRating)),
     query: first(params.query) || undefined,
   };
@@ -91,6 +92,11 @@ export function matchesFilters(
   }
 
   if (filters.state && vehicle.dealer.state !== filters.state) return false;
+
+  if (filters.city) {
+    const city = filters.city.trim().toLowerCase();
+    if (vehicle.dealer.city.toLowerCase() !== city) return false;
+  }
 
   if (
     filters.minRating &&

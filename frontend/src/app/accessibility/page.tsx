@@ -1,16 +1,14 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import {
   ContentPage,
   ContentSection,
   ContentProse,
 } from "@/components/layout/ContentPage";
 import { ROUTES, SITE } from "@/config/constants";
-import Link from "next/link";
+import { PAGE_SEO } from "@/config/seo";
 
-export const metadata: Metadata = {
-  title: `Accessibility | ${SITE.name}`,
-  description: `Our commitment to making ${SITE.name} accessible to everyone.`,
-};
+export const metadata: Metadata = PAGE_SEO.accessibility;
 
 export default function AccessibilityPage() {
   return (

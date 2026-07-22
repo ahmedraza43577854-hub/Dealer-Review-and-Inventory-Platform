@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { Car, MapPin, Phone, Star, Store } from "lucide-react";
 import type { DealerCardData } from "@/lib/dealers/enrich";
+import { CityPageLink } from "@/components/dealers/CityPageLink";
 import { ROUTES } from "@/config/constants";
-import { formatLocation, formatPhone } from "@/lib/utils/format";
+import { formatPhone } from "@/lib/utils/format";
 import { RatingSources } from "@/components/vehicles/RatingBreakdown";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -48,7 +49,11 @@ export function DealerListCard({ dealer, compact = false }: DealerListCardProps)
           </div>
           <p className="mt-0.5 flex items-center gap-1 text-sm text-muted-foreground">
             <MapPin className="h-3.5 w-3.5" />
-            {formatLocation(dealer.city, dealer.state)}
+            <CityPageLink
+              city={dealer.city}
+              state={dealer.state}
+              className="text-muted-foreground hover:text-primary"
+            />
           </p>
 
           <div className="mt-2 flex items-center gap-2">

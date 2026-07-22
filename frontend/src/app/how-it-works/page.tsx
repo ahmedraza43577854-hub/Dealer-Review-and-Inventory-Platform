@@ -1,11 +1,19 @@
 import type { Metadata } from "next";
-import { HowItWorksPageContent } from "@/components/pages/HowItWorksPageContent";
-import { SITE } from "@/config/constants";
+import dynamic from "next/dynamic";
+import { PAGE_SEO } from "@/config/seo";
 
-export const metadata: Metadata = {
-  title: `How It Works | ${SITE.name}`,
-  description: `Learn how to search, compare, and choose dealerships on ${SITE.name}.`,
-};
+const HowItWorksPageContent = dynamic(
+  () =>
+    import("@/components/pages/HowItWorksPageContent").then((m) => ({
+      default: m.HowItWorksPageContent,
+    })),
+  {
+    loading: () => (
+      <div className="min-h-[60vh] animate-pulse bg-muted" aria-hidden />
+    ),
+  }
+);
+export const metadata: Metadata = PAGE_SEO.howItWorks;
 
 export default function HowItWorksPage() {
   return <HowItWorksPageContent />;

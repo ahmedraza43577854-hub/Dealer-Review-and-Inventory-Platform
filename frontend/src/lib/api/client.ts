@@ -1,3 +1,5 @@
+import "server-only";
+
 import { API } from "@/config/constants";
 import { env } from "@/config/env";
 import { ApiError, ApiErrorResponse } from "@/types/dealer";

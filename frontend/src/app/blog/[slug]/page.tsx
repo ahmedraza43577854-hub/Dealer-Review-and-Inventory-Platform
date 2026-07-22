@@ -7,8 +7,19 @@ import {
   getPostBySlug,
   getRelatedPosts,
 } from "@/config/blog";
-import { ROUTES, SITE } from "@/config/constants";
+import { ROUTES } from "@/config/constants";
+import {
+  buildBlogPostMetadata,
+  buildNotFoundMetadata,
+} from "@/config/seo";
 import { BlogCover } from "@/components/blog/BlogCover";
+import { SchemaMarkup } from "@/components/seo/SchemaMarkup";
+import {
+  buildArticleSchema,
+  buildBlogCategorySchema,
+  buildFaqPageSchema,
+  extractArticleFaqs,
+} from "@/lib/schema/builders";
 import { BlogCard } from "@/components/blog/BlogCard";
 import { ArticleBody } from "@/components/blog/ArticleBody";
 import { Button } from "@/components/ui/button";
@@ -23,11 +34,8 @@ export function generateStaticParams() {
 
 export function generateMetadata({ params }: ArticlePageProps): Metadata {
   const post = getPostBySlug(params.slug);
-  if (!post) return { title: `Blog | ${SITE.name}` };
-  return {
-    title: `${post.title} | ${SITE.name}`,
-    description: post.excerpt,
-  };
+  if (!post) return buildNotFoundMetadata("Article");
+  return buildBlogPostMetadata(post);
 }
 
 function initials(name: string): string {
@@ -44,9 +52,18 @@ export default function ArticlePage({ params }: ArticlePageProps) {
   if (!post) notFound();
 
   const related = getRelatedPosts(post.slug, 3);
+  const articleFaqs = extractArticleFaqs(post.body);
+  const faqSchema = buildFaqPageSchema(articleFaqs);
+  const schemaData = [
+    buildArticleSchema(post),
+    buildBlogCategorySchema(post),
+    ...(faqSchema ? [faqSchema] : []),
+  ];
 
   return (
-    <div className="bg-background">
+    <>
+      <SchemaMarkup data={schemaData} />
+      <div className="bg-background">
       {/* Breadcrumb */}
       <div className="border-b border-border/70 bg-white">
         <div className="container-page py-3">
@@ -107,7 +124,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
           {/* Cover */}
           <BlogCover
             post={post}
-            className="mt-6 aspect-[16/9] w-full rounded-lg border border-border/70 shadow-card"
+            className="mt-6 w-full rounded-lg border border-border/70 shadow-card"
             sizes="(max-width: 768px) 100vw, 768px"
             iconClassName="h-20 w-20"
             priority
@@ -161,5 +178,6 @@ export default function ArticlePage({ params }: ArticlePageProps) {
         )}
       </article>
     </div>
+    </>
   );
 }

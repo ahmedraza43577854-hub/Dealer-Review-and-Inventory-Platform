@@ -23,7 +23,7 @@ export function ContactForm() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setStatus("sending");
-    // Demo only — no backend endpoint. Simulate a successful submission.
+    // Demo only, no backend endpoint. Simulate a successful submission.
     window.setTimeout(() => setStatus("sent"), 700);
   }
 

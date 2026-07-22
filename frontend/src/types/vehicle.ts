@@ -77,6 +77,7 @@ export interface VehicleFilters {
   bodyStyle?: string;
   condition?: string;
   state?: string;
+  city?: string;
   minRating?: number;
   query?: string;
 }

@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Gauge, Heart, MapPin, Phone, Star } from "lucide-react";
 import type { Vehicle } from "@/types/vehicle";
+import { CityPageLink } from "@/components/dealers/CityPageLink";
 import { ROUTES } from "@/config/constants";
 import { formatMileage, formatPrice } from "@/lib/utils/format";
 import { cn } from "@/lib/utils";
@@ -31,7 +32,10 @@ export function VehicleRow({ vehicle }: { vehicle: Vehicle }) {
       >
         <VehiclePhoto
           vehicle={vehicle}
-          className="h-52 w-full sm:h-full sm:min-h-[210px]"
+          className="w-full sm:w-[220px]"
+          width={220}
+          height={138}
+          sizes="220px"
         />
         <div className="absolute left-3 top-3">
           <ConditionBadge condition={vehicle.condition} />
@@ -99,7 +103,7 @@ export function VehicleRow({ vehicle }: { vehicle: Vehicle }) {
             </span>
             <span className="flex items-center gap-1 text-xs text-muted-foreground">
               <MapPin className="h-3 w-3" />
-              {vehicle.dealer.city}, {vehicle.dealer.state}
+              <CityPageLink city={vehicle.dealer.city} state={vehicle.dealer.state} />
             </span>
             <span className="flex items-center gap-1 text-xs text-muted-foreground">
               <Phone className="h-3 w-3" />

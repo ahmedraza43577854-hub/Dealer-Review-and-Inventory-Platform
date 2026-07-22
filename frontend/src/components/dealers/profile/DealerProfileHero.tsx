@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import type { DealerDetail } from "@/types/dealer";
 import type { DealerRatings } from "@/types/vehicle";
+import { CityPageLink } from "@/components/dealers/CityPageLink";
 import { ROUTES } from "@/config/constants";
 import { formatPhone, stripProtocol } from "@/lib/utils/format";
 import { StarRating } from "@/components/shared/StarRating";
@@ -56,7 +57,14 @@ export function DealerProfileHero({
           <div className="mt-2 flex flex-wrap items-center gap-x-5 gap-y-1.5 text-sm text-muted-foreground">
             <span className="flex items-center gap-1.5">
               <MapPin className="h-4 w-4 text-primary" />
-              {dealer.address}, {dealer.city}, {dealer.state} {dealer.zip}
+              {dealer.address},{" "}
+              <CityPageLink
+                city={dealer.city}
+                state={dealer.state}
+                cityOnly
+                className="text-muted-foreground hover:text-primary"
+              />
+              , {dealer.state} {dealer.zip}
             </span>
             {dealer.phone && (
               <a

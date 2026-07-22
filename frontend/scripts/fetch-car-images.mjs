@@ -74,12 +74,20 @@ async function photosFor(v) {
   return { photos: [], query: null };
 }
 
-async function download(url, dest) {
+async function downloadBuffer(url) {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const buf = Buffer.from(await res.arrayBuffer());
-  await writeFile(dest, buf);
-  return buf.length;
+  return Buffer.from(await res.arrayBuffer());
+}
+
+async function saveWebp(buffer, dest) {
+  const sharp = (await import("sharp")).default;
+  await sharp(buffer)
+    .rotate()
+    .resize({ width: 1600, withoutEnlargement: true })
+    .webp({ quality: 82 })
+    .toFile(dest);
+  return buffer.length;
 }
 
 async function main() {
@@ -100,10 +108,11 @@ async function main() {
     for (let i = 0; i < chosen.length; i++) {
       const photo = chosen[i];
       const src = photo.src.large2x || photo.src.large || photo.src.original;
-      const file = `${v.id}-${i + 1}.jpg`;
+      const file = `${v.id}-${i + 1}.webp`;
       const dest = path.join(PUBLIC_DIR, file);
       try {
-        const bytes = await download(src, dest);
+        const buffer = await downloadBuffer(src);
+        const bytes = await saveWebp(buffer, dest);
         paths.push(`/vehicles/${file}`);
         cred.push({ photographer: photo.photographer, url: photo.url });
         void bytes;

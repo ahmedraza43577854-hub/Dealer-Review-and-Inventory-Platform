@@ -6,11 +6,9 @@ import {
   ContentProse,
 } from "@/components/layout/ContentPage";
 import { ROUTES, SITE } from "@/config/constants";
+import { PAGE_SEO } from "@/config/seo";
 
-export const metadata: Metadata = {
-  title: `Cookie Policy | ${SITE.name}`,
-  description: `Cookie Policy for ${SITE.name}.`,
-};
+export const metadata: Metadata = PAGE_SEO.cookies;
 
 const LAST_UPDATED = new Date().toLocaleDateString("en-US", {
   month: "long",

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronRight } from "lucide-react";
@@ -7,7 +8,11 @@ import {
   getSimilarVehicles,
   getAllVehicles,
 } from "@/lib/vehicles/data";
-import { ROUTES, SITE } from "@/config/constants";
+import { ROUTES } from "@/config/constants";
+import {
+  buildNotFoundMetadata,
+  buildVehicleMetadata,
+} from "@/config/seo";
 import { formatPrice } from "@/lib/utils/format";
 import { VehicleGallery } from "@/components/vehicles/VehicleGallery";
 import { VehicleSpecs } from "@/components/vehicles/VehicleSpecs";
@@ -15,7 +20,22 @@ import { VehicleFeatures } from "@/components/vehicles/VehicleFeatures";
 import { VehicleDealerCard } from "@/components/vehicles/VehicleDealerCard";
 import { SimilarVehicles } from "@/components/vehicles/SimilarVehicles";
 import { ConditionBadge } from "@/components/vehicles/ConditionBadge";
-import { VehicleContactActions } from "@/components/vehicles/VehicleContactActions";
+import { SchemaMarkup } from "@/components/seo/SchemaMarkup";
+import { SeoContentSection } from "@/components/seo/SeoContentSection";
+import { buildProductSchema } from "@/lib/schema/builders";
+import { buildVehicleDetailSeoContent } from "@/config/seo-content";
+
+const VehicleContactActions = dynamic(
+  () =>
+    import("@/components/vehicles/VehicleContactActions").then((m) => ({
+      default: m.VehicleContactActions,
+    })),
+  {
+    loading: () => (
+      <div className="h-40 animate-pulse rounded-lg bg-muted" aria-hidden />
+    ),
+  }
+);
 
 interface VehicleDetailPageProps {
   params: { id: string };
@@ -29,11 +49,8 @@ export function generateMetadata({
   params,
 }: VehicleDetailPageProps): Metadata {
   const vehicle = getVehicleById(params.id);
-  if (!vehicle) return { title: `Vehicle | ${SITE.name}` };
-  return {
-    title: `${vehicle.year} ${vehicle.make} ${vehicle.model} | ${SITE.name}`,
-    description: vehicle.description,
-  };
+  if (!vehicle) return buildNotFoundMetadata("Vehicle");
+  return buildVehicleMetadata(vehicle);
 }
 
 export default function VehicleDetailPage({ params }: VehicleDetailPageProps) {
@@ -43,7 +60,9 @@ export default function VehicleDetailPage({ params }: VehicleDetailPageProps) {
   const similar = getSimilarVehicles(vehicle, 3);
 
   return (
-    <div className="bg-background pb-24 lg:pb-0">
+    <>
+      <SchemaMarkup data={buildProductSchema(vehicle)} />
+      <div className="bg-background pb-24 lg:pb-0">
       {/* Breadcrumb */}
       <div className="border-b border-border/70 bg-white">
         <div className="container-page py-3">
@@ -132,6 +151,19 @@ export default function VehicleDetailPage({ params }: VehicleDetailPageProps) {
           </aside>
         </div>
       </div>
+
+      <SeoContentSection
+        content={buildVehicleDetailSeoContent({
+          year: vehicle.year,
+          make: vehicle.make,
+          model: vehicle.model,
+          bodyStyle: vehicle.bodyStyle,
+          condition: vehicle.condition,
+          dealer: vehicle.dealer,
+        })}
+        variant="muted"
+      />
     </div>
+    </>
   );
 }

@@ -5,6 +5,10 @@ import { bodyStyleIcon } from "@/lib/vehicles/icons";
 import { getVehicleImages } from "@/lib/vehicles/images";
 import { cn } from "@/lib/utils";
 
+/** Default 16:10 aspect ratio for card and list thumbnails. */
+export const VEHICLE_PHOTO_WIDTH = 640;
+export const VEHICLE_PHOTO_HEIGHT = 400;
+
 interface VehiclePhotoProps {
   vehicle: Pick<
     Vehicle,
@@ -15,6 +19,9 @@ interface VehiclePhotoProps {
   iconClassName?: string;
   /** Override the resolved image (used by the gallery for a specific photo). */
   image?: string;
+  /** Intrinsic dimensions, prevents layout shift and drives srcset. */
+  width?: number;
+  height?: number;
   /** Passed to next/image for responsive sizing. */
   sizes?: string;
   priority?: boolean;
@@ -30,7 +37,9 @@ export function VehiclePhoto({
   showCount = true,
   iconClassName,
   image,
-  sizes = "(max-width: 640px) 100vw, 400px",
+  width = VEHICLE_PHOTO_WIDTH,
+  height = VEHICLE_PHOTO_HEIGHT,
+  sizes = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px",
   priority = false,
 }: VehiclePhotoProps) {
   const images = getVehicleImages(vehicle.id);
@@ -45,15 +54,18 @@ export function VehiclePhoto({
         "relative flex items-center justify-center overflow-hidden bg-photo-placeholder",
         className
       )}
+      style={{ aspectRatio: `${width} / ${height}` }}
     >
       {src ? (
         <Image
           src={src}
           alt={alt}
-          fill
+          width={width}
+          height={height}
           sizes={sizes}
           priority={priority}
-          className="object-cover"
+          loading={priority ? undefined : "lazy"}
+          className="h-full w-full object-cover"
         />
       ) : (
         <>

@@ -5,16 +5,36 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { DealerNavigationProvider } from "@/contexts/dealer-navigation-context";
 import { SITE } from "@/config/constants";
+import { INDEXABLE_ROBOTS } from "@/config/seo";
+import { getMetadataBase } from "@/lib/seo";
 
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-inter",
+  weight: ["400", "500", "600", "700", "800"],
+  preload: true,
 });
 
 export const metadata: Metadata = {
-  title: `${SITE.name} | Find Your Next Car Nationwide`,
+  metadataBase: getMetadataBase(),
+  title: {
+    default: SITE.name,
+    template: `%s | ${SITE.name}`,
+  },
   description: SITE.description,
+  robots: INDEXABLE_ROBOTS,
+  verification: {
+    google: "uH0NcvaewFx90B1HkKZhtA363nR4POJUN5N7FnLKu54",
+  },
+  openGraph: {
+    siteName: SITE.name,
+    locale: "en_US",
+    type: "website",
+  },
+  other: {
+    publisher: SITE.name,
+  },
 };
 
 export default function RootLayout({

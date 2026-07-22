@@ -105,5 +105,5 @@ export const BRANDS_CARRIED = [
 ] as const;
 
 export function dealerDescription(name: string, city: string, state: string): string {
-  return `${name} is a full-service dealership proudly serving ${city}, ${state} and the surrounding area. Our team is committed to a no-pressure, transparent buying experience — from browsing our extensive new and pre-owned inventory to financing, trade-ins, and expert service after the sale. Every certified vehicle is fully inspected so you can drive off the lot with confidence.`;
+  return `${name} is a full-service dealership proudly serving ${city}, ${state} and the surrounding area. Our team is committed to a no-pressure, transparent buying experience, from browsing our extensive new and pre-owned inventory to financing, trade-ins, and expert service after the sale. Every certified vehicle is fully inspected so you can drive off the lot with confidence.`;
 }

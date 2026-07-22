@@ -4,13 +4,13 @@ import { ArrowRight, CalendarDays, Clock } from "lucide-react";
 import { ContentPage, ContentSection } from "@/components/layout/ContentPage";
 import { BlogCover } from "@/components/blog/BlogCover";
 import { BlogCard } from "@/components/blog/BlogCard";
+import { SeoContentSection } from "@/components/seo/SeoContentSection";
 import { BLOG_POSTS } from "@/config/blog";
-import { ROUTES, SITE } from "@/config/constants";
+import { ROUTES } from "@/config/constants";
+import { BLOG_SEO_CONTENT } from "@/config/seo-content";
+import { PAGE_SEO } from "@/config/seo";
 
-export const metadata: Metadata = {
-  title: `Blog & Buying Guides | ${SITE.name}`,
-  description: `Car-buying tips, dealer insights, and guides to help you shop smarter, wherever you are in the country.`,
-};
+export const metadata: Metadata = PAGE_SEO.blog;
 
 export default function BlogPage() {
   const [featured, ...rest] = BLOG_POSTS;
@@ -31,7 +31,7 @@ export default function BlogPage() {
           <div className="relative">
             <BlogCover
               post={featured}
-              className="h-full min-h-[240px]"
+              className="w-full"
               sizes="(max-width: 768px) 100vw, 620px"
               iconClassName="h-20 w-20"
               priority
@@ -72,6 +72,8 @@ export default function BlogPage() {
           ))}
         </div>
       </ContentSection>
+
+      <SeoContentSection content={BLOG_SEO_CONTENT} variant="muted" />
     </ContentPage>
   );
 }

@@ -11,6 +11,11 @@ export const SITE = {
   phone: "(800) 555-0199",
 } as const;
 
+/** Google Analytics (gtag.js) — site-wide measurement ID. */
+export const ANALYTICS = {
+  googleMeasurementId: "G-ET4QEE12B5",
+} as const;
+
 /** Canonical H1 copy, each public page must render exactly one H1 from this map. */
 export const PAGE_HEADINGS = {
   home: "Find Your Next Car - Search Trusted Dealerships Nationwide",

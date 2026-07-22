@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { DealerNavigationProvider } from "@/contexts/dealer-navigation-context";
 import { SITE } from "@/config/constants";
 import { INDEXABLE_ROBOTS } from "@/config/seo";
@@ -45,6 +46,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <body className="min-h-screen flex flex-col antialiased font-sans">
+        <GoogleAnalytics />
         <DealerNavigationProvider>
           <Navbar />
           <main className="flex-1 pt-16">{children}</main>

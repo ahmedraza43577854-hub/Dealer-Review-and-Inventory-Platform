@@ -7,6 +7,8 @@ import { REGIONS, ROUTES } from "@/config/constants";
 import { SITEMAP_SEO_CONTENT } from "@/config/seo-content";
 import { BRAND_PILLS, HOME_BODY_STYLES } from "@/config/vehicle";
 import { PAGE_SEO } from "@/config/seo";
+import { SchemaMarkup } from "@/components/seo/SchemaMarkup";
+import { buildWebPageSchema } from "@/lib/schema/builders";
 
 export const metadata: Metadata = PAGE_SEO.sitemap;
 
@@ -69,7 +71,15 @@ const GROUPS: SitemapGroup[] = [
 
 export default function SitemapPage() {
   return (
-    <ContentPage
+    <>
+      <SchemaMarkup
+        data={buildWebPageSchema(
+          "Sitemap",
+          "Browse every section of AutoSalesReviews, vehicle search, dealer profiles, buying guides, and support pages.",
+          ROUTES.sitemap
+        )}
+      />
+      <ContentPage
       title="Sitemap"
       subtitle="Find every page on AutoSalesReviews in one place."
       badge="Navigation"
@@ -105,5 +115,6 @@ export default function SitemapPage() {
 
       <SeoContentSection content={SITEMAP_SEO_CONTENT} variant="muted" />
     </ContentPage>
+    </>
   );
 }

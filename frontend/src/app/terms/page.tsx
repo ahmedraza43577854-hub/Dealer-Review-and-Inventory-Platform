@@ -4,8 +4,10 @@ import {
   ContentSection,
   ContentProse,
 } from "@/components/layout/ContentPage";
-import { SITE } from "@/config/constants";
+import { SITE, ROUTES } from "@/config/constants";
 import { PAGE_SEO } from "@/config/seo";
+import { SchemaMarkup } from "@/components/seo/SchemaMarkup";
+import { buildWebPageSchema } from "@/lib/schema/builders";
 
 export const metadata: Metadata = PAGE_SEO.terms;
 
@@ -17,7 +19,15 @@ const LAST_UPDATED = new Date().toLocaleDateString("en-US", {
 
 export default function TermsPage() {
   return (
-    <ContentPage
+    <>
+      <SchemaMarkup
+        data={buildWebPageSchema(
+          "Terms of Service",
+          `The rules and guidelines for using ${SITE.name}.`,
+          ROUTES.terms
+        )}
+      />
+      <ContentPage
       title="Terms of Service"
       subtitle={`Last updated: ${LAST_UPDATED}. The rules and guidelines for using ${SITE.name}.`}
       badge="Legal"
@@ -89,5 +99,6 @@ export default function TermsPage() {
         </ContentProse>
       </ContentSection>
     </ContentPage>
+    </>
   );
 }

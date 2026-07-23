@@ -4,6 +4,8 @@ import { ContentPage, ContentSection } from "@/components/layout/ContentPage";
 import { ROUTES } from "@/config/constants";
 import { getCitiesGroupedByState } from "@/config/locations";
 import { createPageMetadata, PAGE_KEYWORDS } from "@/config/seo";
+import { SchemaMarkup } from "@/components/seo/SchemaMarkup";
+import { buildCitiesDirectorySchemas } from "@/lib/schema/builders";
 
 export const metadata: Metadata = createPageMetadata(
   "Find Car Dealerships by City | AutoSalesReviews",
@@ -16,7 +18,9 @@ export default function CitiesDirectoryPage() {
   const groups = getCitiesGroupedByState();
 
   return (
-    <ContentPage
+    <>
+      <SchemaMarkup data={buildCitiesDirectorySchemas()} />
+      <ContentPage
       title="Browse Car Dealers by City"
       subtitle="Find trusted dealerships in major cities across the United States."
       badge="City directory"
@@ -61,5 +65,6 @@ export default function CitiesDirectoryPage() {
         </div>
       </ContentSection>
     </ContentPage>
+    </>
   );
 }

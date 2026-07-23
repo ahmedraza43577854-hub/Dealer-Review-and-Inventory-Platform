@@ -9,6 +9,8 @@ import { BLOG_POSTS } from "@/config/blog";
 import { ROUTES } from "@/config/constants";
 import { BLOG_SEO_CONTENT } from "@/config/seo-content";
 import { PAGE_SEO } from "@/config/seo";
+import { SchemaMarkup } from "@/components/seo/SchemaMarkup";
+import { buildBlogListingSchemas } from "@/lib/schema/builders";
 
 export const metadata: Metadata = PAGE_SEO.blog;
 
@@ -16,7 +18,9 @@ export default function BlogPage() {
   const [featured, ...rest] = BLOG_POSTS;
 
   return (
-    <ContentPage
+    <>
+      <SchemaMarkup data={buildBlogListingSchemas()} />
+      <ContentPage
       title="Blog & Buying Guides"
       subtitle="Practical tips, dealer insights, and guides to help you shop smarter."
       badge="AutoSalesReviews Blog"
@@ -75,5 +79,6 @@ export default function BlogPage() {
 
       <SeoContentSection content={BLOG_SEO_CONTENT} variant="muted" />
     </ContentPage>
+    </>
   );
 }

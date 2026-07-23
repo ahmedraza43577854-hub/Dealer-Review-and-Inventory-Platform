@@ -7,6 +7,8 @@ import {
 } from "@/components/layout/ContentPage";
 import { ROUTES, SITE } from "@/config/constants";
 import { PAGE_SEO } from "@/config/seo";
+import { SchemaMarkup } from "@/components/seo/SchemaMarkup";
+import { buildWebPageSchema } from "@/lib/schema/builders";
 
 export const metadata: Metadata = PAGE_SEO.cookies;
 
@@ -18,7 +20,15 @@ const LAST_UPDATED = new Date().toLocaleDateString("en-US", {
 
 export default function CookiesPage() {
   return (
-    <ContentPage
+    <>
+      <SchemaMarkup
+        data={buildWebPageSchema(
+          "Cookie Policy",
+          `How ${SITE.name} uses cookies and similar technologies.`,
+          ROUTES.cookies
+        )}
+      />
+      <ContentPage
       title="Cookie Policy"
       subtitle={`Last updated: ${LAST_UPDATED}. How we use cookies and similar technologies.`}
       badge="Legal"
@@ -82,5 +92,6 @@ export default function CookiesPage() {
         </ContentProse>
       </ContentSection>
     </ContentPage>
+    </>
   );
 }

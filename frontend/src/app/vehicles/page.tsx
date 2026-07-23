@@ -28,7 +28,11 @@ import { Button } from "@/components/ui/button";
 import { SeoContentSection } from "@/components/seo/SeoContentSection";
 import { SchemaMarkup } from "@/components/seo/SchemaMarkup";
 import { LocationFaqSection } from "@/components/dealers/LocationFaqSection";
-import { buildFaqPageSchema } from "@/lib/schema/builders";
+import {
+  buildVehicleCategorySchemas,
+  buildVehicleListItems,
+  buildVehiclesListingSchemas,
+} from "@/lib/schema/builders";
 
 const MobileFilterDrawer = dynamic(
   () =>
@@ -76,7 +80,20 @@ export default function VehiclesPage({ searchParams }: VehiclesPageProps) {
   const countLabel =
     results.length === 1 ? "1 vehicle" : `${results.length} vehicles`;
   const category = getVehicleCategoryConfig(filters.bodyStyle);
-  const faqSchema = category ? buildFaqPageSchema(category.faqs) : null;
+  const listItems = buildVehicleListItems(results);
+  const schemaData = category
+    ? buildVehicleCategorySchemas(category, listItems)
+    : buildVehiclesListingSchemas({
+        path: ROUTES.vehicles,
+        collectionName: "Search Cars for Sale Nationwide",
+        collectionDescription:
+          "Browse thousands of new and used cars for sale from verified dealerships across the US. Filter by make, model, year, price and more.",
+        listItems,
+        breadcrumbs: [
+          { name: "Home", path: ROUTES.home },
+          { name: "Vehicles", path: ROUTES.vehicles },
+        ],
+      });
 
   const searchDefaults = {
     make: filters.make,
@@ -87,7 +104,7 @@ export default function VehiclesPage({ searchParams }: VehiclesPageProps) {
 
   return (
     <>
-      {faqSchema && <SchemaMarkup data={faqSchema} />}
+      <SchemaMarkup data={schemaData} />
 
       <div className="bg-background">
         {category ? (

@@ -1,8 +1,13 @@
 import type { ArticleBlock } from "@/config/blog";
 import type { BlogPost } from "@/config/blog";
-import { countArticleWords } from "@/config/blog";
+import { BLOG_POSTS, countArticleWords } from "@/config/blog";
 import type { TargetCity } from "@/config/locations/cities-data";
-import { ROUTES, SITE } from "@/config/constants";
+import { TARGET_CITIES } from "@/config/locations/cities-data";
+import { HOW_IT_WORKS_STEPS, ROUTES, SITE } from "@/config/constants";
+import {
+  vehicleCategoryHref,
+  type VehicleCategoryConfig,
+} from "@/config/vehicle-categories";
 import { getCanonicalUrl } from "@/lib/seo";
 import type { DealerDetail } from "@/types/dealer";
 import type { DealerRatings, Vehicle } from "@/types/vehicle";
@@ -340,4 +345,249 @@ export function buildStatePageSchemas(
   ]);
   const faqSchema = buildFaqPageSchema(faqs);
   return [breadcrumbs, ...(faqSchema ? [faqSchema] : [])];
+}
+
+export function buildWebPageSchema(
+  name: string,
+  description: string,
+  path: string
+): JsonLd {
+  return {
+    "@type": "WebPage",
+    name,
+    description,
+    url: getCanonicalUrl(path),
+    isPartOf: {
+      "@type": "WebSite",
+      name: SITE.name,
+      url: getCanonicalUrl(ROUTES.home),
+    },
+  };
+}
+
+export function buildCollectionPageSchema(
+  name: string,
+  description: string,
+  path: string
+): JsonLd {
+  return {
+    "@type": "CollectionPage",
+    name,
+    description,
+    url: getCanonicalUrl(path),
+    isPartOf: {
+      "@type": "WebSite",
+      name: SITE.name,
+      url: getCanonicalUrl(ROUTES.home),
+    },
+  };
+}
+
+export function buildItemListSchema(
+  name: string,
+  items: { name: string; url: string }[]
+): JsonLd {
+  return {
+    "@type": "ItemList",
+    name,
+    numberOfItems: items.length,
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      url: item.url,
+    })),
+  };
+}
+
+interface ListingPageSchemaInput {
+  collectionName: string;
+  collectionDescription: string;
+  path: string;
+  listName?: string;
+  listItems?: { name: string; url: string }[];
+  faqs?: FaqItem[];
+  breadcrumbs?: BreadcrumbItem[];
+}
+
+/** Builds CollectionPage plus optional ItemList, FAQPage, and BreadcrumbList schemas. */
+export function buildListingPageSchemas(
+  input: ListingPageSchemaInput
+): JsonLd[] {
+  const schemas: JsonLd[] = [
+    buildCollectionPageSchema(
+      input.collectionName,
+      input.collectionDescription,
+      input.path
+    ),
+  ];
+
+  if (input.breadcrumbs && input.breadcrumbs.length > 0) {
+    schemas.push(buildBreadcrumbSchema(input.breadcrumbs));
+  }
+
+  if (input.listItems && input.listItems.length > 0) {
+    schemas.push(
+      buildItemListSchema(
+        input.listName ?? input.collectionName,
+        input.listItems
+      )
+    );
+  }
+
+  const faqSchema = input.faqs ? buildFaqPageSchema(input.faqs) : null;
+  if (faqSchema) {
+    schemas.push(faqSchema);
+  }
+
+  return schemas;
+}
+
+export function buildDealersListingSchemas(): JsonLd[] {
+  return buildListingPageSchemas({
+    collectionName: "Find Car Dealerships Nationwide",
+    collectionDescription:
+      "Browse trusted car dealerships across the United States with verified Google, Yelp, and Carfax ratings.",
+    path: ROUTES.dealers,
+    breadcrumbs: [
+      { name: "Home", path: ROUTES.home },
+      { name: "Dealers", path: ROUTES.dealers },
+    ],
+  });
+}
+
+export function buildVehiclesListingSchemas(options: {
+  path: string;
+  collectionName: string;
+  collectionDescription: string;
+  listItems: { name: string; url: string }[];
+  faqs?: FaqItem[];
+  breadcrumbs?: BreadcrumbItem[];
+}): JsonLd[] {
+  return buildListingPageSchemas({
+    collectionName: options.collectionName,
+    collectionDescription: options.collectionDescription,
+    path: options.path,
+    listName: `${options.collectionName} inventory`,
+    listItems: options.listItems,
+    faqs: options.faqs,
+    breadcrumbs: options.breadcrumbs,
+  });
+}
+
+export function buildVehicleCategorySchemas(
+  category: VehicleCategoryConfig,
+  listItems: { name: string; url: string }[]
+): JsonLd[] {
+  return buildVehiclesListingSchemas({
+    path: vehicleCategoryHref(category.key),
+    collectionName: category.metaTitle.replace(` | ${SITE.name}`, ""),
+    collectionDescription: category.metaDescription,
+    listItems,
+    faqs: category.faqs,
+    breadcrumbs: [
+      { name: "Home", path: ROUTES.home },
+      { name: "Vehicles", path: ROUTES.vehicles },
+      { name: category.label, path: vehicleCategoryHref(category.key) },
+    ],
+  });
+}
+
+export function buildBlogListingSchemas(): JsonLd[] {
+  const postItems = BLOG_POSTS.map((post) => ({
+    name: post.title,
+    url: getCanonicalUrl(ROUTES.blogPost(post.slug)),
+  }));
+
+  return [
+    buildCollectionPageSchema(
+      "AutoSalesReviews Blog",
+      "Expert car buying tips, dealer insights, and automotive guides for smart shoppers.",
+      ROUTES.blog
+    ),
+    {
+      "@type": "Blog",
+      name: `${SITE.name} Blog`,
+      url: getCanonicalUrl(ROUTES.blog),
+      description:
+        "Car buying tips, dealer news, and automotive guides from AutoSalesReviews.",
+      publisher: {
+        "@type": "Organization",
+        name: SITE.name,
+        url: getCanonicalUrl(ROUTES.home),
+      },
+      blogPost: BLOG_POSTS.map((post) => ({
+        "@type": "BlogPosting",
+        headline: post.title,
+        url: getCanonicalUrl(ROUTES.blogPost(post.slug)),
+        datePublished: parseBlogDate(post.date),
+      })),
+    },
+    buildItemListSchema("Blog articles", postItems),
+  ];
+}
+
+export function buildCitiesDirectorySchemas(): JsonLd[] {
+  const cityItems = TARGET_CITIES.map((city) => ({
+    name: `${city.city}, ${city.stateCode} car dealers`,
+    url: getCanonicalUrl(ROUTES.dealerCity(city.slug)),
+  }));
+
+  return [
+    buildCollectionPageSchema(
+      "Browse Car Dealers by City",
+      "Directory of trusted car dealerships in major cities across the United States.",
+      ROUTES.cities
+    ),
+    buildItemListSchema("Car dealer cities", cityItems),
+    buildBreadcrumbSchema([
+      { name: "Home", path: ROUTES.home },
+      { name: "Dealers", path: ROUTES.dealers },
+      { name: "Cities", path: ROUTES.cities },
+    ]),
+  ];
+}
+
+export function buildHowToPageSchema(): JsonLd {
+  return {
+    "@type": "HowTo",
+    name: "How to find and buy a car on AutoSalesReviews",
+    description:
+      "Search vehicles, compare dealer ratings, and contact trusted dealerships in three steps.",
+    step: HOW_IT_WORKS_STEPS.map((step, index) => ({
+      "@type": "HowToStep",
+      position: index + 1,
+      name: step.title,
+      text: step.description,
+    })),
+  };
+}
+
+export function buildHowItWorksPageSchemas(): JsonLd[] {
+  return [
+    buildWebPageSchema(
+      "How AutoSalesReviews Works",
+      "Learn how to search vehicles, compare dealer ratings, and buy with confidence.",
+      ROUTES.howItWorks
+    ),
+    buildHowToPageSchema(),
+  ];
+}
+
+export function buildWriteReviewPageSchema(): JsonLd {
+  return buildWebPageSchema(
+    "Write a Dealer Review",
+    "Share your car dealership experience and help other buyers make smarter decisions.",
+    ROUTES.writeReview
+  );
+}
+
+export function buildVehicleListItems(
+  vehicles: Pick<Vehicle, "id" | "year" | "make" | "model">[],
+  limit = 20
+): { name: string; url: string }[] {
+  return vehicles.slice(0, limit).map((vehicle) => ({
+    name: `${vehicle.year} ${vehicle.make} ${vehicle.model}`,
+    url: getCanonicalUrl(ROUTES.vehicleDetail(vehicle.id)),
+  }));
 }

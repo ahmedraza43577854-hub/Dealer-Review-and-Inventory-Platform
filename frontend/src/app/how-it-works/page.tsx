@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
+import { SchemaMarkup } from "@/components/seo/SchemaMarkup";
 import { PAGE_SEO } from "@/config/seo";
+import { buildHowItWorksPageSchemas } from "@/lib/schema/builders";
 
 const HowItWorksPageContent = dynamic(
   () =>
@@ -16,5 +18,10 @@ const HowItWorksPageContent = dynamic(
 export const metadata: Metadata = PAGE_SEO.howItWorks;
 
 export default function HowItWorksPage() {
-  return <HowItWorksPageContent />;
+  return (
+    <>
+      <SchemaMarkup data={buildHowItWorksPageSchemas()} />
+      <HowItWorksPageContent />
+    </>
+  );
 }

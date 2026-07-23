@@ -7,6 +7,8 @@ import {
 } from "@/components/layout/ContentPage";
 import { ROUTES, SITE } from "@/config/constants";
 import { PAGE_SEO } from "@/config/seo";
+import { SchemaMarkup } from "@/components/seo/SchemaMarkup";
+import { buildWebPageSchema } from "@/lib/schema/builders";
 
 export const metadata: Metadata = PAGE_SEO.privacy;
 
@@ -29,7 +31,15 @@ const SECTIONS = [
 
 export default function PrivacyPage() {
   return (
-    <ContentPage
+    <>
+      <SchemaMarkup
+        data={buildWebPageSchema(
+          "Privacy Policy",
+          `How ${SITE.name} collects, uses, and protects your personal information.`,
+          ROUTES.privacy
+        )}
+      />
+      <ContentPage
       title="Privacy Policy"
       subtitle={`Last updated: ${LAST_UPDATED}. How we collect, use, and protect your information.`}
       badge="Legal"
@@ -140,5 +150,6 @@ export default function PrivacyPage() {
         </div>
       </ContentSection>
     </ContentPage>
+    </>
   );
 }

@@ -7,12 +7,22 @@ import {
 } from "@/components/layout/ContentPage";
 import { ROUTES, SITE } from "@/config/constants";
 import { PAGE_SEO } from "@/config/seo";
+import { SchemaMarkup } from "@/components/seo/SchemaMarkup";
+import { buildWebPageSchema } from "@/lib/schema/builders";
 
 export const metadata: Metadata = PAGE_SEO.accessibility;
 
 export default function AccessibilityPage() {
   return (
-    <ContentPage
+    <>
+      <SchemaMarkup
+        data={buildWebPageSchema(
+          "Accessibility Statement",
+          `${SITE.name} is committed to making car shopping accessible to everyone.`,
+          ROUTES.accessibility
+        )}
+      />
+      <ContentPage
       title="Accessibility Statement"
       subtitle={`${SITE.name} is committed to making car shopping accessible to everyone.`}
       badge="Our commitment"
@@ -61,5 +71,6 @@ export default function AccessibilityPage() {
         </ContentProse>
       </ContentSection>
     </ContentPage>
+    </>
   );
 }

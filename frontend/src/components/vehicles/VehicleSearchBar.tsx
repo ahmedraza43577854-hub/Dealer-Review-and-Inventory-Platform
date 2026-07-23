@@ -109,8 +109,8 @@ export function VehicleSearchBar({
         className={cn(
           "grid gap-3",
           isHero
-            ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-5"
-            : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-5"
+            ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-[repeat(4,minmax(0,1fr))_auto]"
+            : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-[repeat(4,minmax(0,1fr))_auto]"
         )}
       >
         <NativeSelect label="Make" value={make} onChange={handleMakeChange}>
@@ -149,13 +149,13 @@ export function VehicleSearchBar({
           ))}
         </NativeSelect>
 
-        <div className="flex flex-col justify-end">
+        <div className="flex flex-col justify-end sm:col-span-2 lg:col-span-4 xl:col-span-1">
           <Button
             type="submit"
             variant="gold"
             size="lg"
             disabled={submitting}
-            className="h-11 w-full"
+            className="h-11 w-full gap-3 px-8 xl:w-auto xl:min-w-[13rem] xl:shrink-0"
           >
             {submitting ? (
               <>

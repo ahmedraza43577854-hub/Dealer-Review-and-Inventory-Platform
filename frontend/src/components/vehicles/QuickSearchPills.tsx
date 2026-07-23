@@ -1,10 +1,18 @@
 import Link from "next/link";
 import { QUICK_SEARCH_PILLS } from "@/config/vehicle";
 
-export function QuickSearchPills({ variant = "hero" }: { variant?: "hero" | "light" }) {
+export function QuickSearchPills({
+  variant = "hero",
+  align = "center",
+}: {
+  variant?: "hero" | "light";
+  align?: "left" | "center";
+}) {
   const isHero = variant === "hero";
   return (
-    <div className="flex flex-wrap items-center justify-center gap-2">
+    <div
+      className={`flex flex-wrap items-center gap-2 ${align === "center" ? "justify-center" : "justify-start"}`}
+    >
       {isHero && (
         <span className="mr-1 text-sm font-medium text-white/85">Popular:</span>
       )}

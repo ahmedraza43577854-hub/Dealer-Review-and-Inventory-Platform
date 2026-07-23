@@ -17,7 +17,6 @@ import { PAGE_HEADINGS, ROUTES } from "@/config/constants";
 import { buildVehicleCategoryMetadata, PAGE_SEO } from "@/config/seo";
 import { getVehicleCategoryConfig } from "@/config/vehicle-categories";
 import { VEHICLES_INTRO_SEO_CONTENT } from "@/config/seo-content";
-import { VehicleSearchBar } from "@/components/vehicles/VehicleSearchBar";
 import { VehicleCategoryHero } from "@/components/vehicles/VehicleCategoryHero";
 import { VehicleFilters } from "@/components/vehicles/VehicleFilters";
 import { VehicleSortSelect } from "@/components/vehicles/VehicleSortSelect";
@@ -117,26 +116,13 @@ export default function VehiclesPage({ searchParams }: VehiclesPageProps) {
             defaultValues={searchDefaults}
           />
         ) : (
-          <div className="border-b border-border/70 bg-white">
-            <div className="container-page py-5">
-              <h1 className="mb-3 text-xl font-bold leading-snug text-primary sm:text-2xl">
-                {PAGE_HEADINGS.vehicles}
-              </h1>
-              <VehicleSearchBar
-                layout="bar"
-                submitLabel="Update Results"
-                defaultValues={searchDefaults}
-              />
-            </div>
-          </div>
-        )}
-
-        {!category && (
-          <SeoContentSection
-            content={VEHICLES_INTRO_SEO_CONTENT}
-            variant="compact"
-            wide
-            className="border-b border-border/70 bg-white"
+          <VehicleCategoryHero
+            badge="Nationwide Inventory"
+            h1={PAGE_HEADINGS.vehicles}
+            subtitle="Browse thousands of new and used vehicles from verified dealerships. Filter by make, model, year, and price to find your match."
+            submitLabel={activeCount > 0 ? "Update Results" : "Search Inventory"}
+            showQuickPills
+            defaultValues={searchDefaults}
           />
         )}
 
@@ -204,7 +190,7 @@ export default function VehiclesPage({ searchParams }: VehiclesPageProps) {
           </div>
         </div>
 
-        {category && (
+        {category ? (
           <>
             <SeoContentSection content={category.seoContent} variant="muted" wide />
             <LocationFaqSection
@@ -212,6 +198,8 @@ export default function VehiclesPage({ searchParams }: VehiclesPageProps) {
               title={`${category.label} Buying FAQ`}
             />
           </>
+        ) : (
+          <SeoContentSection content={VEHICLES_INTRO_SEO_CONTENT} variant="muted" wide />
         )}
       </div>
     </>

@@ -60,6 +60,7 @@ export function VehiclePhoto({
     >
       {src ? (
         <Image
+          key={src}
           src={src}
           alt={alt}
           width={width}

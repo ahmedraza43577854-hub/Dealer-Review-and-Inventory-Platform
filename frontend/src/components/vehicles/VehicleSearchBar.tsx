@@ -16,6 +16,7 @@ import { cn } from "@/lib/utils";
 interface VehicleSearchBarProps {
   layout?: "hero" | "bar";
   submitLabel?: string;
+  bodyStyle?: string;
   defaultValues?: {
     make?: string;
     model?: string;
@@ -58,6 +59,7 @@ function NativeSelect({
 export function VehicleSearchBar({
   layout = "hero",
   submitLabel = "Search",
+  bodyStyle,
   defaultValues,
   className,
 }: VehicleSearchBarProps) {
@@ -82,6 +84,7 @@ export function VehicleSearchBar({
     e.preventDefault();
     setSubmitting(true);
     const params = new URLSearchParams();
+    if (bodyStyle) params.set("bodyStyle", bodyStyle);
     if (make) params.set("make", make);
     if (model) params.set("model", model);
     if (year) params.set("yearFrom", year);

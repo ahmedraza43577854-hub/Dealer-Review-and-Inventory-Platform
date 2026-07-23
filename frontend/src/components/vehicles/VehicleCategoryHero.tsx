@@ -5,6 +5,7 @@ interface VehicleCategoryHeroProps {
   h1: string;
   subtitle: string;
   submitLabel?: string;
+  bodyStyle?: string;
   defaultValues?: {
     make?: string;
     model?: string;
@@ -18,6 +19,7 @@ export function VehicleCategoryHero({
   h1,
   subtitle,
   submitLabel = "Search Inventory",
+  bodyStyle,
   defaultValues,
 }: VehicleCategoryHeroProps) {
   return (
@@ -32,10 +34,11 @@ export function VehicleCategoryHero({
         <p className="mt-3 max-w-2xl text-base leading-relaxed text-white/75 sm:text-lg">
           {subtitle}
         </p>
-        <div className="mt-6 max-w-3xl rounded-lg border border-white/20 bg-white/95 p-4 shadow-card backdrop-blur-sm sm:p-5">
+        <div className="mt-6 max-w-4xl">
           <VehicleSearchBar
-            layout="bar"
+            layout="hero"
             submitLabel={submitLabel}
+            bodyStyle={bodyStyle}
             defaultValues={defaultValues}
           />
         </div>

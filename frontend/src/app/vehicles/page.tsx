@@ -113,6 +113,7 @@ export default function VehiclesPage({ searchParams }: VehiclesPageProps) {
             h1={category.h1}
             subtitle={category.subtitle}
             submitLabel={category.searchSubmitLabel}
+            bodyStyle={category.key}
             defaultValues={searchDefaults}
           />
         ) : (

@@ -38,11 +38,6 @@ export function buildOrganizationSchema(): JsonLd {
     email: SITE.email,
     telephone: SITE.phone,
     areaServed: SITE.coverage,
-    publisher: {
-      "@type": "Organization",
-      name: SITE.name,
-      url: getCanonicalUrl(ROUTES.home),
-    },
   };
 }
 

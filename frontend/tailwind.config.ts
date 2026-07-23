@@ -75,6 +75,8 @@ const config: Config = {
         gold: {
           DEFAULT: "#E8A400",
           600: "#cc9000",
+          700: "#9a6700",
+          800: "#7a5200",
           light: "#FDF6E3",
         },
       },

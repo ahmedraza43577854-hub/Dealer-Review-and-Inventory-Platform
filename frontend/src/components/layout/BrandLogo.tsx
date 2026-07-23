@@ -34,7 +34,8 @@ export function BrandLogo({ className, variant = "default" }: BrandLogoProps) {
           isDark ? "text-white" : "text-primary"
         )}
       >
-        AutoSales<span className="text-gold-600">Reviews</span>
+        AutoSales
+        <span className={isDark ? "text-accent" : "text-gold-800"}>Reviews</span>
       </span>
     </Link>
   );

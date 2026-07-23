@@ -29,8 +29,12 @@ export function FeaturedVehicles() {
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {vehicles.map((vehicle) => (
-            <VehicleCard key={vehicle.id} vehicle={vehicle} />
+          {vehicles.map((vehicle, index) => (
+            <VehicleCard
+              key={vehicle.id}
+              vehicle={vehicle}
+              priority={index === 0}
+            />
           ))}
         </div>
       </div>

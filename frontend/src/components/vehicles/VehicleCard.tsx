@@ -13,14 +13,17 @@ interface VehicleCardProps {
   vehicle: Vehicle;
   priority?: boolean;
   sizes?: string;
+  quality?: number;
 }
 
 export function VehicleCard({
   vehicle,
   priority = false,
-  sizes = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px",
+  sizes = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw",
+  quality = 70,
 }: VehicleCardProps) {
   const href = ROUTES.vehicleDetail(vehicle.id);
+  const vehicleLabel = `${vehicle.year} ${vehicle.make} ${vehicle.model}`;
 
   return (
     <article
@@ -31,14 +34,19 @@ export function VehicleCard({
           : "border-border/70"
       )}
     >
-      <Link href={href} className="relative block">
+      <Link
+        href={href}
+        className="relative block"
+        aria-label={`View ${vehicleLabel}`}
+      >
         <VehiclePhoto
           vehicle={vehicle}
           className="w-full"
           sizes={sizes}
           priority={priority}
+          quality={quality}
         />
-        <div className="absolute left-3 top-3 flex items-center gap-2">
+        <div className="absolute left-3 top-3 flex items-center gap-2" aria-hidden>
           <ConditionBadge condition={vehicle.condition} />
           {vehicle.dealer.featured && (
             <span className="inline-flex items-center rounded-md bg-accent px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-accent-foreground">

@@ -25,6 +25,7 @@ interface VehiclePhotoProps {
   /** Passed to next/image for responsive sizing. */
   sizes?: string;
   priority?: boolean;
+  quality?: number;
 }
 
 /**
@@ -41,6 +42,7 @@ export function VehiclePhoto({
   height = VEHICLE_PHOTO_HEIGHT,
   sizes = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px",
   priority = false,
+  quality = 75,
 }: VehiclePhotoProps) {
   const images = getVehicleImages(vehicle.id);
   const src = image ?? images[0];
@@ -63,6 +65,7 @@ export function VehiclePhoto({
           width={width}
           height={height}
           sizes={sizes}
+          quality={quality}
           priority={priority}
           loading={priority ? undefined : "lazy"}
           className="h-full w-full object-cover"

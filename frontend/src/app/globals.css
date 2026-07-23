@@ -85,7 +85,7 @@
   }
 
   .text-price {
-    color: hsl(var(--accent));
+    color: #b45309;
   }
 
   /* Hero: solid navy background per spec */

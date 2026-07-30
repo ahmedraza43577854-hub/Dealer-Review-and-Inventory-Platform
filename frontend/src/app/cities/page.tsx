@@ -4,7 +4,10 @@ import { ContentPage, ContentSection } from "@/components/layout/ContentPage";
 import { ROUTES } from "@/config/constants";
 import { getCitiesGroupedByState } from "@/config/locations";
 import { createPageMetadata, PAGE_KEYWORDS } from "@/config/seo";
+import { CITIES_FAQ_ITEMS, CITIES_SEO_CONTENT } from "@/config/seo-content";
 import { SchemaMarkup } from "@/components/seo/SchemaMarkup";
+import { SeoContentSection } from "@/components/seo/SeoContentSection";
+import { LocationFaqSection } from "@/components/dealers/LocationFaqSection";
 import { buildCitiesDirectorySchemas } from "@/lib/schema/builders";
 
 export const metadata: Metadata = createPageMetadata(
@@ -19,7 +22,7 @@ export default function CitiesDirectoryPage() {
 
   return (
     <>
-      <SchemaMarkup data={buildCitiesDirectorySchemas()} />
+      <SchemaMarkup data={buildCitiesDirectorySchemas(CITIES_FAQ_ITEMS)} />
       <ContentPage
       title="Browse Car Dealers by City"
       subtitle="Find trusted dealerships in major cities across the United States."
@@ -65,6 +68,9 @@ export default function CitiesDirectoryPage() {
         </div>
       </ContentSection>
     </ContentPage>
+
+    <LocationFaqSection items={CITIES_FAQ_ITEMS} />
+    <SeoContentSection content={CITIES_SEO_CONTENT} variant="muted" />
     </>
   );
 }

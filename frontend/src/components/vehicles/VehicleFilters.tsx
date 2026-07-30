@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import type { VehicleFilters as Filters } from "@/types/vehicle";
@@ -108,7 +108,7 @@ export function VehicleFilters({
   onApplied,
 }: VehicleFiltersProps) {
   const router = useRouter();
-  const [applying, setApplying] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   const [make, setMake] = useState(filters.make ?? "");
   const [model, setModel] = useState(filters.model ?? "");
@@ -143,7 +143,6 @@ export function VehicleFilters({
   }
 
   function apply() {
-    setApplying(true);
     const params = new URLSearchParams();
     if (make) params.set("make", make);
     if (model) params.set("model", model);
@@ -159,13 +158,16 @@ export function VehicleFilters({
     if (minRating) params.set("minRating", minRating);
     if (sort && sort !== "relevance") params.set("sort", sort);
     const query = params.toString();
-    router.push(query ? `${ROUTES.vehicles}?${query}` : ROUTES.vehicles);
+    startTransition(() => {
+      router.push(query ? `${ROUTES.vehicles}?${query}` : ROUTES.vehicles);
+    });
     onApplied?.();
   }
 
   function clearAll() {
-    setApplying(true);
-    router.push(ROUTES.vehicles);
+    startTransition(() => {
+      router.push(ROUTES.vehicles);
+    });
     onApplied?.();
   }
 
@@ -350,9 +352,9 @@ export function VehicleFilters({
           variant="gold"
           className="w-full"
           onClick={apply}
-          disabled={applying}
+          disabled={isPending}
         >
-          {applying ? (
+          {isPending ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin" />
               Loading...

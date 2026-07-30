@@ -7,6 +7,7 @@ import { Menu, X, PenSquare, Store } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BrandLogo } from "@/components/layout/BrandLogo";
 import { CitiesNavDropdown } from "@/components/layout/CitiesNavDropdown";
+import { SavedNavLink } from "@/components/layout/SavedNavLink";
 import { NAV_LINKS, ROUTES } from "@/config/constants";
 import { cn } from "@/lib/utils";
 
@@ -75,6 +76,7 @@ export function Navbar() {
         </nav>
 
         <div className="hidden items-center gap-2.5 lg:flex">
+          <SavedNavLink className="px-3 py-2 text-slate-600 hover:bg-secondary hover:text-primary" />
           <Button asChild variant="outline" size="sm">
             <Link href={ROUTES.forDealers}>
               <Store className="h-4 w-4" />
@@ -125,6 +127,10 @@ export function Navbar() {
               variant="mobile"
               isActive={citiesActive}
               onNavigate={() => setMobileOpen(false)}
+            />
+            <SavedNavLink
+              onNavigate={() => setMobileOpen(false)}
+              className="rounded-lg px-4 py-3.5 text-base text-slate-700 hover:bg-secondary"
             />
           </nav>
           <div className="mt-auto flex flex-col gap-3 border-t border-border/70 px-4 py-6">

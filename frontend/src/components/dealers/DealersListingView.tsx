@@ -4,8 +4,10 @@ import { DealerResultsPendingShell } from "@/components/dealers/DealerResultsPen
 import { DealersResultsSuspense } from "@/components/dealers/DealersResultsSuspense";
 import { ActiveFilters } from "@/components/dealers/ActiveFilters";
 import { SeoContentSection } from "@/components/seo/SeoContentSection";
+import { LocationFaqSection } from "@/components/dealers/LocationFaqSection";
 import { SITE } from "@/config/constants";
 import {
+  DEALERS_FAQ_ITEMS,
   getDealersListingSeoContent,
   type DealersListingSeoContext,
 } from "@/config/seo-content";
@@ -49,6 +51,7 @@ export function DealersListingView({
         content={introSeoContent}
         variant="compact"
         className="border-b border-border/70 bg-white"
+        collapsible={false}
       />
 
       <div className="container-page pb-10">
@@ -70,6 +73,10 @@ export function DealersListingView({
           <DealersResultsSuspense searchParams={searchParams} />
         </DealerResultsPendingShell>
       </div>
+
+      {seoContext.type === "default" && (
+        <LocationFaqSection items={DEALERS_FAQ_ITEMS} />
+      )}
 
       <SeoContentSection content={extendedSeoContent} variant="muted" />
     </div>

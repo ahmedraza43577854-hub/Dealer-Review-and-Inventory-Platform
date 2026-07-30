@@ -5,10 +5,11 @@ import { ContentPage, ContentSection } from "@/components/layout/ContentPage";
 import { ContactForm } from "@/components/pages/ContactForm";
 import { SchemaMarkup } from "@/components/seo/SchemaMarkup";
 import { SeoContentSection } from "@/components/seo/SeoContentSection";
+import { LocationFaqSection } from "@/components/dealers/LocationFaqSection";
 import { ROUTES, SITE } from "@/config/constants";
-import { CONTACT_SEO_CONTENT } from "@/config/seo-content";
+import { CONTACT_FAQ_ITEMS, CONTACT_SEO_CONTENT } from "@/config/seo-content";
 import { PAGE_SEO } from "@/config/seo";
-import { buildContactPageSchema } from "@/lib/schema/builders";
+import { buildContactPageSchema, buildFaqPageSchema } from "@/lib/schema/builders";
 
 export const metadata: Metadata = PAGE_SEO.contact;
 
@@ -37,9 +38,13 @@ const METHODS = [
 ];
 
 export default function ContactPage() {
+  const faqSchema = buildFaqPageSchema(CONTACT_FAQ_ITEMS);
+
   return (
     <>
-      <SchemaMarkup data={buildContactPageSchema()} />
+      <SchemaMarkup
+        data={[buildContactPageSchema(), ...(faqSchema ? [faqSchema] : [])]}
+      />
       <ContentPage
       title="Contact Us"
       subtitle="Have a question about a car, a dealer, or listing your dealership? Our team is here to help."
@@ -109,6 +114,8 @@ export default function ContactPage() {
           </aside>
         </div>
       </ContentSection>
+
+      <LocationFaqSection items={CONTACT_FAQ_ITEMS} />
 
       <SeoContentSection content={CONTACT_SEO_CONTENT} variant="muted" />
     </ContentPage>

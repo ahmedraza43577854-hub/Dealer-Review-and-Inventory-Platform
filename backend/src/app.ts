@@ -5,7 +5,15 @@ import { errorHandler } from "./middleware/errorHandler";
 
 const app = express();
 
-app.use(cors());
+const corsOrigin = process.env.CORS_ORIGIN?.split(",").map((o) => o.trim());
+
+app.use(
+  cors({
+    origin: corsOrigin?.length ? corsOrigin : true,
+    credentials: true,
+    allowedHeaders: ["Content-Type", "X-Visitor-Id"],
+  })
+);
 app.use(express.json());
 
 app.get("/health", (_req, res) => {

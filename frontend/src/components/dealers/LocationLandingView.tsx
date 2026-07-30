@@ -95,9 +95,9 @@ export function LocationLandingView({
           </DealerResultsPendingShell>
         </div>
 
-        <SeoContentSection content={seoContent} variant="muted" />
-
         <LocationFaqSection items={faqItems} />
+
+        <SeoContentSection content={seoContent} variant="muted" />
 
         {nearbyCities && nearbyCities.length > 0 && (
           <NearbyCitiesSection cities={nearbyCities} />

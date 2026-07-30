@@ -22,7 +22,7 @@ export const FAQ_GROUPS: FaqGroup[] = [
       {
         question: "Can I save vehicles I'm interested in?",
         answer:
-          "Yes, tap the heart icon on any vehicle in the search results to save it while you browse during your session.",
+          "Yes. Tap Save on any listing to add it to your Saved Vehicles shortlist. Saves are stored on our servers for this browser (no account required). When you create an account later, we can merge them into your profile.",
       },
     ],
   },

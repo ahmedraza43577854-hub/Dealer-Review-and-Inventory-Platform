@@ -8,6 +8,7 @@ import { DealerNavigationProvider } from "@/contexts/dealer-navigation-context";
 import { UserLocationProvider } from "@/contexts/user-location-context";
 import { LocationPromptModal } from "@/components/home/LocationPromptModal";
 import { CompareProvider } from "@/contexts/compare-context";
+import { SavedVehiclesProvider } from "@/contexts/saved-vehicles-context";
 import { CompareTray } from "@/components/vehicles/CompareTray";
 import { PreventSelectScrollLock } from "@/components/shared/PreventSelectScrollLock";
 import { SITE } from "@/config/constants";
@@ -56,13 +57,15 @@ export default function RootLayout({
         <PreventSelectScrollLock />
         <UserLocationProvider>
           <CompareProvider>
-            <DealerNavigationProvider>
-              <Navbar />
-              <main className="flex-1 pt-16">{children}</main>
-              <Footer />
-              <LocationPromptModal />
-              <CompareTray />
-            </DealerNavigationProvider>
+            <SavedVehiclesProvider>
+              <DealerNavigationProvider>
+                <Navbar />
+                <main className="flex-1 pt-16">{children}</main>
+                <Footer />
+                <LocationPromptModal />
+                <CompareTray />
+              </DealerNavigationProvider>
+            </SavedVehiclesProvider>
           </CompareProvider>
         </UserLocationProvider>
       </body>

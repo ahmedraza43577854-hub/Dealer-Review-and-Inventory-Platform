@@ -17,7 +17,7 @@ import { VEHICLES_PER_PAGE } from "@/config/vehicle";
 import { PAGE_HEADINGS, ROUTES } from "@/config/constants";
 import { buildVehicleCategoryMetadata, PAGE_SEO } from "@/config/seo";
 import { getVehicleCategoryConfig } from "@/config/vehicle-categories";
-import { VEHICLES_INTRO_SEO_CONTENT } from "@/config/seo-content";
+import { VEHICLES_FAQ_ITEMS, VEHICLES_INTRO_SEO_CONTENT } from "@/config/seo-content";
 import { VehicleCategoryHero } from "@/components/vehicles/VehicleCategoryHero";
 import { VehicleFilters } from "@/components/vehicles/VehicleFilters";
 import { VehicleSortSelect } from "@/components/vehicles/VehicleSortSelect";
@@ -89,6 +89,7 @@ export default function VehiclesPage({ searchParams }: VehiclesPageProps) {
         collectionDescription:
           "Browse thousands of new and used cars for sale from verified dealerships across the US. Filter by make, model, year, price and more.",
         listItems,
+        faqs: VEHICLES_FAQ_ITEMS,
         breadcrumbs: [
           { name: "Home", path: ROUTES.home },
           { name: "Vehicles", path: ROUTES.vehicles },
@@ -188,14 +189,17 @@ export default function VehiclesPage({ searchParams }: VehiclesPageProps) {
 
         {category ? (
           <>
-            <SeoContentSection content={category.seoContent} variant="muted" wide />
             <LocationFaqSection
               items={category.faqs}
               title={`${category.label} Buying FAQ`}
             />
+            <SeoContentSection content={category.seoContent} variant="muted" wide />
           </>
         ) : (
-          <SeoContentSection content={VEHICLES_INTRO_SEO_CONTENT} variant="muted" wide />
+          <>
+            <LocationFaqSection items={VEHICLES_FAQ_ITEMS} />
+            <SeoContentSection content={VEHICLES_INTRO_SEO_CONTENT} variant="muted" wide />
+          </>
         )}
       </div>
     </>

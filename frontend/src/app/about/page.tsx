@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import { SchemaMarkup } from "@/components/seo/SchemaMarkup";
 import { PAGE_SEO } from "@/config/seo";
-import { buildAboutPageSchema } from "@/lib/schema/builders";
+import { ABOUT_FAQ_ITEMS } from "@/config/seo-content";
+import { buildAboutPageSchema, buildFaqPageSchema } from "@/lib/schema/builders";
 
 const AboutPageContent = dynamic(
   () =>
@@ -18,9 +19,13 @@ const AboutPageContent = dynamic(
 export const metadata: Metadata = PAGE_SEO.about;
 
 export default function AboutPage() {
+  const faqSchema = buildFaqPageSchema(ABOUT_FAQ_ITEMS);
+
   return (
     <>
-      <SchemaMarkup data={buildAboutPageSchema()} />
+      <SchemaMarkup
+        data={[buildAboutPageSchema(), ...(faqSchema ? [faqSchema] : [])]}
+      />
       <AboutPageContent />
     </>
   );

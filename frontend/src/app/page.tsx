@@ -10,9 +10,11 @@ import { PopularCities } from "@/components/home/PopularCities";
 import { TopRatedDealers } from "@/components/home/TopRatedDealers";
 import { SchemaMarkup } from "@/components/seo/SchemaMarkup";
 import { SeoContentSection } from "@/components/seo/SeoContentSection";
+import { LocationFaqSection } from "@/components/dealers/LocationFaqSection";
 import { PAGE_SEO } from "@/config/seo";
-import { HOME_SEO_CONTENT } from "@/config/seo-content";
+import { HOME_FAQ_ITEMS, HOME_SEO_CONTENT } from "@/config/seo-content";
 import {
+  buildFaqPageSchema,
   buildOrganizationSchema,
   buildWebSiteSchema,
 } from "@/lib/schema/builders";
@@ -30,10 +32,16 @@ export default function HomePage() {
     cookies().get(LOCATION_COOKIE_NAME)?.value
   );
 
+  const faqSchema = buildFaqPageSchema(HOME_FAQ_ITEMS);
+
   return (
     <>
       <SchemaMarkup
-        data={[buildOrganizationSchema(), buildWebSiteSchema()]}
+        data={[
+          buildOrganizationSchema(),
+          buildWebSiteSchema(),
+          ...(faqSchema ? [faqSchema] : []),
+        ]}
       />
       <HomeHero />
       <HomeStatsBand />
@@ -43,6 +51,7 @@ export default function HomePage() {
       <BrowseByBrand />
       <PopularCities />
       <TopRatedDealers location={location ?? undefined} />
+      <LocationFaqSection items={HOME_FAQ_ITEMS} />
       <SeoContentSection content={HOME_SEO_CONTENT} variant="muted" />
     </>
   );

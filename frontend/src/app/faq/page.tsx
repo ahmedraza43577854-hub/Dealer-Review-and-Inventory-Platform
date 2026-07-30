@@ -26,7 +26,11 @@ export default function FaqPage() {
       {faqSchema && <SchemaMarkup data={faqSchema} />}
       <ContentSection>
         <div className="mx-auto max-w-3xl">
-          <SeoContentSection content={FAQ_INTRO_SEO_CONTENT} embedded />
+          <SeoContentSection
+            content={FAQ_INTRO_SEO_CONTENT}
+            embedded
+            collapsible={false}
+          />
 
           <FaqAccordion groups={FAQ_GROUPS} />
 

@@ -9,13 +9,17 @@ export class SavedVehicleController {
   });
 
   save = asyncHandler(async (req: Request, res: Response) => {
-    const { vehicleId } = req.validatedBody as { vehicleId: string };
+    const { vehicleId } = (req as Request & {
+      validatedBody: { vehicleId: string };
+    }).validatedBody;
     const item = await savedVehicleService.save(req.visitorId!, vehicleId);
     res.status(201).json(item);
   });
 
   remove = asyncHandler(async (req: Request, res: Response) => {
-    const { vehicleId } = req.validatedParams as { vehicleId: string };
+    const { vehicleId } = (req as Request & {
+      validatedParams: { vehicleId: string };
+    }).validatedParams;
     const result = await savedVehicleService.remove(
       req.visitorId!,
       vehicleId

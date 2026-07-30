@@ -17,8 +17,12 @@ import {
   PageCtaBand,
 } from "@/components/layout/ContentPage";
 import { SeoContentSection } from "@/components/seo/SeoContentSection";
+import { LocationFaqSection } from "@/components/dealers/LocationFaqSection";
 import { ROUTES, SITE } from "@/config/constants";
-import { WRITE_REVIEW_SEO_CONTENT } from "@/config/seo-content";
+import {
+  WRITE_REVIEW_FAQ_ITEMS,
+  WRITE_REVIEW_SEO_CONTENT,
+} from "@/config/seo-content";
 
 const REVIEW_INCLUDES = [
   "Overall rating from 1 to 5 stars",
@@ -109,6 +113,8 @@ export function WriteReviewPageContent() {
           ))}
         </div>
       </ContentSection>
+
+      <LocationFaqSection items={WRITE_REVIEW_FAQ_ITEMS} />
 
       <SeoContentSection content={WRITE_REVIEW_SEO_CONTENT} />
 

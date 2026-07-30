@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import { Gauge, Heart, MapPin, Phone, Star } from "lucide-react";
+import { Gauge, MapPin, Phone, Star } from "lucide-react";
 import type { Vehicle } from "@/types/vehicle";
 import { CityPageLink } from "@/components/dealers/CityPageLink";
 import { ROUTES } from "@/config/constants";
@@ -12,11 +11,19 @@ import { Button } from "@/components/ui/button";
 import { VehiclePhoto } from "@/components/vehicles/VehiclePhoto";
 import { ConditionBadge } from "@/components/vehicles/ConditionBadge";
 import { CompareCheckbox } from "@/components/vehicles/CompareCheckbox";
+import { SaveVehicleButton } from "@/components/vehicles/SaveVehicleButton";
 import { toCompareVehicleSummary } from "@/lib/vehicles/compare";
 
-export function VehicleRow({ vehicle }: { vehicle: Vehicle }) {
-  const [saved, setSaved] = useState(false);
+export function VehicleRow({
+  vehicle,
+  context = "browse",
+}: {
+  vehicle: Vehicle;
+  /** On the Saved page, show an explicit Remove control instead of Save toggle. */
+  context?: "browse" | "saved";
+}) {
   const href = ROUTES.vehicleDetail(vehicle.id);
+  const isSavedContext = context === "saved";
 
   return (
     <article
@@ -29,21 +36,24 @@ export function VehicleRow({ vehicle }: { vehicle: Vehicle }) {
     >
       <Link
         href={href}
-        className="relative block shrink-0 sm:w-[220px]"
+        // flex + items-center centers the fixed-aspect photo within the row's
+        // full stretched height, so a taller sibling (more chips/features)
+        // adds even breathing room around the photo instead of either
+        // cropping it into a tall sliver or leaving dead space below it.
+        className="relative flex shrink-0 items-center justify-center overflow-hidden sm:w-[220px]"
         aria-label={`${vehicle.year} ${vehicle.make} ${vehicle.model}`}
       >
-        <VehiclePhoto
-          vehicle={vehicle}
-          fill
-          // On mobile the row stacks, so the photo keeps a normal aspect
-          // ratio; on desktop it sits beside taller text content, so it
-          // stretches to match that height instead of leaving dead space
-          // below a short, aspect-ratio-locked photo.
-          className="aspect-[8/5] w-full sm:aspect-auto sm:h-full sm:w-[220px]"
-          sizes="(max-width: 640px) 100vw, 220px"
-        />
-        <div className="absolute left-3 top-3">
-          <ConditionBadge condition={vehicle.condition} />
+        <div className="relative w-full">
+          <VehiclePhoto
+            vehicle={vehicle}
+            className="w-full"
+            width={220}
+            height={148}
+            sizes="(max-width: 640px) 100vw, 220px"
+          />
+          <div className="absolute left-3 top-3">
+            <ConditionBadge condition={vehicle.condition} />
+          </div>
         </div>
       </Link>
 
@@ -55,15 +65,13 @@ export function VehicleRow({ vehicle }: { vehicle: Vehicle }) {
                 {vehicle.year} {vehicle.make} {vehicle.model}
               </h2>
             </Link>
-            <button
-              type="button"
-              onClick={() => setSaved((s) => !s)}
-              aria-pressed={saved}
-              aria-label={saved ? "Remove from saved" : "Save vehicle"}
-              className="shrink-0 rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-secondary hover:text-accent sm:hidden"
-            >
-              <Heart className={cn("h-5 w-5", saved && "fill-accent text-accent")} />
-            </button>
+            {!isSavedContext && (
+              <SaveVehicleButton
+                vehicleId={vehicle.id}
+                variant="icon"
+                className="sm:hidden"
+              />
+            )}
           </div>
           <p className="text-sm text-muted-foreground">{vehicle.trim}</p>
 
@@ -112,7 +120,10 @@ export function VehicleRow({ vehicle }: { vehicle: Vehicle }) {
             </span>
             <span className="flex items-center gap-1 text-xs text-muted-foreground">
               <MapPin className="h-3 w-3" />
-              <CityPageLink city={vehicle.dealer.city} state={vehicle.dealer.state} />
+              <CityPageLink
+                city={vehicle.dealer.city}
+                state={vehicle.dealer.state}
+              />
             </span>
             <span className="flex items-center gap-1 text-xs text-muted-foreground">
               <Phone className="h-3 w-3" />
@@ -125,21 +136,35 @@ export function VehicleRow({ vehicle }: { vehicle: Vehicle }) {
           <Button asChild className="flex-1 sm:flex-none">
             <Link href={href}>View Vehicle</Link>
           </Button>
-          <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">
+          <Button
+            asChild
+            variant="ghost"
+            size="sm"
+            className="hidden sm:inline-flex"
+          >
             <Link href={ROUTES.dealerProfile(vehicle.dealer.slug)}>
               View Dealer
             </Link>
           </Button>
-          <button
-            type="button"
-            onClick={() => setSaved((s) => !s)}
-            aria-pressed={saved}
-            aria-label={saved ? "Remove from saved" : "Save vehicle"}
-            className="hidden items-center justify-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:border-accent/50 hover:text-accent sm:inline-flex"
-          >
-            <Heart className={cn("h-4 w-4", saved && "fill-accent text-accent")} />
-            {saved ? "Saved" : "Save"}
-          </button>
+          {isSavedContext ? (
+            <SaveVehicleButton
+              vehicleId={vehicle.id}
+              variant="remove"
+              className="flex-1 sm:flex-none sm:w-full"
+            />
+          ) : (
+            <>
+              <SaveVehicleButton
+                vehicleId={vehicle.id}
+                variant="icon"
+                className="sm:hidden"
+              />
+              <SaveVehicleButton
+                vehicleId={vehicle.id}
+                className="hidden sm:inline-flex"
+              />
+            </>
+          )}
           <CompareCheckbox
             vehicle={toCompareVehicleSummary(vehicle)}
             className="hidden justify-center rounded-lg border border-border px-3 py-1.5 sm:inline-flex"

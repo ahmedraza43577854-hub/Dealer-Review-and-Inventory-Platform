@@ -19,20 +19,13 @@ interface VehiclePhotoProps {
   iconClassName?: string;
   /** Override the resolved image (used by the gallery for a specific photo). */
   image?: string;
-  /** Intrinsic dimensions, prevents layout shift and drives srcset. Ignored when `fill` is set. */
+  /** Intrinsic dimensions, prevents layout shift and drives srcset. */
   width?: number;
   height?: number;
   /** Passed to next/image for responsive sizing. */
   sizes?: string;
   priority?: boolean;
   quality?: number;
-  /**
-   * Fills the parent's box instead of locking to `width`/`height`'s aspect
-   * ratio — for flex/grid layouts (e.g. a row card) where a taller sibling
-   * should set the height and the photo should match it, not the reverse.
-   * The parent must be positioned and sized (e.g. `relative h-full`).
-   */
-  fill?: boolean;
 }
 
 /**
@@ -50,7 +43,6 @@ export function VehiclePhoto({
   sizes = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px",
   priority = false,
   quality = 75,
-  fill = false,
 }: VehiclePhotoProps) {
   const images = getVehicleImages(vehicle.id);
   const src = image ?? images[0];
@@ -64,35 +56,21 @@ export function VehiclePhoto({
         "relative flex items-center justify-center overflow-hidden bg-photo-placeholder",
         className
       )}
-      style={fill ? undefined : { aspectRatio: `${width} / ${height}` }}
+      style={{ aspectRatio: `${width} / ${height}` }}
     >
       {src ? (
-        fill ? (
-          <Image
-            key={src}
-            src={src}
-            alt={alt}
-            fill
-            sizes={sizes}
-            quality={quality}
-            priority={priority}
-            loading={priority ? undefined : "lazy"}
-            className="object-cover"
-          />
-        ) : (
-          <Image
-            key={src}
-            src={src}
-            alt={alt}
-            width={width}
-            height={height}
-            sizes={sizes}
-            quality={quality}
-            priority={priority}
-            loading={priority ? undefined : "lazy"}
-            className="h-full w-full object-cover"
-          />
-        )
+        <Image
+          key={src}
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          sizes={sizes}
+          quality={quality}
+          priority={priority}
+          loading={priority ? undefined : "lazy"}
+          className="h-full w-full object-cover"
+        />
       ) : (
         <>
           <div

@@ -6,6 +6,7 @@ import {
   type VehicleCategoryKey,
 } from "@/config/vehicle-categories";
 import { toCityStateSlug } from "@/lib/dealers/location-slugs";
+import type { FaqItem } from "@/lib/schema/types";
 
 /** Inline text or an internal link within SEO copy. */
 export type SeoInline = string | { text: string; href: string };
@@ -79,6 +80,30 @@ export const HOME_SEO_CONTENT: SeoContent = {
         " to compare stores near you, or jump straight to ",
         link("cars for sale", ROUTES.vehicles),
         " to search thousands of vehicles from top-rated sellers. The goal is simple: give you the clarity you need to choose the right dealer and the right car.",
+      ],
+    },
+    {
+      type: "h3",
+      content: ["How our ratings actually work"],
+    },
+    {
+      type: "p",
+      content: [
+        "Instead of collecting reviews ourselves and hoping shoppers trust a brand-new score, we pull ratings from platforms buyers already rely on, Google, Yelp, and Carfax, and combine them into a single, weighted score for each dealership. Dealers cannot pay to have negative feedback removed, and featured placement never overrides a low rating. That means a five-star badge on ",
+        link("AutoSalesReviews", ROUTES.home),
+        " reflects real customer experiences with sales pressure, pricing honesty, and how a dealership handled problems after the sale, not marketing spend.",
+      ],
+    },
+    {
+      type: "h3",
+      content: ["New, used, and everything in between"],
+    },
+    {
+      type: "p",
+      content: [
+        "Not every shopper wants the same thing. Some buyers want a certified pre-owned vehicle with remaining factory warranty, others want the lowest possible mileage for the money, and some are cross-shopping new models against last year's leftover inventory. Our filters let you set condition, year range, and price ceiling all at once, so you only see ",
+        link("cars for sale", ROUTES.vehicles),
+        " that actually match your situation. Combine that with dealer ratings and you can shortlist a handful of realistic options in minutes instead of driving between lots all weekend.",
       ],
     },
   ],
@@ -159,6 +184,28 @@ export const DEALERS_EXTENDED_SEO_CONTENT: SeoContent = {
         " filtered by make, price, or body style. It is a straightforward path from research to test drive, built for buyers who want facts first.",
       ],
     },
+    {
+      type: "h3",
+      content: ["What to check on every dealer profile"],
+    },
+    {
+      type: "p",
+      content: [
+        "Before you drive out to a lot, open the full profile and look past the star average. Check how many total reviews back that score, since a 4.9 built on five reviews carries less weight than a 4.5 built on five hundred. Read a few recent comments for mentions of pricing transparency, how trade-in offers were handled, and whether the service department followed through after the sale. Confirm the address, phone number, and hours are current, then check whether the dealership links to ",
+        link("live inventory", ROUTES.vehicles),
+        " you can browse before you commit to a visit.",
+      ],
+    },
+    {
+      type: "h3",
+      content: ["Comparing multiple dealerships at once"],
+    },
+    {
+      type: "p",
+      content: [
+        "Most buyers shortlist two or three dealerships before making a decision, and that comparison is where a directory like this earns its keep. Sort by rating or distance, open each profile in a new tab, and weigh inventory selection alongside review sentiment rather than price alone. If two dealers carry the same vehicle at a similar price, the one with a stronger service reputation and clearer communication in past reviews is usually the safer bet, especially if you plan to bring the car back for maintenance.",
+      ],
+    },
   ],
 };
 
@@ -186,6 +233,34 @@ export const VEHICLES_INTRO_SEO_CONTENT: SeoContent = {
         "Every vehicle listing connects to a rated ",
         link("dealer profile", ROUTES.dealers),
         " so you can check reviews before you inquire. Sort by price or mileage, refine by state, and open any listing for full specs, photos, and dealer contact details, everything you need to move from browsing to buying with confidence.",
+      ],
+    },
+    {
+      type: "h3",
+      content: ["Narrowing thousands of listings down to a shortlist"],
+    },
+    {
+      type: "p",
+      content: [
+        "With inventory this large, the fastest path to a decision is stacking filters instead of scrolling page after page. Set your price ceiling first, then narrow by body style, whether you want ",
+        link("SUVs", vehicleCategoryHref("SUV")),
+        ", ",
+        link("sedans", vehicleCategoryHref("Sedan")),
+        ", or ",
+        link("trucks", vehicleCategoryHref("Truck")),
+        ", and finally by condition and mileage. Sorting the remaining results by lowest price or lowest mileage usually surfaces the handful of vehicles actually worth a closer look, rather than every match for a broad search term.",
+      ],
+    },
+    {
+      type: "h3",
+      content: ["Reading a listing before you contact the dealer"],
+    },
+    {
+      type: "p",
+      content: [
+        "A good listing tells you almost everything you need before you pick up the phone: full trim and options, mileage, accident or title history where available, and clear photos of the interior, exterior, and any visible wear. Compare the asking price against similar mileage and trim on nearby listings, and check the connected ",
+        link("dealer profile", ROUTES.dealers),
+        " for how that store's past customers rated pricing honesty and follow-through. If the numbers and the reviews both line up, you have a strong candidate for a test drive.",
       ],
     },
   ],
@@ -520,6 +595,26 @@ export const BLOG_SEO_CONTENT: SeoContent = {
         " to put what you learn into practice.",
       ],
     },
+    {
+      type: "h3",
+      content: ["Topics we cover most"],
+    },
+    {
+      type: "p",
+      content: [
+        "Expect practical, specific advice rather than generic tips you have already read a dozen times: what to ask before a trade-in appraisal, how to read a Carfax report line by line, the real differences between new, used, and certified pre-owned pricing, and how to prepare for a test drive so you actually notice problems instead of just enjoying the new-car smell. We also cover how to interpret combined dealer ratings so a single review does not sway a decision that should be based on a pattern of feedback.",
+      ],
+    },
+    {
+      type: "h3",
+      content: ["Written independent of any dealership"],
+    },
+    {
+      type: "p",
+      content: [
+        "Nothing here is sponsored by a manufacturer or a specific dealership. Our guides are written from the buyer's side of the table, which means the advice sometimes points you away from add-ons, financing terms, or upsells that are not in your interest. If an article recommends checking a specific detail before you sign paperwork, it is because that detail has cost real buyers money in the past, not because it makes for good marketing copy.",
+      ],
+    },
   ],
 };
 
@@ -557,6 +652,36 @@ export const HOW_IT_WORKS_SEO_CONTENT: SeoContent = {
         " pages.",
       ],
     },
+    {
+      type: "h3",
+      content: ["Step one: narrow the field with search"],
+    },
+    {
+      type: "p",
+      content: [
+        "Start broad and narrow fast. Search by dealership name if you already have a store in mind, or search by city or state if you are starting from scratch. From there, layer on filters, minimum rating, distance, and inventory availability, until the results are a manageable shortlist instead of an overwhelming directory. Most shoppers land on two or three serious candidates within a few minutes of searching.",
+      ],
+    },
+    {
+      type: "h3",
+      content: ["Step two: let ratings do the pre-screening"],
+    },
+    {
+      type: "p",
+      content: [
+        "Once you have a shortlist, ratings help you rank it. A dealership with a strong combined score across Google, Yelp, and Carfax has already been vetted by hundreds of other buyers, which saves you from learning about pricing pressure or slow service the hard way. Open a few individual reviews rather than trusting the average number alone, recent comments tell you more about how a dealership operates today than an older review from years ago.",
+      ],
+    },
+    {
+      type: "h3",
+      content: ["Step three: verify before you visit"],
+    },
+    {
+      type: "p",
+      content: [
+        "Before you drive out, confirm the vehicle is still available, ask about any advertised incentives, and get a rough out-the-door price over the phone or by email. This single step avoids the most common frustration in car shopping: arriving to find the car already sold or the price different from what was listed. A dealership willing to answer these questions clearly before your visit is usually one that will be straightforward once you are there in person.",
+      ],
+    },
   ],
 };
 
@@ -590,6 +715,26 @@ export const CONTACT_SEO_CONTENT: SeoContent = {
         ", update profile details, or ask about inventory integration. For quick answers, visit our ",
         link("FAQ", ROUTES.faq),
         " first.",
+      ],
+    },
+    {
+      type: "h3",
+      content: ["What to include in your message"],
+    },
+    {
+      type: "p",
+      content: [
+        "The faster we can identify what you are looking at, the faster we can help. If your question involves a specific dealership or vehicle, include the listing name or a link so our team does not have to search for it. For accuracy reports, describe exactly what looks wrong, an outdated phone number, an incorrect address, or a listing that appears sold, so we can follow up with the dealership directly instead of guessing at the issue.",
+      ],
+    },
+    {
+      type: "h3",
+      content: ["Response times and what happens next"],
+    },
+    {
+      type: "p",
+      content: [
+        "Most messages get a reply within one business day during our posted support hours. Straightforward requests, like correcting a listing detail, are usually resolved in a single reply. Dealer partnership inquiries may take a little longer since our team verifies each business before publishing or updating a profile. If you have not heard back after two business days, feel free to follow up, sometimes messages land in a spam filter on our end too.",
       ],
     },
   ],
@@ -648,6 +793,26 @@ export const WRITE_REVIEW_SEO_CONTENT: SeoContent = {
         " to see how existing reviews help shoppers ",
         link("find car dealerships", ROUTES.dealers),
         " with confidence.",
+      ],
+    },
+    {
+      type: "h3",
+      content: ["What makes a review actually useful"],
+    },
+    {
+      type: "p",
+      content: [
+        "A star rating alone tells the next buyer very little. The reviews that help people most describe specifics: how the negotiation went, whether the out-the-door price matched what was advertised, how long financing paperwork took, and whether the service department followed through on anything promised at delivery. If something went wrong, note whether the dealership tried to make it right, that context matters as much as the outcome itself.",
+      ],
+    },
+    {
+      type: "h3",
+      content: ["In the meantime, use existing ratings"],
+    },
+    {
+      type: "p",
+      content: [
+        "While our own submission form is in progress, every dealer profile already shows a combined score pulled from Google, Yelp, and Carfax. Read a handful of the most recent comments rather than relying on the average alone, patterns across multiple reviews are far more reliable than any single glowing or scathing post. When submission opens, your review will sit alongside those same sources to give future shoppers an even fuller picture.",
       ],
     },
   ],
@@ -725,6 +890,28 @@ export function buildVehicleDetailSeoContent(
           ` for ${vehicle.dealer.name} before you buy.`,
         ],
       },
+      {
+        type: "h3",
+        content: ["Before you contact the dealer"],
+      },
+      {
+        type: "p",
+        content: [
+          `Confirm this ${label} is still on the lot before you make the trip, listings can change quickly on popular vehicles. Ask ${vehicle.dealer.name} for the full out-the-door price including fees and any dealer add-ons, and request a vehicle history report if one is not already included for used inventory. If financing is part of your plan, get pre-approved with your own bank or credit union first so you have a number to compare against whatever the dealership offers.`,
+        ],
+      },
+      {
+        type: "h3",
+        content: [`What buyers say about ${vehicle.dealer.name}`],
+      },
+      {
+        type: "p",
+        content: [
+          `Before scheduling a visit, check the `,
+          link(`${vehicle.dealer.name} profile`, ROUTES.dealerProfile(vehicle.dealer.slug)),
+          ` for combined ratings from Google, Yelp, and Carfax. Recent reviews usually mention how straightforward the pricing conversation was and whether the dealership followed through after the sale, both good signals for how your own visit is likely to go.`,
+        ],
+      },
     ],
   };
 }
@@ -772,6 +959,403 @@ export function buildDealerProfileSeoContent(
           ` after your visit to help other buyers find trusted car dealers.`,
         ],
       },
+      {
+        type: "h3",
+        content: [`What to ask before you visit ${dealer.name}`],
+      },
+      {
+        type: "p",
+        content: [
+          `Call or email ahead to confirm a specific vehicle is still available and get a rough out-the-door price, taxes, fees, and any add-ons included. Ask whether ${dealer.name} offers a vehicle history report on used inventory, what their trade-in appraisal process looks like, and how long financing approval typically takes. Dealerships that answer these questions clearly and quickly over the phone tend to be just as straightforward once you are standing on the lot.`,
+        ],
+      },
+      {
+        type: "h3",
+        content: [`Why shoppers check ratings before visiting ${dealer.city}`],
+      },
+      {
+        type: "p",
+        content: [
+          `Combined ratings from Google, Yelp, and Carfax give you a preview of how ${dealer.name} treats customers before, during, and after the sale. Recent reviews are especially useful, they reflect the dealership's current sales team and service quality rather than an experience from years ago. Reading a handful of comments, not just the star average, is the fastest way to know what to expect from your visit.`,
+        ],
+      },
     ],
   };
 }
+
+export function buildDealerProfileFaqItems(
+  dealer: Pick<DealerProfileSeoInput, "name" | "city" | "state">
+): FaqItem[] {
+  return [
+    {
+      question: `Is pricing negotiable at ${dealer.name}?`,
+      answer: `Most dealerships, including ${dealer.name}, expect some negotiation on out-the-door price, especially on fees and add-ons. Ask for the full price breakdown in writing before you commit.`,
+    },
+    {
+      question: `Does ${dealer.name} offer financing or accept trade-ins?`,
+      answer: `Dealer profiles list contact details so you can confirm financing options and trade-in policies directly with ${dealer.name}. Call ahead or ask when you visit to get current terms.`,
+    },
+    {
+      question: `How do I contact ${dealer.name}?`,
+      answer: `Use the phone number and address on this profile, or open any of their vehicle listings and select "Book This Car" to reach the dealership directly.`,
+    },
+    {
+      question: `Are the reviews for ${dealer.name} verified?`,
+      answer: `Ratings shown here are aggregated from established third-party platforms like Google, Yelp, and Carfax, not edited or removed by ${dealer.name}, so you see an unbiased picture before you visit.`,
+    },
+  ];
+}
+
+export const CITIES_SEO_CONTENT: SeoContent = {
+  blocks: [
+    {
+      type: "h2",
+      content: ["Find car dealerships in your city"],
+    },
+    {
+      type: "p",
+      content: [
+        "Local markets vary widely in pricing, inventory, and service quality, so shopping by city helps you compare ",
+        link("car dealerships near me", ROUTES.dealers),
+        " that are actually relevant to you. Browse the directory above to jump straight to ",
+        link("verified dealer reviews", ROUTES.dealers),
+        ` in major metros nationwide, then narrow further by state if your city isn't listed yet.`,
+      ],
+    },
+    {
+      type: "h3",
+      content: ["Why shop locally first"],
+    },
+    {
+      type: "p",
+      content: [
+        "Comparing dealers in your own city keeps test drives and service visits convenient, and lets you weigh combined ratings from Google, Yelp, and Carfax against dealers you can actually reach. Each city page includes ",
+        link("local vehicle inventory", ROUTES.vehicles),
+        " so you can shortlist cars before you ever leave home.",
+      ],
+    },
+    {
+      type: "h3",
+      content: ["Don't see your city?"],
+    },
+    {
+      type: "p",
+      content: [
+        "We're adding new markets regularly. In the meantime, browse ",
+        link("dealers by state", ROUTES.dealers),
+        " to find nearby options, or search our ",
+        link("nationwide vehicle inventory", ROUTES.vehicles),
+        " and filter by state once you find a dealer worth the drive.",
+      ],
+    },
+    {
+      type: "h3",
+      content: ["How city pages are organized"],
+    },
+    {
+      type: "p",
+      content: [
+        "Each city grouped above links to a dedicated page listing dealerships in that market, sorted by combined rating so the strongest options surface first. From any city page you can filter further by minimum rating or browse ",
+        link("that city's inventory", ROUTES.vehicles),
+        " directly. If you are comparing two nearby cities, opening both pages in separate tabs makes it easy to weigh selection and pricing without losing your place.",
+      ],
+    },
+  ],
+};
+
+export const CITIES_FAQ_ITEMS: FaqItem[] = [
+  {
+    question: "How do I find car dealerships in my city?",
+    answer:
+      "Select your city from the directory above, or use the state directory if your city isn't listed. Each city page shows verified dealer reviews and local inventory.",
+  },
+  {
+    question: "Do you only cover major cities?",
+    answer:
+      "We prioritize major metros first, but our dealer directory and vehicle search cover all 50 states even where we haven't built a dedicated city page yet.",
+  },
+  {
+    question: "Can I search vehicle inventory by city?",
+    answer:
+      "Yes. Open a city page to see dealers in that market, or use the vehicle search and filter by state to browse inventory near a specific city.",
+  },
+  {
+    question: "What if my city isn't listed?",
+    answer:
+      "Browse dealers by state instead, or search vehicle inventory nationwide. We add new city pages regularly as coverage expands.",
+  },
+];
+
+export const HOME_FAQ_ITEMS: FaqItem[] = [
+  {
+    question: "Is AutoSalesReviews free to use?",
+    answer:
+      "Yes. Searching vehicles, reading dealer reviews, and comparing ratings is completely free for car buyers, with no account required.",
+  },
+  {
+    question: "How do I find a trustworthy car dealer?",
+    answer:
+      "Use our dealer directory to compare combined star ratings from Google, Yelp, and Carfax, then read recent customer feedback before you visit the lot.",
+  },
+  {
+    question: "Do you cover dealerships in my state?",
+    answer:
+      "We list dealerships across all 50 states. Search by city or state to find options near you, or browse nationwide inventory if you're open to traveling for the right deal.",
+  },
+  {
+    question: "How current is the vehicle inventory?",
+    answer:
+      "Dealers manage their own listings directly, so most inventory reflects current stock. We still recommend confirming availability and price with the dealership before you visit.",
+  },
+  {
+    question: "How do I contact a dealer about a car I like?",
+    answer:
+      'Open any vehicle listing and use "Book This Car" or "Book a Test Drive" under the photo gallery, or call the dealer directly from their profile card.',
+  },
+];
+
+export const VEHICLES_FAQ_ITEMS: FaqItem[] = [
+  {
+    question: "How do I filter vehicles by price, mileage, or body style?",
+    answer:
+      "Use the filter panel to narrow results by make, model, year, price, mileage, condition, and body style. Filters update the results instantly and can be combined.",
+  },
+  {
+    question: "Are the listed vehicle prices final?",
+    answer:
+      "Dealers set and manage their own pricing. Listed prices are a strong starting point, but always confirm the out-the-door total, including fees, directly with the dealer before you buy.",
+  },
+  {
+    question: "Can I compare multiple vehicles side by side?",
+    answer:
+      "Yes. Select the compare option on any listing to add it to your comparison tray, then view specs, price, and mileage side by side on the compare page.",
+  },
+  {
+    question: "How do I contact the dealer about a vehicle?",
+    answer:
+      'Open the vehicle listing and use "Book This Car" or "Book a Test Drive," or call the dealer directly from the contact details on the listing page.',
+  },
+  {
+    question: "Is this inventory updated in real time?",
+    answer:
+      "Dealers manage their own listings. We strive for accuracy but recommend confirming availability with the dealership directly before visiting, especially for popular vehicles.",
+  },
+];
+
+export const DEALERS_FAQ_ITEMS: FaqItem[] = [
+  {
+    question: "How are dealer ratings calculated?",
+    answer:
+      "We combine ratings from Google, Yelp, and Carfax into a single average score for each dealership so you get the full picture at a glance.",
+  },
+  {
+    question: "Can a dealership remove a negative review?",
+    answer:
+      "No. Dealers can respond publicly to reviews, but they cannot delete or suppress honest feedback from verified buyers.",
+  },
+  {
+    question: "How do I contact a dealership listed here?",
+    answer:
+      "Open any dealer profile for their phone number, address, and hours, or visit one of their vehicle listings to reach out directly about a specific car.",
+  },
+  {
+    question: "Do you cover dealers in every state?",
+    answer:
+      "Yes, our directory includes dealerships across all 50 states. Filter by state or city to find options near you, or browse nationwide if you're open to traveling.",
+  },
+];
+
+export const ABOUT_FAQ_ITEMS: FaqItem[] = [
+  {
+    question: "Is AutoSalesReviews affiliated with any dealership?",
+    answer:
+      "No. We are an independent platform. Dealers cannot pay to remove or edit reviews, and featured placements never replace verified ratings.",
+  },
+  {
+    question: "Where do your dealer ratings come from?",
+    answer:
+      "We aggregate scores from established third-party platforms like Google, Yelp, and Carfax rather than collecting reviews ourselves today, giving you an unbiased starting point.",
+  },
+  {
+    question: "Can I submit my own dealership review?",
+    answer:
+      "Review submission is launching soon. In the meantime, browse existing dealer profiles to see aggregated ratings and feedback from verified sources.",
+  },
+  {
+    question: "How many dealerships and vehicles do you list?",
+    answer:
+      "AutoSalesReviews lists 500+ dealerships and 10,000+ vehicles across all 50 states, with new listings added regularly.",
+  },
+];
+
+export const CONTACT_FAQ_ITEMS: FaqItem[] = [
+  {
+    question: "How quickly will I get a response?",
+    answer:
+      "Our team responds within one business day, Monday through Friday, 9AM–6PM ET. Messages sent on weekends are answered the next business day.",
+  },
+  {
+    question: "I have a question about a specific dealer or listing, who do I contact?",
+    answer:
+      "Use the contact form on this page and mention the dealer name or listing so our team can route your question quickly, or reach out directly using the dealer's profile contact details.",
+  },
+  {
+    question: "How do I report inaccurate dealer or vehicle information?",
+    answer:
+      "Email us with a link to the listing and a brief description of what's incorrect. We review reports and follow up with the dealership directly.",
+  },
+  {
+    question: "Do you offer phone support?",
+    answer:
+      "Yes. Call during business hours listed above, or email anytime and we'll respond within one business day.",
+  },
+];
+
+export const WRITE_REVIEW_FAQ_ITEMS: FaqItem[] = [
+  {
+    question: "When can I submit a review?",
+    answer:
+      "Review submission is launching soon. We're finalizing the form and moderation tools so feedback stays honest and useful for other shoppers.",
+  },
+  {
+    question: "Will my review be public?",
+    answer:
+      "Yes, submitted reviews will be shown publicly with your first name and last initial, alongside your star rating and comments.",
+  },
+  {
+    question: "Can dealers remove or edit my review?",
+    answer:
+      "No. Dealers will be able to respond publicly to reviews, but they will not be able to delete or edit honest feedback from verified buyers.",
+  },
+  {
+    question: "What should I include in my review?",
+    answer:
+      "Cover your overall experience: sales process, pricing transparency, and service quality. Specific details help other buyers more than a rating alone.",
+  },
+];
+
+export const HOW_IT_WORKS_FAQ_ITEMS: FaqItem[] = [
+  {
+    question: "Do I need an account to search dealers or vehicles?",
+    answer:
+      "No account is required to search vehicles, browse dealer profiles, or compare ratings. Searching and browsing are completely free.",
+  },
+  {
+    question: "How do I narrow down which dealer to visit?",
+    answer:
+      "Filter by state or city, set a minimum star rating, and open a few profiles to compare hours, contact details, and recent feedback before you decide.",
+  },
+  {
+    question: "What happens after I find a car I like?",
+    answer:
+      'Open the vehicle listing and use "Book This Car" or "Book a Test Drive" to reach the dealer directly, or call them from their profile page.',
+  },
+  {
+    question: "Are ratings updated regularly?",
+    answer:
+      "Yes. Average scores are recalculated whenever new reviews come in from our source platforms, so ratings reflect recent customer experiences.",
+  },
+];
+
+export const FOR_DEALERS_FAQ_ITEMS: FaqItem[] = [
+  {
+    question: "How much does it cost to list my dealership?",
+    answer:
+      "Email our team with your dealership details to discuss listing options. Basic profiles include ratings, contact info, and location at no cost to get started.",
+  },
+  {
+    question: "Can I remove or edit negative reviews about my dealership?",
+    answer:
+      "No. Reviews are aggregated from verified third-party sources and cannot be edited or removed by dealers. You can respond publicly to address feedback.",
+  },
+  {
+    question: "How long does onboarding take?",
+    answer:
+      "Once you email your dealership name, city, state, and website, our team typically verifies and publishes your profile within one business day.",
+  },
+  {
+    question: "Can I list my vehicle inventory too?",
+    answer:
+      "Inventory listing tools are rolling out. Email our team to be notified when vehicle listings are available for your dealership.",
+  },
+];
+
+export const SAVED_SEO_CONTENT: SeoContent = {
+  blocks: [
+    {
+      type: "h2",
+      content: ["Keep your favorite vehicles in one place"],
+    },
+    {
+      type: "p",
+      content: [
+        "Your saved list makes it easy to compare a handful of ",
+        link("cars for sale", ROUTES.vehicles),
+        " without re-running the same search over and over. Save anything that catches your eye while you browse, then come back here to weigh price, mileage, and dealer ratings side by side before you reach out to a dealership.",
+      ],
+    },
+    {
+      type: "h3",
+      content: ["How saved vehicles work"],
+    },
+    {
+      type: "p",
+      content: [
+        "Saves are tied to this browser, no account is required. That means your list stays available across visits on this device, but it will not follow you to a different browser or phone. When account creation launches, we plan to let you merge a browser-based shortlist into your profile so it travels with you.",
+      ],
+    },
+    {
+      type: "h3",
+      content: ["Turning a shortlist into a decision"],
+    },
+    {
+      type: "p",
+      content: [
+        "Once you have a few vehicles saved, use the compare option to view specs, price, and mileage in one table, or open each ",
+        link("dealer profile", ROUTES.dealers),
+        " to check ratings before you contact a seller. Removing a vehicle you have ruled out keeps the list useful as your search narrows.",
+      ],
+    },
+  ],
+};
+
+export const SAVED_FAQ_ITEMS: FaqItem[] = [
+  {
+    question: "Do I need an account to save vehicles?",
+    answer:
+      "No. Saving is tied to your browser on this device, no sign-up required. Your shortlist stays here as long as you use the same browser.",
+  },
+  {
+    question: "Will my saved vehicles still be here if I come back later?",
+    answer:
+      "Yes, as long as you return using the same browser and device. Clearing your browser data or switching devices will reset the list.",
+  },
+  {
+    question: "Can I compare my saved vehicles side by side?",
+    answer:
+      "Yes. Select the compare option on any saved listing to view price, mileage, and specs for multiple vehicles in one table.",
+  },
+  {
+    question: "How do I remove a vehicle from my saved list?",
+    answer:
+      "Open your saved list and use the remove option on any listing. It will no longer appear here, but you can always save it again later.",
+  },
+];
+
+export const BLOG_FAQ_ITEMS: FaqItem[] = [
+  {
+    question: "How often do you publish new articles?",
+    answer:
+      "We add new buying guides and dealer insights regularly, covering financing, inspections, trade-ins, and how to read dealer reviews.",
+  },
+  {
+    question: "Are these guides specific to any one dealership?",
+    answer:
+      "No. Our blog covers general car-buying advice that applies nationwide, independent of any single dealer or manufacturer.",
+  },
+  {
+    question: "Can I suggest a topic for a future article?",
+    answer:
+      "Yes. Contact our team with topic suggestions and we'll consider them for upcoming guides.",
+  },
+];

@@ -5,9 +5,10 @@ import { ContentPage, ContentSection } from "@/components/layout/ContentPage";
 import { BlogCover } from "@/components/blog/BlogCover";
 import { BlogCard } from "@/components/blog/BlogCard";
 import { SeoContentSection } from "@/components/seo/SeoContentSection";
+import { LocationFaqSection } from "@/components/dealers/LocationFaqSection";
 import { BLOG_POSTS } from "@/config/blog";
 import { ROUTES } from "@/config/constants";
-import { BLOG_SEO_CONTENT } from "@/config/seo-content";
+import { BLOG_FAQ_ITEMS, BLOG_SEO_CONTENT } from "@/config/seo-content";
 import { PAGE_SEO } from "@/config/seo";
 import { SchemaMarkup } from "@/components/seo/SchemaMarkup";
 import { buildBlogListingSchemas } from "@/lib/schema/builders";
@@ -19,7 +20,7 @@ export default function BlogPage() {
 
   return (
     <>
-      <SchemaMarkup data={buildBlogListingSchemas()} />
+      <SchemaMarkup data={buildBlogListingSchemas(BLOG_FAQ_ITEMS)} />
       <ContentPage
       title="Blog & Buying Guides"
       subtitle="Practical tips, dealer insights, and guides to help you shop smarter."
@@ -76,6 +77,8 @@ export default function BlogPage() {
           ))}
         </div>
       </ContentSection>
+
+      <LocationFaqSection items={BLOG_FAQ_ITEMS} />
 
       <SeoContentSection content={BLOG_SEO_CONTENT} variant="muted" />
     </ContentPage>

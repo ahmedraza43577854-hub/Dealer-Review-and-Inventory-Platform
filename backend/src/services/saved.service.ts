@@ -1,4 +1,4 @@
-import { ConflictError, NotFoundError } from "../errors/AppError";
+import { NotFoundError } from "../errors/AppError";
 import { savedVehicleRepository } from "../repositories/saved.repository";
 
 export const savedVehicleService = {
@@ -16,16 +16,17 @@ export const savedVehicleService = {
       vehicleId
     );
     if (existing) {
-      throw new ConflictError("Vehicle already saved");
+      return {
+        id: existing.id,
+        vehicleId: existing.vehicleId,
+        createdAt: existing.createdAt,
+      };
     }
     return savedVehicleRepository.create(visitorId, vehicleId);
   },
 
   async remove(visitorId: string, vehicleId: string) {
-    const result = await savedVehicleRepository.delete(visitorId, vehicleId);
-    if (result.count === 0) {
-      throw new NotFoundError("Saved vehicle");
-    }
+    await savedVehicleRepository.delete(visitorId, vehicleId);
     return { ok: true as const };
   },
 };

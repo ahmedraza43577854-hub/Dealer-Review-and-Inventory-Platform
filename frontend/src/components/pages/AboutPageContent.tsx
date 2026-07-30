@@ -18,8 +18,9 @@ import {
   PageCtaBand,
 } from "@/components/layout/ContentPage";
 import { SeoContentSection } from "@/components/seo/SeoContentSection";
+import { LocationFaqSection } from "@/components/dealers/LocationFaqSection";
 import { REGIONS, ROUTES, SITE, WHY_CHOOSE_US } from "@/config/constants";
-import { ABOUT_EXTENDED_SEO_CONTENT } from "@/config/seo-content";
+import { ABOUT_EXTENDED_SEO_CONTENT, ABOUT_FAQ_ITEMS } from "@/config/seo-content";
 import { staggerContainer, staggerItem } from "@/lib/motion";
 
 const VALUES = [
@@ -175,6 +176,8 @@ export function AboutPageContent() {
           </div>
         </div>
       </ContentSection>
+
+      <LocationFaqSection items={ABOUT_FAQ_ITEMS} />
 
       <SeoContentSection content={ABOUT_EXTENDED_SEO_CONTENT} variant="muted" />
 

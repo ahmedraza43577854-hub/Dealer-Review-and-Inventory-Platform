@@ -27,6 +27,7 @@ export const ROUTES = {
   vehicles: "/vehicles",
   vehicleDetail: (id: string) => `/vehicles/${id}`,
   compare: "/compare",
+  saved: "/saved",
   dealers: "/dealers",
   dealerProfile: (slug: string) => `/dealers/${slug}`,
   dealerState: (stateCode: string) =>
@@ -58,6 +59,7 @@ export const NAV_LINKS = [
 export const FOOTER = {
   explore: [
     { href: ROUTES.vehicles, label: "Find Cars" },
+    { href: ROUTES.saved, label: "Saved Vehicles" },
     { href: ROUTES.dealers, label: "Dealers" },
     { href: ROUTES.cities, label: "Cities" },
     { href: ROUTES.blog, label: "Blog" },

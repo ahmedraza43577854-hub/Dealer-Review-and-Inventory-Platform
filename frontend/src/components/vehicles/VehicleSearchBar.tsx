@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Loader2, Search } from "lucide-react";
 import {
@@ -83,7 +83,7 @@ export function VehicleSearchBar({
   const [model, setModel] = useState(defaultValues?.model ?? "");
   const [year, setYear] = useState(defaultValues?.year ?? "");
   const [priceTo, setPriceTo] = useState(defaultValues?.priceTo ?? "");
-  const [submitting, setSubmitting] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   const models = useMemo(
     () => (make ? MODELS_BY_MAKE[make] ?? [] : []),
@@ -98,7 +98,6 @@ export function VehicleSearchBar({
 
   function handleSubmit(e?: React.FormEvent) {
     e?.preventDefault();
-    setSubmitting(true);
     const params = new URLSearchParams();
     if (bodyStyle) params.set("bodyStyle", bodyStyle);
     if (make) params.set("make", make);
@@ -106,7 +105,9 @@ export function VehicleSearchBar({
     if (year) params.set("yearFrom", year);
     if (priceTo) params.set("priceTo", priceTo);
     const query = params.toString();
-    router.push(query ? `${ROUTES.vehicles}?${query}` : ROUTES.vehicles);
+    startTransition(() => {
+      router.push(query ? `${ROUTES.vehicles}?${query}` : ROUTES.vehicles);
+    });
   }
 
   const isHero = layout === "hero";
@@ -194,11 +195,11 @@ export function VehicleSearchBar({
             type="button"
             variant="gold"
             size="lg"
-            disabled={submitting}
+            disabled={isPending}
             onClick={() => handleSubmit()}
             className="h-11 w-full gap-3 px-8 xl:w-auto xl:min-w-[13rem] xl:shrink-0"
           >
-            {submitting ? (
+            {isPending ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" />
                 Loading...

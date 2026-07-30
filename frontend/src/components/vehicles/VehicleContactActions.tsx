@@ -48,7 +48,7 @@ export function VehicleContactActions({ vehicle }: VehicleContactActionsProps) {
   return (
     <>
       <div
-        className="grid w-full grid-cols-1 gap-2.5 sm:grid-cols-2"
+        className="grid w-full grid-cols-1 gap-2.5 sm:grid-cols-3"
         role="group"
         aria-label="Vehicle actions"
       >
@@ -56,7 +56,7 @@ export function VehicleContactActions({ vehicle }: VehicleContactActionsProps) {
           type="button"
           variant="gold"
           size="lg"
-          className="w-full min-w-0 px-4"
+          className="w-full min-w-0 px-2.5"
           onClick={() => setModal("contact")}
         >
           <MessageSquare className="h-4 w-4 shrink-0" />
@@ -66,7 +66,7 @@ export function VehicleContactActions({ vehicle }: VehicleContactActionsProps) {
           type="button"
           variant="outline"
           size="lg"
-          className="w-full min-w-0 px-4"
+          className="w-full min-w-0 px-2.5"
           onClick={() => setModal("testdrive")}
         >
           <CalendarClock className="h-4 w-4 shrink-0" />
@@ -75,12 +75,12 @@ export function VehicleContactActions({ vehicle }: VehicleContactActionsProps) {
         <Button
           type="button"
           variant="outline"
-          size="default"
-          className="w-full min-w-0 border-primary/30 bg-[hsl(219_48%_94%)] text-primary hover:border-primary/40 hover:bg-[hsl(219_48%_88%)] hover:text-primary sm:col-span-2"
+          size="lg"
+          className="w-full min-w-0 border-primary/40 bg-[hsl(219_48%_88%)] px-2.5 text-primary hover:border-primary/50 hover:bg-[hsl(219_48%_82%)] hover:text-primary"
           onClick={() => setModal("emi")}
         >
           <Calculator className="h-4 w-4 shrink-0" />
-          Calculate Monthly EMI
+          Calculate EMI
         </Button>
       </div>
 

@@ -443,12 +443,13 @@ export function buildListingPageSchemas(
   return schemas;
 }
 
-export function buildDealersListingSchemas(): JsonLd[] {
+export function buildDealersListingSchemas(faqs?: FaqItem[]): JsonLd[] {
   return buildListingPageSchemas({
     collectionName: "Find Car Dealerships Nationwide",
     collectionDescription:
       "Browse trusted car dealerships across the United States with verified Google, Yelp, and Carfax ratings.",
     path: ROUTES.dealers,
+    faqs,
     breadcrumbs: [
       { name: "Home", path: ROUTES.home },
       { name: "Dealers", path: ROUTES.dealers },
@@ -493,11 +494,13 @@ export function buildVehicleCategorySchemas(
   });
 }
 
-export function buildBlogListingSchemas(): JsonLd[] {
+export function buildBlogListingSchemas(faqs?: FaqItem[]): JsonLd[] {
   const postItems = BLOG_POSTS.map((post) => ({
     name: post.title,
     url: getCanonicalUrl(ROUTES.blogPost(post.slug)),
   }));
+
+  const faqSchema = faqs ? buildFaqPageSchema(faqs) : null;
 
   return [
     buildCollectionPageSchema(
@@ -524,14 +527,17 @@ export function buildBlogListingSchemas(): JsonLd[] {
       })),
     },
     buildItemListSchema("Blog articles", postItems),
+    ...(faqSchema ? [faqSchema] : []),
   ];
 }
 
-export function buildCitiesDirectorySchemas(): JsonLd[] {
+export function buildCitiesDirectorySchemas(faqs?: FaqItem[]): JsonLd[] {
   const cityItems = TARGET_CITIES.map((city) => ({
     name: `${city.city}, ${city.stateCode} car dealers`,
     url: getCanonicalUrl(ROUTES.dealerCity(city.slug)),
   }));
+
+  const faqSchema = faqs ? buildFaqPageSchema(faqs) : null;
 
   return [
     buildCollectionPageSchema(
@@ -545,6 +551,7 @@ export function buildCitiesDirectorySchemas(): JsonLd[] {
       { name: "Dealers", path: ROUTES.dealers },
       { name: "Cities", path: ROUTES.cities },
     ]),
+    ...(faqSchema ? [faqSchema] : []),
   ];
 }
 

@@ -6,10 +6,14 @@ import { enrichDealerSummary } from "@/lib/dealers/enrich";
 import { getVehiclesByDealerSlug } from "@/lib/vehicles/data";
 import { getMockReviews, dealerDescription } from "@/lib/dealers/mock";
 import { DealerProfileHero } from "@/components/dealers/profile/DealerProfileHero";
+import { LocationFaqSection } from "@/components/dealers/LocationFaqSection";
 import { SchemaMarkup } from "@/components/seo/SchemaMarkup";
 import { SeoContentSection } from "@/components/seo/SeoContentSection";
-import { buildAutoDealerSchema } from "@/lib/schema/builders";
-import { buildDealerProfileSeoContent } from "@/config/seo-content";
+import { buildAutoDealerSchema, buildFaqPageSchema } from "@/lib/schema/builders";
+import {
+  buildDealerProfileFaqItems,
+  buildDealerProfileSeoContent,
+} from "@/config/seo-content";
 import { DealerProfileTabs } from "@/components/dealers/profile/DealerProfileTabs";
 import { DealerSidebar } from "@/components/dealers/profile/DealerSidebar";
 import { ErrorState } from "@/components/shared/ErrorState";
@@ -30,10 +34,17 @@ export async function DealerProfileContent({ slug }: DealerProfileContentProps) 
     const description =
       dealer.description ||
       dealerDescription(dealer.name, dealer.city, dealer.state);
+    const faqItems = buildDealerProfileFaqItems(dealer);
+    const faqSchema = buildFaqPageSchema(faqItems);
 
     return (
       <>
-        <SchemaMarkup data={buildAutoDealerSchema(dealer, ratings)} />
+        <SchemaMarkup
+          data={[
+            buildAutoDealerSchema(dealer, ratings),
+            ...(faqSchema ? [faqSchema] : []),
+          ]}
+        />
         <div className="pb-20 lg:pb-0">
         <div className="container-page py-6 lg:py-8">
           <div className="mb-6">
@@ -65,6 +76,11 @@ export async function DealerProfileContent({ slug }: DealerProfileContentProps) 
           </Link>
         </div>
       </div>
+
+      <LocationFaqSection
+        items={faqItems}
+        title={`FAQs about ${dealer.name}`}
+      />
 
       <SeoContentSection
         content={buildDealerProfileSeoContent({

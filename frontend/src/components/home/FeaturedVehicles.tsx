@@ -3,9 +3,16 @@ import { ArrowRight } from "lucide-react";
 import { getFeaturedVehicles } from "@/lib/vehicles/data";
 import { ROUTES } from "@/config/constants";
 import { VehicleCard } from "@/components/vehicles/VehicleCard";
+import type { UserLocation } from "@/lib/location/location-cookie";
 
-export function FeaturedVehicles() {
-  const vehicles = getFeaturedVehicles(6);
+export function FeaturedVehicles({ location }: { location?: UserLocation }) {
+  const vehicles = getFeaturedVehicles(6, {
+    city: location?.city,
+    stateCode: location?.stateCode,
+  });
+  const isPersonalized =
+    !!location &&
+    vehicles.some((v) => v.dealer.city.toLowerCase() === location.city.toLowerCase());
 
   return (
     <section className="bg-background">
@@ -13,10 +20,14 @@ export function FeaturedVehicles() {
         <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <h2 className="text-3xl font-bold tracking-tight text-primary sm:text-4xl">
-              Browse Latest Vehicles
+              {isPersonalized
+                ? `Vehicles Near ${location!.city}, ${location!.stateCode}`
+                : "Browse Latest Vehicles"}
             </h2>
             <p className="mt-2 text-muted-foreground">
-              Fresh inventory from top-rated dealers near you.
+              {isPersonalized
+                ? `Fresh inventory from top-rated dealers near ${location!.city}.`
+                : "Fresh inventory from top-rated dealers near you."}
             </p>
           </div>
           <Link

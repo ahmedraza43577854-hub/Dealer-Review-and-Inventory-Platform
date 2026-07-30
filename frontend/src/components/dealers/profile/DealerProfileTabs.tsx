@@ -17,6 +17,13 @@ import { VehiclePhoto } from "@/components/vehicles/VehiclePhoto";
 import { StarRating } from "@/components/shared/StarRating";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 
 type TabKey = "inventory" | "reviews" | "about" | "photos";
@@ -28,16 +35,14 @@ const TABS: { key: TabKey; label: string }[] = [
   { key: "photos", label: "Photos" },
 ];
 
+const ALL = "__all__";
+
 interface DealerProfileTabsProps {
   dealerName: string;
   description: string;
   vehicles: Vehicle[];
   reviews: MockReview[];
   averageRating: number;
-}
-
-function selectClass() {
-  return "h-9 appearance-none rounded-lg border border-input bg-white px-2.5 pr-8 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20";
 }
 
 function InventoryTab({ vehicles }: { vehicles: Vehicle[] }) {
@@ -86,30 +91,70 @@ function InventoryTab({ vehicles }: { vehicles: Vehicle[] }) {
   return (
     <div>
       <div className="mb-5 flex flex-wrap items-end gap-2 rounded-lg border border-border/70 bg-white p-3 shadow-card">
-        <select value={make} onChange={(e) => setMake(e.target.value)} className={selectClass()}>
-          <option value="">All Makes</option>
-          {makes.map((m) => (
-            <option key={m} value={m}>{m}</option>
-          ))}
-        </select>
-        <select value={year} onChange={(e) => setYear(e.target.value)} className={selectClass()}>
-          <option value="">All Years</option>
-          {years.map((y) => (
-            <option key={y} value={y}>{y}</option>
-          ))}
-        </select>
-        <select value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} className={selectClass()}>
-          <option value="">Max Price</option>
-          {MAX_PRICE_OPTIONS.map((p) => (
-            <option key={p.value} value={p.value}>{p.label}</option>
-          ))}
-        </select>
-        <select value={body} onChange={(e) => setBody(e.target.value)} className={selectClass()}>
-          <option value="">All Types</option>
-          {bodies.map((b) => (
-            <option key={b} value={b}>{b}</option>
-          ))}
-        </select>
+        <Select
+          value={make || ALL}
+          onValueChange={(v) => setMake(v === ALL ? "" : v)}
+        >
+          <SelectTrigger className="h-9 w-[9.5rem] rounded-lg border-input bg-white">
+            <SelectValue placeholder="All Makes" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value={ALL}>All Makes</SelectItem>
+            {makes.map((m) => (
+              <SelectItem key={m} value={m}>
+                {m}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Select
+          value={year || ALL}
+          onValueChange={(v) => setYear(v === ALL ? "" : v)}
+        >
+          <SelectTrigger className="h-9 w-[8.5rem] rounded-lg border-input bg-white">
+            <SelectValue placeholder="All Years" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value={ALL}>All Years</SelectItem>
+            {years.map((y) => (
+              <SelectItem key={y} value={String(y)}>
+                {y}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Select
+          value={maxPrice || ALL}
+          onValueChange={(v) => setMaxPrice(v === ALL ? "" : v)}
+        >
+          <SelectTrigger className="h-9 w-[8.5rem] rounded-lg border-input bg-white">
+            <SelectValue placeholder="Max Price" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value={ALL}>Max Price</SelectItem>
+            {MAX_PRICE_OPTIONS.map((p) => (
+              <SelectItem key={p.value} value={p.value}>
+                {p.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <Select
+          value={body || ALL}
+          onValueChange={(v) => setBody(v === ALL ? "" : v)}
+        >
+          <SelectTrigger className="h-9 w-[8.5rem] rounded-lg border-input bg-white">
+            <SelectValue placeholder="All Types" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value={ALL}>All Types</SelectItem>
+            {bodies.map((b) => (
+              <SelectItem key={b} value={b}>
+                {b}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
         <Button
           type="button"
           variant="gold"

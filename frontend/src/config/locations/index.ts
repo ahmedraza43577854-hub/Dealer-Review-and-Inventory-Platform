@@ -9,10 +9,11 @@ import { toStateSlug } from "@/lib/dealers/state-slugs";
 export {
   TARGET_CITIES,
   TARGET_CITY_BY_SLUG,
-  NAV_DROPDOWN_CITIES,
+  TOP_CITIES_SERVED,
   HOMEPAGE_POPULAR_CITIES,
+  LOCATION_PROMPT_CITIES,
 } from "./cities-data";
-export type { TargetCity } from "./cities-data";
+export type { TargetCity, TopCityServed } from "./cities-data";
 export * from "./location-content";
 
 /** State codes that have at least one target city page. */

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import {
+  Calculator,
   CalendarClock,
   CheckCircle2,
   Loader2,
@@ -22,8 +23,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { VehicleEmiCalculator } from "@/components/vehicles/VehicleEmiCalculator";
 
-type ModalKind = "contact" | "testdrive" | null;
+type ModalKind = "contact" | "testdrive" | "emi" | null;
 
 function fieldClass() {
   return "h-11 w-full rounded-lg border border-input bg-white px-3 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20";
@@ -41,40 +43,51 @@ interface VehicleContactActionsProps {
 
 export function VehicleContactActions({ vehicle }: VehicleContactActionsProps) {
   const [modal, setModal] = useState<ModalKind>(null);
+  const carLabel = `${vehicle.year} ${vehicle.make} ${vehicle.model}`;
 
   return (
     <>
-      <div className="flex w-full min-w-0 flex-col gap-3 sm:flex-row">
+      <div
+        className="grid w-full grid-cols-1 gap-2.5 sm:grid-cols-2"
+        role="group"
+        aria-label="Vehicle actions"
+      >
         <Button
           type="button"
           variant="gold"
           size="lg"
-          className="w-full min-w-0 flex-1 px-4 sm:px-8"
+          className="w-full min-w-0 px-4"
           onClick={() => setModal("contact")}
         >
           <MessageSquare className="h-4 w-4 shrink-0" />
-          <span className="sm:hidden">Contact Dealer</span>
-          <span className="hidden sm:inline">Contact Dealer About This Car</span>
+          Book This Car
         </Button>
         <Button
           type="button"
           variant="outline"
           size="lg"
-          className="w-full min-w-0 flex-1 px-4 sm:px-8"
+          className="w-full min-w-0 px-4"
           onClick={() => setModal("testdrive")}
         >
           <CalendarClock className="h-4 w-4 shrink-0" />
-          <span className="sm:hidden">Schedule Test Drive</span>
-          <span className="hidden sm:inline">Schedule a Test Drive</span>
+          Book a Test Drive
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          size="default"
+          className="w-full min-w-0 border-primary/30 bg-[hsl(219_48%_94%)] text-primary hover:border-primary/40 hover:bg-[hsl(219_48%_88%)] hover:text-primary sm:col-span-2"
+          onClick={() => setModal("emi")}
+        >
+          <Calculator className="h-4 w-4 shrink-0" />
+          Calculate Monthly EMI
         </Button>
       </div>
 
       {/* Mobile sticky action bar */}
       <div className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-between gap-3 border-t border-border/70 bg-white px-4 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] lg:hidden">
         <div className="min-w-0">
-          <p className="truncate text-xs text-muted-foreground">
-            {vehicle.year} {vehicle.make} {vehicle.model}
-          </p>
+          <p className="truncate text-xs text-muted-foreground">{carLabel}</p>
           <p className="text-lg font-extrabold text-price">
             {formatPrice(vehicle.price)}
           </p>
@@ -86,15 +99,25 @@ export function VehicleContactActions({ vehicle }: VehicleContactActionsProps) {
           onClick={() => setModal("contact")}
         >
           <MessageSquare className="h-4 w-4" />
-          Contact Dealer
+          Book This Car
         </Button>
       </div>
 
       <AnimatePresence>
-        {modal && (
+        {(modal === "contact" || modal === "testdrive") && (
           <ContactModal
             kind={modal}
             vehicle={vehicle}
+            onClose={() => setModal(null)}
+          />
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {modal === "emi" && (
+          <VehicleEmiCalculator
+            vehiclePrice={vehicle.price}
+            vehicleLabel={carLabel}
             onClose={() => setModal(null)}
           />
         )}
@@ -108,7 +131,7 @@ function ContactModal({
   vehicle,
   onClose,
 }: {
-  kind: Exclude<ModalKind, null>;
+  kind: "contact" | "testdrive";
   vehicle: Vehicle;
   onClose: () => void;
 }) {
@@ -118,18 +141,19 @@ function ContactModal({
   const [dateError, setDateError] = useState(false);
 
   const title =
-    kind === "contact" ? "Contact the Dealer" : "Schedule a Test Drive";
+    kind === "contact" ? "Book This Car" : "Book a Test Drive";
   const carLabel = `${vehicle.year} ${vehicle.make} ${vehicle.model}`;
   const digits = vehicle.dealer.phone.replace(/\D/g, "");
 
   useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") onClose();
     }
     window.addEventListener("keydown", onKey);
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", onKey);
     };
   }, [onClose]);
@@ -166,10 +190,9 @@ function ContactModal({
         exit={{ y: 20, opacity: 0, scale: 0.98 }}
         transition={{ type: "spring", damping: 30, stiffness: 320 }}
         onClick={(e) => e.stopPropagation()}
-        className="max-h-[92vh] w-full overflow-y-auto rounded-t-2xl bg-white shadow-2xl sm:max-w-md sm:rounded-2xl"
+        className="flex max-h-[min(92dvh,40rem)] w-full flex-col overflow-hidden rounded-t-2xl bg-white shadow-2xl sm:max-w-md sm:rounded-2xl"
       >
-        {/* Header */}
-        <div className="flex items-start justify-between gap-3 border-b border-border/70 p-5">
+        <div className="flex shrink-0 items-start justify-between gap-3 border-b border-border/70 p-5">
           <div className="min-w-0">
             <h2 className="text-lg font-bold text-primary">{title}</h2>
             <p className="truncate text-sm text-muted-foreground">
@@ -190,164 +213,166 @@ function ContactModal({
           </button>
         </div>
 
-        {status === "sent" ? (
-          <div className="flex flex-col items-center px-6 py-10 text-center">
-            <span className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-success/15 text-success">
-              <CheckCircle2 className="h-8 w-8" />
-            </span>
-            <h3 className="text-lg font-bold text-primary">
-              {kind === "contact"
-                ? "Message sent!"
-                : "Test drive requested!"}
-            </h3>
-            <p className="mt-2 max-w-xs text-sm text-muted-foreground">
-              {vehicle.dealer.name} has received your request and will reach out
-              shortly to confirm details for the {carLabel}.
-            </p>
-            <a
-              href={`tel:${digits}`}
-              className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline"
-            >
-              <Phone className="h-4 w-4" />
-              Prefer to call? {formatPhone(vehicle.dealer.phone)}
-            </a>
-            <Button
-              type="button"
-              variant="outline"
-              className="mt-5 w-full"
-              onClick={onClose}
-            >
-              Done
-            </Button>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-4 p-5">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <label className="flex flex-col gap-1.5">
-                <span className="text-sm font-semibold text-foreground">
-                  Full name
-                </span>
-                <input
-                  required
-                  name="name"
-                  className={fieldClass()}
-                  placeholder="Jane Doe"
-                />
-              </label>
-              <label className="flex flex-col gap-1.5">
-                <span className="text-sm font-semibold text-foreground">
-                  Phone
-                </span>
-                <input
-                  required
-                  type="tel"
-                  name="phone"
-                  className={fieldClass()}
-                  placeholder="(555) 123-4567"
-                />
-              </label>
-            </div>
-
-            <label className="flex flex-col gap-1.5">
-              <span className="text-sm font-semibold text-foreground">
-                Email
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
+          {status === "sent" ? (
+            <div className="flex flex-col items-center px-6 py-10 text-center">
+              <span className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-success/15 text-success">
+                <CheckCircle2 className="h-8 w-8" />
               </span>
-              <input
-                required
-                type="email"
-                name="email"
-                className={fieldClass()}
-                placeholder="jane@example.com"
-              />
-            </label>
-
-            {kind === "testdrive" && (
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div className="flex flex-col gap-1.5">
-                  <span className="text-sm font-semibold text-foreground">
-                    Preferred date
-                  </span>
-                  <DatePicker
-                    value={date}
-                    onChange={(d) => {
-                      setDate(d);
-                      setDateError(false);
-                    }}
-                    placeholder="Pick a date"
-                    contentClassName="z-[110]"
-                  />
-                  {dateError && (
-                    <span className="text-xs font-medium text-destructive">
-                      Please choose a date.
-                    </span>
-                  )}
-                </div>
-                <div className="flex flex-col gap-1.5">
-                  <span className="text-sm font-semibold text-foreground">
-                    Preferred time
-                  </span>
-                  <Select value={time} onValueChange={setTime}>
-                    <SelectTrigger className="h-11 rounded-lg">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent className="z-[110]">
-                      {TIME_SLOTS.map((t) => (
-                        <SelectItem key={t} value={t}>
-                          {t}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            )}
-
-            <label className="flex flex-col gap-1.5">
-              <span className="text-sm font-semibold text-foreground">
-                Message
-              </span>
-              <textarea
-                name="message"
-                rows={3}
-                className="w-full resize-y rounded-lg border border-input bg-white px-3 py-2.5 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
-                defaultValue={
-                  kind === "contact"
-                    ? `Hi, I'm interested in the ${carLabel}. Please send me more details and current availability.`
-                    : `Hi, I'd like to schedule a test drive for the ${carLabel}. Please confirm a time that works.`
-                }
-              />
-            </label>
-
-            <Button
-              type="submit"
-              variant="gold"
-              size="lg"
-              className="w-full"
-              disabled={sending}
-            >
-              {sending ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Sending...
-                </>
-              ) : kind === "contact" ? (
-                "Send Message"
-              ) : (
-                "Request Test Drive"
-              )}
-            </Button>
-
-            <p className="text-center text-xs text-muted-foreground">
-              Or call {vehicle.dealer.name} at{" "}
+              <h3 className="text-lg font-bold text-primary">
+                {kind === "contact"
+                  ? "Request sent!"
+                  : "Test drive requested!"}
+              </h3>
+              <p className="mt-2 max-w-xs text-sm text-muted-foreground">
+                {vehicle.dealer.name} has received your request and will reach
+                out shortly to confirm details for the {carLabel}.
+              </p>
               <a
                 href={`tel:${digits}`}
-                className="font-semibold text-primary hover:underline"
+                className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline"
               >
-                {formatPhone(vehicle.dealer.phone)}
+                <Phone className="h-4 w-4" />
+                Prefer to call? {formatPhone(vehicle.dealer.phone)}
               </a>
-            </p>
-          </form>
-        )}
+              <Button
+                type="button"
+                variant="outline"
+                className="mt-5 w-full"
+                onClick={onClose}
+              >
+                Done
+              </Button>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4 p-5">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <label className="flex flex-col gap-1.5">
+                  <span className="text-sm font-semibold text-foreground">
+                    Full name
+                  </span>
+                  <input
+                    required
+                    name="name"
+                    className={fieldClass()}
+                    placeholder="Jane Doe"
+                  />
+                </label>
+                <label className="flex flex-col gap-1.5">
+                  <span className="text-sm font-semibold text-foreground">
+                    Phone
+                  </span>
+                  <input
+                    required
+                    type="tel"
+                    name="phone"
+                    className={fieldClass()}
+                    placeholder="(555) 123-4567"
+                  />
+                </label>
+              </div>
+
+              <label className="flex flex-col gap-1.5">
+                <span className="text-sm font-semibold text-foreground">
+                  Email
+                </span>
+                <input
+                  required
+                  type="email"
+                  name="email"
+                  className={fieldClass()}
+                  placeholder="jane@example.com"
+                />
+              </label>
+
+              {kind === "testdrive" && (
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div className="flex flex-col gap-1.5">
+                    <span className="text-sm font-semibold text-foreground">
+                      Preferred date
+                    </span>
+                    <DatePicker
+                      value={date}
+                      onChange={(d) => {
+                        setDate(d);
+                        setDateError(false);
+                      }}
+                      placeholder="Pick a date"
+                      contentClassName="z-[200]"
+                    />
+                    {dateError && (
+                      <span className="text-xs font-medium text-destructive">
+                        Please choose a date.
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <span className="text-sm font-semibold text-foreground">
+                      Preferred time
+                    </span>
+                    <Select value={time} onValueChange={setTime}>
+                      <SelectTrigger className="h-11 rounded-lg">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="max-h-72">
+                        {TIME_SLOTS.map((t) => (
+                          <SelectItem key={t} value={t}>
+                            {t}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              )}
+
+              <label className="flex flex-col gap-1.5">
+                <span className="text-sm font-semibold text-foreground">
+                  Message
+                </span>
+                <textarea
+                  name="message"
+                  rows={3}
+                  className="w-full resize-y rounded-lg border border-input bg-white px-3 py-2.5 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+                  defaultValue={
+                    kind === "contact"
+                      ? `Hi, I'm interested in the ${carLabel}. Please send me more details and current availability.`
+                      : `Hi, I'd like to schedule a test drive for the ${carLabel}. Please confirm a time that works.`
+                  }
+                />
+              </label>
+
+              <Button
+                type="submit"
+                variant="gold"
+                size="lg"
+                className="w-full"
+                disabled={sending}
+              >
+                {sending ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Sending...
+                  </>
+                ) : kind === "contact" ? (
+                  "Send Request"
+                ) : (
+                  "Request Test Drive"
+                )}
+              </Button>
+
+              <p className="text-center text-xs text-muted-foreground">
+                Or call {vehicle.dealer.name} at{" "}
+                <a
+                  href={`tel:${digits}`}
+                  className="font-semibold text-primary hover:underline"
+                >
+                  {formatPhone(vehicle.dealer.phone)}
+                </a>
+              </p>
+            </form>
+          )}
+        </div>
       </motion.div>
     </motion.div>,
     document.body

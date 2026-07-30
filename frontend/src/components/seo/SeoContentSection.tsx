@@ -37,7 +37,7 @@ function SeoBlockRenderer({ block, index }: { block: SeoBlock; index: number }) 
     return (
       <h2
         key={key}
-        className="text-2xl font-bold tracking-tight text-primary first:mt-0 mt-8"
+        className="mt-8 text-2xl font-bold tracking-tight text-foreground first:mt-0"
       >
         {renderInline(block.content, key)}
       </h2>
@@ -46,7 +46,7 @@ function SeoBlockRenderer({ block, index }: { block: SeoBlock; index: number }) 
 
   if (block.type === "h3") {
     return (
-      <h3 key={key} className="mt-6 text-lg font-semibold text-foreground">
+      <h3 key={key} className="mt-6 text-lg font-semibold text-foreground/90">
         {renderInline(block.content, key)}
       </h3>
     );

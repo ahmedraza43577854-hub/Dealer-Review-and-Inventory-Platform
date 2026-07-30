@@ -3,6 +3,24 @@
 @tailwind utilities;
 
 /*
+  Radix Select injects a native <select aria-hidden> for form association.
+  On Windows that control still paints a second dropdown arrow and can steal
+  clicks, opening the OS menu instead of the shadcn popover. Hide it fully.
+*/
+select[aria-hidden="true"] {
+  display: none !important;
+  pointer-events: none !important;
+  position: absolute !important;
+  width: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  opacity: 0 !important;
+  border: 0 !important;
+  clip: rect(0, 0, 0, 0) !important;
+}
+
+/*
   AutoSalesReviews design system
   Primary  navy  #003087  -> hsl(219 100% 26.5%)
   Accent   gold  #E8A400  -> hsl(42 100% 45.5%)

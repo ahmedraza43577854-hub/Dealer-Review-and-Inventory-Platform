@@ -88,3 +88,11 @@ export type VehicleSort =
   | "price-desc"
   | "newest"
   | "rating";
+
+/** Lightweight vehicle summary carried in the compare tray and its localStorage
+ * persistence — deliberately excludes heavy fields (description, features, vin)
+ * that aren't needed until the full comparison page looks the vehicle back up. */
+export type CompareVehicleSummary = Pick<
+  Vehicle,
+  "id" | "year" | "make" | "model" | "trim" | "price" | "bodyStyle" | "accent" | "photoCount"
+>;

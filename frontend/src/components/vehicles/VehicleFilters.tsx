@@ -2,13 +2,14 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, Search } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import type { VehicleFilters as Filters } from "@/types/vehicle";
 import {
   BODY_STYLES,
   CONDITIONS,
   MAKES,
   MILEAGE_OPTIONS,
+  MODELS_BY_MAKE,
   PRICE_OPTIONS,
   RATING_FILTER_OPTIONS,
   YEARS,
@@ -16,7 +17,16 @@ import {
 import { STATES } from "@/config/constants";
 import { ROUTES } from "@/config/constants";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+
+const ALL = "__all__";
 
 interface VehicleFiltersProps {
   filters: Filters;
@@ -65,8 +75,31 @@ function Chip({
   );
 }
 
-function selectClass() {
-  return "h-9 w-full appearance-none rounded-lg border border-input bg-white px-2.5 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20";
+function FilterSelect({
+  value,
+  onValueChange,
+  placeholder,
+  disabled,
+  children,
+}: {
+  value: string;
+  onValueChange: (value: string) => void;
+  placeholder: string;
+  disabled?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <Select
+      value={value}
+      onValueChange={onValueChange}
+      disabled={disabled}
+    >
+      <SelectTrigger className="h-9 rounded-lg border-input bg-white">
+        <SelectValue placeholder={placeholder} />
+      </SelectTrigger>
+      <SelectContent className="max-h-72">{children}</SelectContent>
+    </Select>
+  );
 }
 
 export function VehicleFilters({
@@ -78,7 +111,6 @@ export function VehicleFilters({
   const [applying, setApplying] = useState(false);
 
   const [make, setMake] = useState(filters.make ?? "");
-  const [makeQuery, setMakeQuery] = useState("");
   const [model, setModel] = useState(filters.model ?? "");
   const [yearFrom, setYearFrom] = useState(filters.yearFrom?.toString() ?? "");
   const [yearTo, setYearTo] = useState(filters.yearTo?.toString() ?? "");
@@ -96,16 +128,18 @@ export function VehicleFilters({
     filters.minRating?.toString() ?? ""
   );
 
-  const filteredMakes = useMemo(
-    () =>
-      MAKES.filter((m) =>
-        m.toLowerCase().includes(makeQuery.trim().toLowerCase())
-      ),
-    [makeQuery]
+  const models = useMemo(
+    () => (make ? MODELS_BY_MAKE[make] ?? [] : []),
+    [make]
   );
 
   function toggle(current: string, value: string, set: (v: string) => void) {
     set(current === value ? "" : value);
+  }
+
+  function handleMakeChange(value: string) {
+    setMake(value === ALL ? "" : value);
+    setModel("");
   }
 
   function apply() {
@@ -149,116 +183,108 @@ export function VehicleFilters({
       </div>
 
       <Section title="Make">
-        <div className="relative mb-2">
-          <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
-          <input
-            value={makeQuery}
-            onChange={(e) => setMakeQuery(e.target.value)}
-            placeholder="Search makes"
-            className="h-9 w-full rounded-lg border border-input bg-white pl-8 pr-2 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
-          />
-        </div>
-        <div className="max-h-40 space-y-0.5 overflow-y-auto pr-1">
-          {filteredMakes.map((m) => (
-            <label
-              key={m}
-              className="flex cursor-pointer items-center gap-2 rounded-md px-1.5 py-1 text-sm hover:bg-secondary"
-            >
-              <input
-                type="checkbox"
-                checked={make === m}
-                onChange={() => toggle(make, m, setMake)}
-                className="h-4 w-4 accent-[#003087]"
-              />
-              <span className="text-foreground">{m}</span>
-            </label>
+        <FilterSelect
+          value={make || ALL}
+          onValueChange={handleMakeChange}
+          placeholder="All Makes"
+        >
+          <SelectItem value={ALL}>All Makes</SelectItem>
+          {MAKES.map((m) => (
+            <SelectItem key={m} value={m}>
+              {m}
+            </SelectItem>
           ))}
-        </div>
+        </FilterSelect>
       </Section>
 
       <Section title="Model">
-        <input
-          value={model}
-          onChange={(e) => setModel(e.target.value)}
-          placeholder="e.g. Camry"
-          className="h-9 w-full rounded-lg border border-input bg-white px-2.5 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
-        />
+        <FilterSelect
+          value={model || ALL}
+          onValueChange={(v) => setModel(v === ALL ? "" : v)}
+          placeholder={make ? "All Models" : "Select a make first"}
+          disabled={!make}
+        >
+          <SelectItem value={ALL}>
+            {make ? "All Models" : "Select a make first"}
+          </SelectItem>
+          {models.map((m) => (
+            <SelectItem key={m} value={m}>
+              {m}
+            </SelectItem>
+          ))}
+        </FilterSelect>
       </Section>
 
       <Section title="Year">
         <div className="grid grid-cols-2 gap-2">
-          <div className="relative">
-            <select
-              value={yearFrom}
-              onChange={(e) => setYearFrom(e.target.value)}
-              className={selectClass()}
-            >
-              <option value="">From</option>
-              {YEARS.map((y) => (
-                <option key={y} value={y}>
-                  {y}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="relative">
-            <select
-              value={yearTo}
-              onChange={(e) => setYearTo(e.target.value)}
-              className={selectClass()}
-            >
-              <option value="">To</option>
-              {YEARS.map((y) => (
-                <option key={y} value={y}>
-                  {y}
-                </option>
-              ))}
-            </select>
-          </div>
+          <FilterSelect
+            value={yearFrom || ALL}
+            onValueChange={(v) => setYearFrom(v === ALL ? "" : v)}
+            placeholder="From"
+          >
+            <SelectItem value={ALL}>From</SelectItem>
+            {YEARS.map((y) => (
+              <SelectItem key={y} value={String(y)}>
+                {y}
+              </SelectItem>
+            ))}
+          </FilterSelect>
+          <FilterSelect
+            value={yearTo || ALL}
+            onValueChange={(v) => setYearTo(v === ALL ? "" : v)}
+            placeholder="To"
+          >
+            <SelectItem value={ALL}>To</SelectItem>
+            {YEARS.map((y) => (
+              <SelectItem key={y} value={String(y)}>
+                {y}
+              </SelectItem>
+            ))}
+          </FilterSelect>
         </div>
       </Section>
 
       <Section title="Price">
         <div className="grid grid-cols-2 gap-2">
-          <select
-            value={priceFrom}
-            onChange={(e) => setPriceFrom(e.target.value)}
-            className={selectClass()}
+          <FilterSelect
+            value={priceFrom || ALL}
+            onValueChange={(v) => setPriceFrom(v === ALL ? "" : v)}
+            placeholder="Min"
           >
-            <option value="">Min</option>
+            <SelectItem value={ALL}>Min</SelectItem>
             {PRICE_OPTIONS.map((p) => (
-              <option key={p.value} value={p.value}>
+              <SelectItem key={p.value} value={String(p.value)}>
                 {p.label}
-              </option>
+              </SelectItem>
             ))}
-          </select>
-          <select
-            value={priceTo}
-            onChange={(e) => setPriceTo(e.target.value)}
-            className={selectClass()}
+          </FilterSelect>
+          <FilterSelect
+            value={priceTo || ALL}
+            onValueChange={(v) => setPriceTo(v === ALL ? "" : v)}
+            placeholder="Max"
           >
-            <option value="">Max</option>
+            <SelectItem value={ALL}>Max</SelectItem>
             {PRICE_OPTIONS.map((p) => (
-              <option key={p.value} value={p.value}>
+              <SelectItem key={p.value} value={String(p.value)}>
                 {p.label}
-              </option>
+              </SelectItem>
             ))}
-          </select>
+          </FilterSelect>
         </div>
       </Section>
 
       <Section title="Mileage">
-        <select
-          value={maxMileage}
-          onChange={(e) => setMaxMileage(e.target.value)}
-          className={selectClass()}
+        <FilterSelect
+          value={maxMileage || "any"}
+          onValueChange={setMaxMileage}
+          placeholder="Any mileage"
         >
           {MILEAGE_OPTIONS.map((m) => (
-            <option key={m.value} value={m.value}>
+            <SelectItem key={m.value} value={m.value}>
               {m.label}
-            </option>
+            </SelectItem>
           ))}
-        </select>
+        </FilterSelect>
       </Section>
 
       <Section title="Body Style">
@@ -290,18 +316,18 @@ export function VehicleFilters({
       </Section>
 
       <Section title="State">
-        <select
-          value={state}
-          onChange={(e) => setState(e.target.value)}
-          className={selectClass()}
+        <FilterSelect
+          value={state || ALL}
+          onValueChange={(v) => setState(v === ALL ? "" : v)}
+          placeholder="All States"
         >
-          <option value="">All States</option>
+          <SelectItem value={ALL}>All States</SelectItem>
           {STATES.map((s) => (
-            <option key={s.code} value={s.code}>
+            <SelectItem key={s.code} value={s.code}>
               {s.label}
-            </option>
+            </SelectItem>
           ))}
-        </select>
+        </FilterSelect>
       </Section>
 
       <Section title="Dealer Rating">
@@ -318,7 +344,7 @@ export function VehicleFilters({
         </div>
       </Section>
 
-      <div className="sticky bottom-0 -mx-4 mt-2 border-t border-border/70 bg-white px-4 pt-4">
+      <div className="sticky bottom-0 -mx-4 mt-2 border-t border-border/70 bg-white px-4 pt-4 pb-1">
         <Button
           type="button"
           variant="gold"

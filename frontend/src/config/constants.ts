@@ -26,6 +26,7 @@ export const ROUTES = {
   home: "/",
   vehicles: "/vehicles",
   vehicleDetail: (id: string) => `/vehicles/${id}`,
+  compare: "/compare",
   dealers: "/dealers",
   dealerProfile: (slug: string) => `/dealers/${slug}`,
   dealerState: (stateCode: string) =>

@@ -17,7 +17,7 @@ export const FAQ_GROUPS: FaqGroup[] = [
       {
         question: "How do I contact a dealer about a car?",
         answer:
-          'Open any vehicle page and use "Contact Dealer About This Car" or "Schedule a Test Drive" to reach the dealership directly by phone.',
+          'Open any vehicle page and use "Book This Car" or "Book a Test Drive" under the photo gallery to reach the dealership. You can also call the dealer from their profile card.',
       },
       {
         question: "Can I save vehicles I'm interested in?",

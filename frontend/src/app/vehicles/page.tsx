@@ -5,13 +5,14 @@ import Link from "next/link";
 import { getAllVehicles } from "@/lib/vehicles/data";
 import {
   filterAndSortVehicles,
-  parsePage,
   parseVehicleFilters,
   parseVehicleSort,
   countActiveFilters,
   stateLabel,
   type VehicleSearchParams,
 } from "@/lib/vehicles/filters";
+import { paginateVehicles } from "@/lib/vehicles/paginate";
+import { buildVehiclesQueryString } from "@/lib/vehicles/query-string";
 import { VEHICLES_PER_PAGE } from "@/config/vehicle";
 import { PAGE_HEADINGS, ROUTES } from "@/config/constants";
 import { buildVehicleCategoryMetadata, PAGE_SEO } from "@/config/seo";
@@ -20,8 +21,7 @@ import { VEHICLES_INTRO_SEO_CONTENT } from "@/config/seo-content";
 import { VehicleCategoryHero } from "@/components/vehicles/VehicleCategoryHero";
 import { VehicleFilters } from "@/components/vehicles/VehicleFilters";
 import { VehicleSortSelect } from "@/components/vehicles/VehicleSortSelect";
-import { VehicleRow } from "@/components/vehicles/VehicleRow";
-import { VehiclePagination } from "@/components/vehicles/VehiclePagination";
+import { VehicleInfiniteList } from "@/components/vehicles/VehicleInfiniteList";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Button } from "@/components/ui/button";
 import { SeoContentSection } from "@/components/seo/SeoContentSection";
@@ -66,13 +66,14 @@ export function generateMetadata({
 export default function VehiclesPage({ searchParams }: VehiclesPageProps) {
   const filters = parseVehicleFilters(searchParams);
   const sort = parseVehicleSort(searchParams);
-  const page = parsePage(searchParams);
 
   const results = filterAndSortVehicles(getAllVehicles(), filters, sort);
-  const totalPages = Math.max(1, Math.ceil(results.length / VEHICLES_PER_PAGE));
-  const currentPage = Math.min(page, totalPages);
-  const start = (currentPage - 1) * VEHICLES_PER_PAGE;
-  const pageItems = results.slice(start, start + VEHICLES_PER_PAGE);
+  const { items: initialVehicles } = paginateVehicles(
+    results,
+    1,
+    VEHICLES_PER_PAGE
+  );
+  const queryString = buildVehiclesQueryString(filters, sort);
   const activeCount = countActiveFilters(filters);
 
   const location = stateLabel(filters.state);
@@ -129,7 +130,7 @@ export default function VehiclesPage({ searchParams }: VehiclesPageProps) {
         <div className="container-page py-6 lg:py-8">
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-[290px_1fr] lg:gap-8">
             <aside className="hidden lg:block">
-              <div className="sticky top-20 rounded-lg border border-border/70 bg-white p-4 shadow-card">
+              <div className="sticky top-20 max-h-[calc(100vh-5.5rem)] overflow-y-auto rounded-lg border border-border/70 bg-white p-4 shadow-card">
                 <VehicleFilters filters={filters} sort={sort} />
               </div>
             </aside>
@@ -162,7 +163,7 @@ export default function VehiclesPage({ searchParams }: VehiclesPageProps) {
                 </div>
               </div>
 
-              {pageItems.length === 0 ? (
+              {results.length === 0 ? (
                 <EmptyState
                   icon={Car}
                   title="No vehicles match your search"
@@ -174,17 +175,12 @@ export default function VehiclesPage({ searchParams }: VehiclesPageProps) {
                   }
                 />
               ) : (
-                <>
-                  <div className="space-y-4">
-                    {pageItems.map((vehicle) => (
-                      <VehicleRow key={vehicle.id} vehicle={vehicle} />
-                    ))}
-                  </div>
-                  <VehiclePagination
-                    page={currentPage}
-                    totalPages={totalPages}
-                  />
-                </>
+                <VehicleInfiniteList
+                  key={queryString || "all"}
+                  initialVehicles={initialVehicles}
+                  totalCount={results.length}
+                  queryString={queryString}
+                />
               )}
             </div>
           </div>

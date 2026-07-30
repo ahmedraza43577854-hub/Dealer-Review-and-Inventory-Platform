@@ -3,9 +3,16 @@ import { ArrowRight } from "lucide-react";
 import { getTopRatedDemoDealers } from "@/lib/dealers/enrich";
 import { ROUTES } from "@/config/constants";
 import { DealerListCard } from "@/components/dealers/DealerListCard";
+import type { UserLocation } from "@/lib/location/location-cookie";
 
-export function TopRatedDealers() {
-  const dealers = getTopRatedDemoDealers(3);
+export function TopRatedDealers({ location }: { location?: UserLocation }) {
+  const dealers = getTopRatedDemoDealers(3, {
+    city: location?.city,
+    stateCode: location?.stateCode,
+  });
+  const isPersonalized =
+    !!location &&
+    dealers.some((d) => d.city.toLowerCase() === location.city.toLowerCase());
 
   return (
     <section className="bg-background">
@@ -13,7 +20,9 @@ export function TopRatedDealers() {
         <div className="mb-8 flex items-end justify-between gap-4">
           <div>
             <h2 className="text-3xl font-bold tracking-tight text-primary sm:text-4xl">
-              Top Rated Dealerships
+              {isPersonalized
+                ? `Top Rated Dealerships Near ${location!.city}`
+                : "Top Rated Dealerships"}
             </h2>
             <p className="mt-2 text-muted-foreground">
               Highly reviewed dealers across Google, Yelp, and Carfax.

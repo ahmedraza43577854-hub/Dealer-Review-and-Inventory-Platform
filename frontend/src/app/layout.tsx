@@ -5,6 +5,11 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
 import { DealerNavigationProvider } from "@/contexts/dealer-navigation-context";
+import { UserLocationProvider } from "@/contexts/user-location-context";
+import { LocationPromptModal } from "@/components/home/LocationPromptModal";
+import { CompareProvider } from "@/contexts/compare-context";
+import { CompareTray } from "@/components/vehicles/CompareTray";
+import { PreventSelectScrollLock } from "@/components/shared/PreventSelectScrollLock";
 import { SITE } from "@/config/constants";
 import { INDEXABLE_ROBOTS } from "@/config/seo";
 import { getMetadataBase } from "@/lib/seo";
@@ -48,11 +53,18 @@ export default function RootLayout({
     <html lang="en" className={inter.variable}>
       <body className="min-h-screen flex flex-col antialiased font-sans">
         <GoogleAnalytics />
-        <DealerNavigationProvider>
-          <Navbar />
-          <main className="flex-1 pt-16">{children}</main>
-          <Footer />
-        </DealerNavigationProvider>
+        <PreventSelectScrollLock />
+        <UserLocationProvider>
+          <CompareProvider>
+            <DealerNavigationProvider>
+              <Navbar />
+              <main className="flex-1 pt-16">{children}</main>
+              <Footer />
+              <LocationPromptModal />
+              <CompareTray />
+            </DealerNavigationProvider>
+          </CompareProvider>
+        </UserLocationProvider>
       </body>
     </html>
   );

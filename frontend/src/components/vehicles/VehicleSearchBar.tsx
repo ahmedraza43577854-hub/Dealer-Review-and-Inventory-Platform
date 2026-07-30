@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ChevronDown, Loader2, Search } from "lucide-react";
+import { Loader2, Search } from "lucide-react";
 import {
   MAKES,
   MODELS_BY_MAKE,
@@ -11,7 +11,16 @@ import {
 } from "@/config/vehicle";
 import { ROUTES } from "@/config/constants";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+
+const ALL = "__all__";
 
 interface VehicleSearchBarProps {
   layout?: "hero" | "bar";
@@ -26,33 +35,39 @@ interface VehicleSearchBarProps {
   className?: string;
 }
 
-function NativeSelect({
+function FieldSelect({
   label,
   value,
-  onChange,
+  onValueChange,
+  placeholder,
+  disabled,
   children,
 }: {
   label: string;
   value: string;
-  onChange: (v: string) => void;
+  onValueChange: (value: string) => void;
+  placeholder: string;
+  disabled?: boolean;
   children: React.ReactNode;
 }) {
   return (
-    <label className="flex flex-col gap-1.5">
+    <div className="flex flex-col gap-1.5">
       <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
         {label}
       </span>
-      <div className="relative">
-        <select
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className="h-11 w-full appearance-none rounded-lg border border-input bg-white px-3 pr-9 text-sm font-medium text-foreground outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
-        >
+      <Select
+        value={value}
+        onValueChange={onValueChange}
+        disabled={disabled}
+      >
+        <SelectTrigger className="h-11 rounded-lg border-input bg-white">
+          <SelectValue placeholder={placeholder} />
+        </SelectTrigger>
+        <SelectContent position="popper" className="max-h-72">
           {children}
-        </select>
-        <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-      </div>
-    </label>
+        </SelectContent>
+      </Select>
+    </div>
   );
 }
 
@@ -76,12 +91,13 @@ export function VehicleSearchBar({
   );
 
   function handleMakeChange(value: string) {
-    setMake(value);
+    const nextMake = value === ALL ? "" : value;
+    setMake(nextMake);
     setModel("");
   }
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  function handleSubmit(e?: React.FormEvent) {
+    e?.preventDefault();
     setSubmitting(true);
     const params = new URLSearchParams();
     if (bodyStyle) params.set("bodyStyle", bodyStyle);
@@ -95,9 +111,10 @@ export function VehicleSearchBar({
 
   const isHero = layout === "hero";
 
+  // Use a div (not <form>) so Radix does not inject a native <select> sibling
+  // that causes double arrows / OS dropdowns inside forms on Windows.
   return (
-    <form
-      onSubmit={handleSubmit}
+    <div
       className={cn(
         isHero
           ? "rounded-xl bg-white p-4 shadow-card sm:p-5"
@@ -113,48 +130,72 @@ export function VehicleSearchBar({
             : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-[repeat(4,minmax(0,1fr))_auto]"
         )}
       >
-        <NativeSelect label="Make" value={make} onChange={handleMakeChange}>
-          <option value="">All Makes</option>
+        <FieldSelect
+          label="Make"
+          value={make || ALL}
+          onValueChange={handleMakeChange}
+          placeholder="All Makes"
+        >
+          <SelectItem value={ALL}>All Makes</SelectItem>
           {MAKES.map((m) => (
-            <option key={m} value={m}>
+            <SelectItem key={m} value={m}>
               {m}
-            </option>
+            </SelectItem>
           ))}
-        </NativeSelect>
+        </FieldSelect>
 
-        <NativeSelect label="Model" value={model} onChange={setModel}>
-          <option value="">{make ? "All Models" : "Any Model"}</option>
+        <FieldSelect
+          label="Model"
+          value={model || ALL}
+          onValueChange={(v) => setModel(v === ALL ? "" : v)}
+          placeholder={make ? "All Models" : "Select a make first"}
+          disabled={!make}
+        >
+          <SelectItem value={ALL}>
+            {make ? "All Models" : "Select a make first"}
+          </SelectItem>
           {models.map((m) => (
-            <option key={m} value={m}>
+            <SelectItem key={m} value={m}>
               {m}
-            </option>
+            </SelectItem>
           ))}
-        </NativeSelect>
+        </FieldSelect>
 
-        <NativeSelect label="Year" value={year} onChange={setYear}>
-          <option value="">Any Year</option>
+        <FieldSelect
+          label="Year"
+          value={year || ALL}
+          onValueChange={(v) => setYear(v === ALL ? "" : v)}
+          placeholder="Any Year"
+        >
+          <SelectItem value={ALL}>Any Year</SelectItem>
           {YEARS.map((y) => (
-            <option key={y} value={String(y)}>
+            <SelectItem key={y} value={String(y)}>
               {y}
-            </option>
+            </SelectItem>
           ))}
-        </NativeSelect>
+        </FieldSelect>
 
-        <NativeSelect label="Max Price" value={priceTo} onChange={setPriceTo}>
-          <option value="">No Max</option>
+        <FieldSelect
+          label="Max Price"
+          value={priceTo || ALL}
+          onValueChange={(v) => setPriceTo(v === ALL ? "" : v)}
+          placeholder="No Max"
+        >
+          <SelectItem value={ALL}>No Max</SelectItem>
           {MAX_PRICE_OPTIONS.map((p) => (
-            <option key={p.value} value={p.value}>
+            <SelectItem key={p.value} value={p.value}>
               {p.label}
-            </option>
+            </SelectItem>
           ))}
-        </NativeSelect>
+        </FieldSelect>
 
         <div className="flex flex-col justify-end sm:col-span-2 lg:col-span-4 xl:col-span-1">
           <Button
-            type="submit"
+            type="button"
             variant="gold"
             size="lg"
             disabled={submitting}
+            onClick={() => handleSubmit()}
             className="h-11 w-full gap-3 px-8 xl:w-auto xl:min-w-[13rem] xl:shrink-0"
           >
             {submitting ? (
@@ -171,6 +212,6 @@ export function VehicleSearchBar({
           </Button>
         </div>
       </div>
-    </form>
+    </div>
   );
 }

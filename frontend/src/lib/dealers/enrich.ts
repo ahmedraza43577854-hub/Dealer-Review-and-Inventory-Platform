@@ -84,9 +84,17 @@ export function enrichDealerSummary(dealer: DealerSummary): DealerCardData {
   };
 }
 
+export interface DealerLocationHint {
+  city?: string;
+  stateCode?: string;
+}
+
 /** Homepage: top-rated dealers from inventory with real vehicle counts. */
-export function getTopRatedDemoDealers(limit = 3): DealerCardData[] {
-  return Object.values(DEMO_DEALERS)
+export function getTopRatedDemoDealers(
+  limit = 3,
+  location?: DealerLocationHint
+): DealerCardData[] {
+  const ranked = Object.values(DEMO_DEALERS)
     .map((d) => ({
       name: d.name,
       slug: d.slug,
@@ -101,6 +109,23 @@ export function getTopRatedDemoDealers(limit = 3): DealerCardData[] {
     .sort((a, b) => {
       if (a.featured !== b.featured) return a.featured ? -1 : 1;
       return b.ratings.combined - a.ratings.combined;
-    })
-    .slice(0, limit);
+    });
+
+  if (!location?.city && !location?.stateCode) {
+    return ranked.slice(0, limit);
+  }
+
+  const local = ranked.filter((d) =>
+    location.city
+      ? d.city.toLowerCase() === location.city.toLowerCase()
+      : d.state.toUpperCase() === location.stateCode!.toUpperCase()
+  );
+
+  if (local.length === 0) {
+    return ranked.slice(0, limit);
+  }
+
+  const localSlugs = new Set(local.map((d) => d.slug));
+  const rest = ranked.filter((d) => !localSlugs.has(d.slug));
+  return [...local, ...rest].slice(0, limit);
 }

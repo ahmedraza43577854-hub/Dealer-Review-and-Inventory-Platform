@@ -14,6 +14,10 @@ import {
   buildVehicleMetadata,
 } from "@/config/seo";
 import { formatPrice } from "@/lib/utils/format";
+import {
+  estimateMonthlyPayment,
+  formatMonthlyEstimate,
+} from "@/lib/finance/monthly-payment";
 import { VehicleGallery } from "@/components/vehicles/VehicleGallery";
 import { VehicleSpecs } from "@/components/vehicles/VehicleSpecs";
 import { VehicleFeatures } from "@/components/vehicles/VehicleFeatures";
@@ -22,8 +26,13 @@ import { SimilarVehicles } from "@/components/vehicles/SimilarVehicles";
 import { ConditionBadge } from "@/components/vehicles/ConditionBadge";
 import { SchemaMarkup } from "@/components/seo/SchemaMarkup";
 import { SeoContentSection } from "@/components/seo/SeoContentSection";
-import { buildProductSchema } from "@/lib/schema/builders";
+import { VehicleFaqSection } from "@/components/vehicles/VehicleFaqSection";
+import {
+  buildFaqPageSchema,
+  buildProductSchema,
+} from "@/lib/schema/builders";
 import { buildVehicleDetailSeoContent } from "@/config/seo-content";
+import { getVehicleDetailFaqs } from "@/config/vehicles/vehicle-detail-faq";
 
 const VehicleContactActions = dynamic(
   () =>
@@ -32,7 +41,7 @@ const VehicleContactActions = dynamic(
     })),
   {
     loading: () => (
-      <div className="h-40 animate-pulse rounded-lg bg-muted" aria-hidden />
+      <div className="h-[6.5rem] animate-pulse rounded-lg bg-muted sm:h-[6.25rem]" aria-hidden />
     ),
   }
 );
@@ -58,10 +67,17 @@ export default function VehicleDetailPage({ params }: VehicleDetailPageProps) {
   if (!vehicle) notFound();
 
   const similar = getSimilarVehicles(vehicle, 3);
+  const faqs = getVehicleDetailFaqs(vehicle);
+  const faqSchema = buildFaqPageSchema(faqs);
 
   return (
     <>
-      <SchemaMarkup data={buildProductSchema(vehicle)} />
+      <SchemaMarkup
+        data={[
+          buildProductSchema(vehicle),
+          ...(faqSchema ? [faqSchema] : []),
+        ]}
+      />
       <div className="bg-background pb-24 lg:pb-0">
       {/* Breadcrumb */}
       <div className="border-b border-border/70 bg-white">
@@ -89,7 +105,10 @@ export default function VehicleDetailPage({ params }: VehicleDetailPageProps) {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_360px]">
           {/* Main column */}
           <div className="space-y-8">
-            <VehicleGallery vehicle={vehicle} />
+            <div className="space-y-4">
+              <VehicleGallery vehicle={vehicle} />
+              <VehicleContactActions vehicle={vehicle} />
+            </div>
 
             <div>
               <h1 className="text-2xl font-extrabold text-primary sm:text-3xl">
@@ -102,12 +121,15 @@ export default function VehicleDetailPage({ params }: VehicleDetailPageProps) {
                 <span className="text-3xl font-extrabold text-price sm:text-4xl">
                   {formatPrice(vehicle.price)}
                 </span>
+                <span className="text-base font-semibold text-accent">
+                  {formatMonthlyEstimate(estimateMonthlyPayment(vehicle.price))}
+                </span>
                 <ConditionBadge condition={vehicle.condition} className="text-sm" />
               </div>
             </div>
 
             <div>
-              <h2 className="mb-3 text-lg font-bold text-primary">
+              <h2 className="mb-3 text-lg font-bold text-foreground">
                 Key Specifications
               </h2>
               <VehicleSpecs vehicle={vehicle} />
@@ -118,7 +140,7 @@ export default function VehicleDetailPage({ params }: VehicleDetailPageProps) {
             </div>
 
             <div>
-              <h2 className="mb-3 text-lg font-bold text-primary">
+              <h2 className="mb-3 text-lg font-bold text-foreground">
                 Vehicle Description
               </h2>
               <p className="leading-relaxed text-foreground/90">
@@ -127,13 +149,11 @@ export default function VehicleDetailPage({ params }: VehicleDetailPageProps) {
             </div>
 
             <div className="rounded-lg border border-border/70 bg-white p-5 shadow-card">
-              <h2 className="mb-4 text-lg font-bold text-primary">
+              <h2 className="mb-4 text-lg font-bold text-foreground">
                 Features &amp; Options
               </h2>
               <VehicleFeatures features={vehicle.features} />
             </div>
-
-            <VehicleContactActions vehicle={vehicle} />
           </div>
 
           {/* Sidebar */}
@@ -142,7 +162,7 @@ export default function VehicleDetailPage({ params }: VehicleDetailPageProps) {
 
             {similar.length > 0 && (
               <div>
-                <h2 className="mb-3 text-lg font-bold text-primary">
+                <h2 className="mb-3 text-lg font-bold text-foreground">
                   Similar Vehicles
                 </h2>
                 <SimilarVehicles vehicles={similar} />
@@ -151,6 +171,8 @@ export default function VehicleDetailPage({ params }: VehicleDetailPageProps) {
           </aside>
         </div>
       </div>
+
+      <VehicleFaqSection items={faqs} />
 
       <SeoContentSection
         content={buildVehicleDetailSeoContent({

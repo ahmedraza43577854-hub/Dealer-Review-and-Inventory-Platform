@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { VehiclePhoto } from "@/components/vehicles/VehiclePhoto";
 import { ConditionBadge } from "@/components/vehicles/ConditionBadge";
 import { DealerRatingInline } from "@/components/vehicles/DealerRatingInline";
+import { CompareCheckbox } from "@/components/vehicles/CompareCheckbox";
+import { toCompareVehicleSummary } from "@/lib/vehicles/compare";
 
 interface VehicleCardProps {
   vehicle: Vehicle;
@@ -99,9 +101,12 @@ export function VehicleCard({
           </p>
         </div>
 
-        <Button asChild className="mt-4 w-full">
-          <Link href={href}>View Details</Link>
-        </Button>
+        <div className="mt-4 flex items-center gap-3">
+          <CompareCheckbox vehicle={toCompareVehicleSummary(vehicle)} />
+          <Button asChild className="flex-1">
+            <Link href={href}>View Details</Link>
+          </Button>
+        </div>
       </div>
     </article>
   );

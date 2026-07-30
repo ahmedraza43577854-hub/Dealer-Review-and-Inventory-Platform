@@ -40,6 +40,9 @@ export function Navbar() {
     return pathname.startsWith(href);
   }
 
+  const citiesActive =
+    pathname.startsWith(ROUTES.cities) || pathname.startsWith("/dealers/city");
+
   return (
     <header
       className={cn(
@@ -54,13 +57,12 @@ export function Navbar() {
           className="hidden items-center gap-1 lg:flex"
           aria-label="Main navigation"
         >
-          <CitiesNavDropdown isActive={isActive(ROUTES.vehicles)} />
-          {NAV_LINKS.filter((link) => link.href !== ROUTES.vehicles).map((link) => (
+          {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
               href={link.href}
               className={cn(
-                "rounded-md px-3.5 py-2 text-sm font-semibold transition-colors",
+                "whitespace-nowrap rounded-md px-3.5 py-2 text-sm font-semibold transition-colors",
                 isActive(link.href)
                   ? "bg-secondary text-primary"
                   : "text-slate-600 hover:bg-secondary hover:text-primary"
@@ -69,6 +71,7 @@ export function Navbar() {
               {link.label}
             </Link>
           ))}
+          <CitiesNavDropdown isActive={citiesActive} />
         </nav>
 
         <div className="hidden items-center gap-2.5 lg:flex">
@@ -103,12 +106,7 @@ export function Navbar() {
             className="flex flex-col gap-1 px-4 py-6"
             aria-label="Mobile navigation"
           >
-            <CitiesNavDropdown
-              variant="mobile"
-              isActive={isActive(ROUTES.vehicles)}
-              onNavigate={() => setMobileOpen(false)}
-            />
-            {NAV_LINKS.filter((link) => link.href !== ROUTES.vehicles).map((link) => (
+            {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -123,6 +121,11 @@ export function Navbar() {
                 {link.label}
               </Link>
             ))}
+            <CitiesNavDropdown
+              variant="mobile"
+              isActive={citiesActive}
+              onNavigate={() => setMobileOpen(false)}
+            />
           </nav>
           <div className="mt-auto flex flex-col gap-3 border-t border-border/70 px-4 py-6">
             <Button asChild variant="outline" className="w-full" size="lg">

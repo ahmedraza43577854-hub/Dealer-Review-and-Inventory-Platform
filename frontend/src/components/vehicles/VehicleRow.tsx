@@ -11,6 +11,8 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { VehiclePhoto } from "@/components/vehicles/VehiclePhoto";
 import { ConditionBadge } from "@/components/vehicles/ConditionBadge";
+import { CompareCheckbox } from "@/components/vehicles/CompareCheckbox";
+import { toCompareVehicleSummary } from "@/lib/vehicles/compare";
 
 export function VehicleRow({ vehicle }: { vehicle: Vehicle }) {
   const [saved, setSaved] = useState(false);
@@ -32,10 +34,13 @@ export function VehicleRow({ vehicle }: { vehicle: Vehicle }) {
       >
         <VehiclePhoto
           vehicle={vehicle}
-          className="w-full sm:w-[220px]"
-          width={220}
-          height={138}
-          sizes="220px"
+          fill
+          // On mobile the row stacks, so the photo keeps a normal aspect
+          // ratio; on desktop it sits beside taller text content, so it
+          // stretches to match that height instead of leaving dead space
+          // below a short, aspect-ratio-locked photo.
+          className="aspect-[8/5] w-full sm:aspect-auto sm:h-full sm:w-[220px]"
+          sizes="(max-width: 640px) 100vw, 220px"
         />
         <div className="absolute left-3 top-3">
           <ConditionBadge condition={vehicle.condition} />
@@ -65,6 +70,10 @@ export function VehicleRow({ vehicle }: { vehicle: Vehicle }) {
           <p className="mt-1.5 text-2xl font-extrabold text-price">
             {formatPrice(vehicle.price)}
           </p>
+
+          <div className="mt-2 sm:hidden">
+            <CompareCheckbox vehicle={toCompareVehicleSummary(vehicle)} />
+          </div>
 
           <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
             <span className="inline-flex items-center gap-1 rounded-md bg-secondary px-2 py-1 text-xs font-medium text-primary">
@@ -131,6 +140,10 @@ export function VehicleRow({ vehicle }: { vehicle: Vehicle }) {
             <Heart className={cn("h-4 w-4", saved && "fill-accent text-accent")} />
             {saved ? "Saved" : "Save"}
           </button>
+          <CompareCheckbox
+            vehicle={toCompareVehicleSummary(vehicle)}
+            className="hidden justify-center rounded-lg border border-border px-3 py-1.5 sm:inline-flex"
+          />
         </div>
       </div>
     </article>

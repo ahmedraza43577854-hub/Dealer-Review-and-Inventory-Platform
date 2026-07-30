@@ -40,3 +40,22 @@ model Review {
 
   @@index([dealerId])
 }
+
+/**
+ * Saved / favorited vehicles.
+ * Phase 1 (no auth yet): scoped by visitorId (UUID cookie / header).
+ * Phase 2 (auth): set userId and merge visitor rows on login.
+ * Never key favorites by IP — IPs are shared, rotate, and are PII.
+ */
+model SavedVehicle {
+  id        String   @id @default(cuid())
+  visitorId String
+  userId    String?
+  vehicleId String
+  createdAt DateTime @default(now())
+
+  @@unique([visitorId, vehicleId])
+  @@index([visitorId])
+  @@index([userId])
+  @@index([vehicleId])
+}

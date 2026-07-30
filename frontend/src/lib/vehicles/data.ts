@@ -30,8 +30,30 @@ export function getVehicleById(id: string): Vehicle | undefined {
   return ALL_VEHICLES.find((v) => v.id === id);
 }
 
-export function getFeaturedVehicles(limit = 6): Vehicle[] {
-  return ALL_VEHICLES.slice(0, limit);
+export interface VehicleLocationHint {
+  city?: string;
+  stateCode?: string;
+}
+
+export function getFeaturedVehicles(
+  limit = 6,
+  location?: VehicleLocationHint
+): Vehicle[] {
+  if (!location?.city && !location?.stateCode) {
+    return ALL_VEHICLES.slice(0, limit);
+  }
+
+  const local = location.city
+    ? getVehiclesByCity(location.city, location.stateCode)
+    : getVehiclesByState(location.stateCode!);
+
+  if (local.length === 0) {
+    return ALL_VEHICLES.slice(0, limit);
+  }
+
+  const localIds = new Set(local.map((v) => v.id));
+  const rest = ALL_VEHICLES.filter((v) => !localIds.has(v.id));
+  return [...local, ...rest].slice(0, limit);
 }
 
 export function getVehiclesByDealerSlug(slug: string): Vehicle[] {

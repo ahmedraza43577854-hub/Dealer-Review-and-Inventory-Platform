@@ -3,6 +3,13 @@
 import { useState } from "react";
 import { CheckCircle2, Loader2, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const SUBJECTS = [
   "General question",
@@ -19,6 +26,7 @@ function fieldClass() {
 
 export function ContactForm() {
   const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
+  const [subject, setSubject] = useState(SUBJECTS[0]);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -67,7 +75,12 @@ export function ContactForm() {
           <span className="text-sm font-semibold text-foreground">
             Full name
           </span>
-          <input required name="name" className={fieldClass()} placeholder="Jane Doe" />
+          <input
+            required
+            name="name"
+            className={fieldClass()}
+            placeholder="Jane Doe"
+          />
         </label>
         <label className="flex flex-col gap-1.5">
           <span className="text-sm font-semibold text-foreground">Email</span>
@@ -79,14 +92,22 @@ export function ContactForm() {
             placeholder="jane@example.com"
           />
         </label>
-        <label className="flex flex-col gap-1.5 sm:col-span-2">
+        <div className="flex flex-col gap-1.5 sm:col-span-2">
           <span className="text-sm font-semibold text-foreground">Subject</span>
-          <select name="subject" className={fieldClass()}>
-            {SUBJECTS.map((s) => (
-              <option key={s}>{s}</option>
-            ))}
-          </select>
-        </label>
+          <input type="hidden" name="subject" value={subject} />
+          <Select value={subject} onValueChange={setSubject}>
+            <SelectTrigger className="h-11 rounded-lg border-input bg-white">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {SUBJECTS.map((s) => (
+                <SelectItem key={s} value={s}>
+                  {s}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
         <label className="flex flex-col gap-1.5 sm:col-span-2">
           <span className="text-sm font-semibold text-foreground">Message</span>
           <textarea
